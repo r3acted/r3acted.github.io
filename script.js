@@ -101,4 +101,17 @@
                 countNum.textContent = '—';
             });
     }
+
+    // ── Service Worker Registration (PWA) ──
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function () {
+            navigator.serviceWorker.register('./sw.js')
+                .then(function (reg) {
+                    console.log('Service Worker registered successfully with scope: ', reg.scope);
+                })
+                .catch(function (err) {
+                    console.log('Service Worker registration failed: ', err);
+                });
+        });
+    }
 })();

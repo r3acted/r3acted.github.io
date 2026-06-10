@@ -1,0 +1,17 @@
+{
+  "short_name": "8qtw",
+  "name": "8qtw - Portfolio",
+  "description": "ScreenSharer & PC Forensics Portfolio",
+  "icons": [
+    {
+      "src": "assets/avatar.jpg",
+      "type": "image/jpeg",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": ".",
+  "background_color": "#0a0a0a",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#0a0a0a"
+}
