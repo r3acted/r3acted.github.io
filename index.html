@@ -5,177 +5,535 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>8qtw</title>
     <meta name="description" content="8qtw — ScreenSharer. Minecraft & Discord Experience.">
-    <meta name="theme-color" content="#0a0a0a">
+    <meta name="theme-color" content="#050505">
     <meta http-equiv="Content-Security-Policy"
           content="default-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self'; media-src 'self'; script-src 'self'; form-action 'none';">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <link rel="manifest" href="manifest.json">
 </head>
 <body>
 
-    <!-- ── Splash Screen ── -->
+    <!-- ── Splash Screen (Dripping Blood Entrance) ── -->
     <div class="splash" id="splash">
-        <span class="splash-text">click to enter</span>
+        <canvas id="blood-canvas"></canvas>
+        <div class="splash-container">
+            <span class="click-to-enter-text">CLICK TO ENTER</span>
+        </div>
     </div>
 
-    <!-- ── Background Video (solo visivo, sempre muto) ── -->
-    <video class="video-bg" autoplay loop muted playsinline>
-        <source src="assets/song.mp4" type="video/mp4">
-    </video>
+    <!-- ── Twinkling Space Background ── -->
+    <canvas id="stars-canvas"></canvas>
     <div class="video-overlay"></div>
 
-    <!-- ── Background Music (MP3 separato) ── -->
     <audio id="bg-music" loop preload="auto">
         <source src="assets/music.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- ── Volume Control ── -->
-    <div class="volume-control" id="volume-control">
-        <button class="volume-icon" id="volume-icon" aria-label="Mute/Unmute">
-            <svg id="icon-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-                <line x1="23" y1="9" x2="17" y2="15"></line>
-                <line x1="17" y1="9" x2="23" y2="15"></line>
-            </svg>
-            <svg id="icon-low" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
-                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-                <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
-            </svg>
-            <svg id="icon-high" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
-                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-                <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
-                <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
-            </svg>
-        </button>
-        <input type="range" class="volume-slider" id="volume-slider" min="0" max="100" value="50" aria-label="Volume">
-    </div>
+    <!-- ── Floating Volume Toggle Button (Top Left) ── -->
+    <button class="volume-btn-floating" id="volume-icon" aria-label="Disattiva/Attiva audio">
+        <svg id="icon-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <line x1="23" y1="9" x2="17" y2="15"></line>
+            <line x1="17" y1="9" x2="23" y2="15"></line>
+        </svg>
+        <svg id="icon-low" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+        </svg>
+        <svg id="icon-high" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+        </svg>
+    </button>
 
-    <main class="container">
-
-        <!-- ── Profile ──────────────────────── -->
-        <div class="profile">
-            <div class="avatar-wrapper">
-                <img src="assets/avatar.jpg" alt="8qtw" class="avatar">
+    <!-- ── Layout Shell ── -->
+    <div class="layout-shell">
+        
+        <!-- ── SIDEBAR NAVIGATION ── -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <svg class="sidebar-header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="8" y1="6" x2="21" y2="6"></line>
+                    <line x1="8" y1="12" x2="21" y2="12"></line>
+                    <line x1="8" y1="18" x2="21" y2="18"></line>
+                    <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                    <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                    <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                </svg>
             </div>
-            <h1 class="name">
-                8qtw
-                <span class="view-counter" title="Visualizzazioni">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="eye-icon">
-                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                        <circle cx="12" cy="12" r="3"></circle>
+            <div class="sidebar-menu">
+                <button class="menu-tab active" data-tab="tab-bio" aria-label="Apri Biografia">
+                    <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
                     </svg>
-                    <span id="count-number">...</span>
-                </span>
-            </h1>
-            <div class="bio-container">
-                <p class="bio-title">🔍 Staff & PC Forensics</p>
-                <div class="bio-details">
-                    <div class="bio-detail-item"><strong>Age:</strong> 16 y/o</div>
-                    <div class="bio-detail-item"><strong>Place:</strong> Italy</div>
-                    <div class="bio-detail-item"><strong>Occupation:</strong> Student &bull; Staff Minecraft</div>
-                </div>
+                    <span class="tab-label">Bio</span>
+                </button>
+                <button class="menu-tab" data-tab="tab-experience" aria-label="Apri Esperienze Staff">
+                    <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                        <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                    </svg>
+                    <span class="tab-label">Staff Experience</span>
+                </button>
             </div>
-        </div>
+        </nav>
 
-        <!-- ── Contacts ─────────────────────── -->
-        <div class="contacts">
-            <!-- Discord: apre il profilo -->
-            <a class="contact-btn" href="https://discord.com/users/1485744426084204738" target="_blank" rel="noopener noreferrer" id="discord-btn" aria-label="Apri profilo Discord">
-                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                    <path d="M20.317 4.37a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
-                </svg>
-                <span>Discord</span>
-            </a>
+        <!-- ── MAIN CONTENT CONTAINER ── -->
+        <main class="content-area">
 
-            <!-- Telegram: apre il profilo -->
-            <a class="contact-btn" href="https://t.me/qtw21" target="_blank" rel="noopener noreferrer" id="telegram-btn" aria-label="Apri profilo Telegram">
-                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                    <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
-                </svg>
-                <span>Telegram</span>
-            </a>
-        </div>
+            <!-- ── TAB: BIO ──────────────────────── -->
+            <section id="tab-bio" class="tab-content active">
+                <header class="profile-card">
+                    <div class="profile-glow"></div>
+                    <div class="cyber-decor-tr"></div>
+                    <div class="cyber-decor-bl"></div>
+                    
+                    <div class="bio-header-badge">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="bio-header-icon">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        <span>Bio</span>
+                    </div>
 
-        <!-- ── Minecraft Experience ──────────── -->
-        <section class="section" id="minecraft-experience">
-            <h2 class="section-title">Minecraft Experience</h2>
-            <div class="exp-list">
-                <div class="exp-item">
-                    <span class="exp-name">MetaMC</span>
-                    <span class="exp-role">Helper</span>
-                </div>
-                <div class="exp-item">
-                    <span class="exp-name">PhaseMC</span>
-                    <span class="exp-role">Jr.Mod · SS Verified</span>
-                </div>
-                <div class="exp-item">
-                    <span class="exp-name">PotPvP</span>
-                    <span class="exp-role">Jr.Admin · Head SS</span>
-                </div>
-                <div class="exp-item">
-                    <span class="exp-name">EngineMC</span>
-                    <span class="exp-role">Helper · SS Verified</span>
-                </div>
-                <div class="exp-item">
-                    <span class="exp-name">AuraMC</span>
-                    <span class="exp-role">Helper · SS Verified</span>
-                </div>
-                <div class="exp-item">
-                    <span class="exp-name">GlobeMC</span>
-                    <span class="exp-role">Helper · Head SS</span>
-                </div>
-                <div class="exp-item">
-                    <span class="exp-name">FenixMC</span>
-                    <span class="exp-role">Sr.Mod · Head SS</span>
-                </div>
-                <div class="exp-item">
-                    <span class="exp-name">FruitMC</span>
-                    <span class="exp-role">Helper · SS Verified</span>
-                </div>
-                <div class="exp-item">
-                    <span class="exp-name">EvilMC</span>
-                    <span class="exp-role">Admin · SS Trainer</span>
-                </div>
-            </div>
-        </section>
+                    <div class="avatar-container">
+                        <div class="avatar-ring-outer"></div>
+                        <div class="avatar-ring-inner"></div>
+                        <div class="avatar-wrapper">
+                            <img src="assets/avatar.jpg" alt="Avatar di 8qtw" class="avatar">
+                        </div>
+                    </div>
 
-        <!-- ── Discord Experience ────────────── -->
-        <section class="section" id="discord-experience">
-            <h2 class="section-title">Discord Experience</h2>
-            <div class="exp-list">
-                <div class="exp-item">
-                    <span class="exp-name">Hunt Service</span>
-                    <span class="exp-role">Staff (aiuto vendite)</span>
-                </div>
-                <div class="exp-item">
-                    <span class="exp-name">TierList CoralMC (1.9+)</span>
-                    <span class="exp-role">SS Verified</span>
-                </div>
-                <div class="exp-item">
-                    <span class="exp-name">TLHub Italiana (TL Meta)</span>
-                    <span class="exp-role">DS Mod · SS Verified</span>
-                </div>
-                <div class="exp-item">
-                    <span class="exp-name">TierList CoralMC (1.9+) (2exp)</span>
-                    <span class="exp-role">Helper · Head SS</span>
-                </div>
-                <div class="exp-item">
-                    <span class="exp-name">Galaxy TierList</span>
-                    <span class="exp-role">SS Verified</span>
-                </div>
-            </div>
-        </section>
+                    <div class="profile-info-centered">
+                        <h1 class="name-centered">8qtw</h1>
+                        <p class="bio-subtitle-centered">
+                            <svg class="screen-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg>
+                            Staff & PC Forensics
+                        </p>
+                        <div class="details-list">
+                            <div class="details-item"><strong>Age:</strong> 16 y/o</div>
+                            <div class="details-item"><strong>Place:</strong> Italy</div>
+                            <div class="details-item"><strong>Occupation:</strong> Student &bull; Minecraft Staff</div>
+                        </div>
+                    </div>
+                </header>
 
-    </main>
+                <div class="contacts-grid">
+                    <!-- Discord -->
+                    <a class="contact-card discord-card" href="https://discord.com/users/1485744426084204738" target="_blank" rel="noopener noreferrer" id="discord-btn" aria-label="Apri profilo Discord">
+                        <div class="contact-glow"></div>
+                        <div class="contact-content">
+                            <svg class="contact-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                <path d="M20.317 4.37a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
+                            </svg>
+                            <span class="contact-label">Discord</span>
+                        </div>
+                    </a>
 
+                    <!-- Telegram -->
+                    <a class="contact-card telegram-card" href="https://t.me/qtw21" target="_blank" rel="noopener noreferrer" id="telegram-btn" aria-label="Apri profilo Telegram">
+                        <div class="contact-glow"></div>
+                        <div class="contact-content">
+                            <svg class="contact-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+                            </svg>
+                            <span class="contact-label">Telegram</span>
+                        </div>
+                    </a>
+                </div>
+            </section>
 
+            <!-- ── TAB: STAFF EXPERIENCE ──────────────── -->
+            <section id="tab-experience" class="tab-content">
+                
+                <!-- Minecraft Experience -->
+                <div class="xp-group-wrapper">
+                    <div class="xp-group-header">
+                        <span class="decor-dot"></span>
+                        <h2 class="xp-group-title">Minecraft Experience</h2>
+                    </div>
 
-    <!-- Credits -->
-    <div class="credits">crediti: tudyonfire</div>
+                    <div class="xp-table">
+                        <!-- MetaMC -->
+                        <div class="xp-row">
+                            <div class="xp-row-glow"></div>
+                            <div class="xp-col-info">
+                                <svg class="xp-col-icon" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M20.317 4.37a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/>
+                                </svg>
+                                <span class="xp-col-name">MetaMC</span>
+                            </div>
+                            <div class="xp-col-badges">
+                                <span class="xp-badge badge-helper">⚙️ Helper</span>
+                            </div>
+                            <div class="xp-col-action">
+                                <a href="https://imgur.com/a/CnvgGIg" target="_blank" rel="noopener noreferrer" class="proof-action-btn">
+                                    <svg class="proof-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                    </svg>
+                                    <span>PROOF</span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- PhaseMC -->
+                        <div class="xp-row">
+                            <div class="xp-row-glow"></div>
+                            <div class="xp-col-info">
+                                <svg class="xp-col-icon" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M20.317 4.37a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/>
+                                </svg>
+                                <span class="xp-col-name">PhaseMC</span>
+                            </div>
+                            <div class="xp-col-badges">
+                                <span class="xp-badge badge-mod">🛡️ Jr.Mod</span>
+                                <span class="xp-badge badge-ss">★ SS Verified</span>
+                            </div>
+                            <div class="xp-col-action">
+                                <button class="proof-action-btn disabled" disabled aria-label="Nessuna prova disponibile">
+                                    <svg class="proof-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                    </svg>
+                                    <span>PROOF</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- PotPvP -->
+                        <div class="xp-row">
+                            <div class="xp-row-glow"></div>
+                            <div class="xp-col-info">
+                                <svg class="xp-col-icon" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M20.317 4.37a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/>
+                                </svg>
+                                <span class="xp-col-name">PotPvP</span>
+                            </div>
+                            <div class="xp-col-badges">
+                                <span class="xp-badge badge-admin">👑 Jr.Admin</span>
+                                <span class="xp-badge badge-head-ss">💼 Head SS</span>
+                            </div>
+                            <div class="xp-col-action">
+                                <a href="https://imgur.com/a/v07ll8H" target="_blank" rel="noopener noreferrer" class="proof-action-btn">
+                                    <svg class="proof-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                    </svg>
+                                    <span>PROOF</span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- EngineMC -->
+                        <div class="xp-row">
+                            <div class="xp-row-glow"></div>
+                            <div class="xp-col-info">
+                                <svg class="xp-col-icon" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M20.317 4.37a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/>
+                                </svg>
+                                <span class="xp-col-name">EngineMC</span>
+                            </div>
+                            <div class="xp-col-badges">
+                                <span class="xp-badge badge-helper">⚙️ Helper</span>
+                                <span class="xp-badge badge-ss">★ SS Verified</span>
+                            </div>
+                            <div class="xp-col-action">
+                                <a href="https://imgur.com/a/r24FSn3" target="_blank" rel="noopener noreferrer" class="proof-action-btn">
+                                    <svg class="proof-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                    </svg>
+                                    <span>PROOF</span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- AuraMC -->
+                        <div class="xp-row">
+                            <div class="xp-row-glow"></div>
+                            <div class="xp-col-info">
+                                <svg class="xp-col-icon" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M20.317 4.37a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/>
+                                </svg>
+                                <span class="xp-col-name">AuraMC</span>
+                            </div>
+                            <div class="xp-col-badges">
+                                <span class="xp-badge badge-helper">⚙️ Helper</span>
+                                <span class="xp-badge badge-ss">★ SS Verified</span>
+                            </div>
+                            <div class="xp-col-action">
+                                <a href="https://imgur.com/a/brGuN6b" target="_blank" rel="noopener noreferrer" class="proof-action-btn">
+                                    <svg class="proof-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                    </svg>
+                                    <span>PROOF</span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- GlobeMC -->
+                        <div class="xp-row">
+                            <div class="xp-row-glow"></div>
+                            <div class="xp-col-info">
+                                <svg class="xp-col-icon" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M20.317 4.37a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/>
+                                </svg>
+                                <span class="xp-col-name">GlobeMC</span>
+                            </div>
+                            <div class="xp-col-badges">
+                                <span class="xp-badge badge-helper">⚙️ Helper</span>
+                                <span class="xp-badge badge-head-ss">💼 Head SS</span>
+                            </div>
+                            <div class="xp-col-action">
+                                <a href="https://imgur.com/a/838wVfg" target="_blank" rel="noopener noreferrer" class="proof-action-btn">
+                                    <svg class="proof-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                    </svg>
+                                    <span>PROOF</span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- FenixMC -->
+                        <div class="xp-row">
+                            <div class="xp-row-glow"></div>
+                            <div class="xp-col-info">
+                                <svg class="xp-col-icon" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M20.317 4.37a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/>
+                                </svg>
+                                <span class="xp-col-name">FenixMC</span>
+                            </div>
+                            <div class="xp-col-badges">
+                                <span class="xp-badge badge-mod">🛡️ Sr.Mod</span>
+                                <span class="xp-badge badge-head-ss">💼 Head SS</span>
+                            </div>
+                            <div class="xp-col-action">
+                                <a href="https://imgur.com/a/COl8Gw2" target="_blank" rel="noopener noreferrer" class="proof-action-btn">
+                                    <svg class="proof-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                    </svg>
+                                    <span>PROOF</span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- FruitMC -->
+                        <div class="xp-row">
+                            <div class="xp-row-glow"></div>
+                            <div class="xp-col-info">
+                                <svg class="xp-col-icon" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M20.317 4.37a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/>
+                                </svg>
+                                <span class="xp-col-name">FruitMC</span>
+                            </div>
+                            <div class="xp-col-badges">
+                                <span class="xp-badge badge-helper">⚙️ Helper</span>
+                                <span class="xp-badge badge-ss">★ SS Verified</span>
+                            </div>
+                            <div class="xp-col-action">
+                                <a href="https://imgur.com/yqRYbja" target="_blank" rel="noopener noreferrer" class="proof-action-btn">
+                                    <svg class="proof-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                    </svg>
+                                    <span>PROOF</span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- EvilMC -->
+                        <div class="xp-row">
+                            <div class="xp-row-glow"></div>
+                            <div class="xp-col-info">
+                                <svg class="xp-col-icon" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M20.317 4.37a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/>
+                                </svg>
+                                <span class="xp-col-name">EvilMC</span>
+                            </div>
+                            <div class="xp-col-badges">
+                                <span class="xp-badge badge-admin">👑 Admin</span>
+                                <span class="xp-badge badge-trainer">🎓 SS Trainer</span>
+                            </div>
+                            <div class="xp-col-action">
+                                <a href="https://imgur.com/a/LGplXEV" target="_blank" rel="noopener noreferrer" class="proof-action-btn">
+                                    <svg class="proof-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                    </svg>
+                                    <span>PROOF</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Discord Experience -->
+                <div class="xp-group-wrapper">
+                    <div class="xp-group-header">
+                        <span class="decor-dot"></span>
+                        <h2 class="xp-group-title">Discord Experience</h2>
+                    </div>
+
+                    <div class="xp-table">
+                        <!-- Hunt Service -->
+                        <div class="xp-row">
+                            <div class="xp-row-glow"></div>
+                            <div class="xp-col-info">
+                                <svg class="xp-col-icon" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M20.317 4.37a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/>
+                                </svg>
+                                <span class="xp-col-name">Hunt Service</span>
+                            </div>
+                            <div class="xp-col-badges">
+                                <span class="xp-badge badge-staff">🤝 Staff (aiuto vendite)</span>
+                            </div>
+                            <div class="xp-col-action">
+                                <button class="proof-action-btn disabled" disabled aria-label="Nessuna prova disponibile">
+                                    <svg class="proof-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                    </svg>
+                                    <span>PROOF</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- TierList CoralMC (1.9+) -->
+                        <div class="xp-row">
+                            <div class="xp-row-glow"></div>
+                            <div class="xp-col-info">
+                                <svg class="xp-col-icon" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M20.317 4.37a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/>
+                                </svg>
+                                <span class="xp-col-name">TierList CoralMC (1.9+)</span>
+                            </div>
+                            <div class="xp-col-badges">
+                                <span class="xp-badge badge-ss">★ SS Verified</span>
+                            </div>
+                            <div class="xp-col-action">
+                                <a href="https://imgur.com/a/tCLNVRv" target="_blank" rel="noopener noreferrer" class="proof-action-btn">
+                                    <svg class="proof-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                    </svg>
+                                    <span>PROOF</span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- TLHub Italiana (TL Meta) -->
+                        <div class="xp-row">
+                            <div class="xp-row-glow"></div>
+                            <div class="xp-col-info">
+                                <svg class="xp-col-icon" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M20.317 4.37a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/>
+                                </svg>
+                                <span class="xp-col-name">TLHub Italiana (TL Meta)</span>
+                            </div>
+                            <div class="xp-col-badges">
+                                <span class="xp-badge badge-mod">🛡️ DS Mod</span>
+                                <span class="xp-badge badge-ss">★ SS Verified</span>
+                            </div>
+                            <div class="xp-col-action">
+                                <a href="https://imgur.com/a/F7t1SWO" target="_blank" rel="noopener noreferrer" class="proof-action-btn">
+                                    <svg class="proof-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                    </svg>
+                                    <span>PROOF</span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- TierList CoralMC (1.9+) (2exp) -->
+                        <div class="xp-row">
+                            <div class="xp-row-glow"></div>
+                            <div class="xp-col-info">
+                                <svg class="xp-col-icon" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M20.317 4.37a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/>
+                                </svg>
+                                <span class="xp-col-name">TierList CoralMC (1.9+) (2exp)</span>
+                            </div>
+                            <div class="xp-col-badges">
+                                <span class="xp-badge badge-helper">⚙️ Helper</span>
+                                <span class="xp-badge badge-head-ss">💼 Head SS</span>
+                            </div>
+                            <div class="xp-col-action">
+                                <a href="https://imgur.com/a/ivlSXNe" target="_blank" rel="noopener noreferrer" class="proof-action-btn">
+                                    <svg class="proof-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                    </svg>
+                                    <span>PROOF</span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Galaxy TierList -->
+                        <div class="xp-row">
+                            <div class="xp-row-glow"></div>
+                            <div class="xp-col-info">
+                                <svg class="xp-col-icon" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M20.317 4.37a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/>
+                                </svg>
+                                <span class="xp-col-name">Galaxy TierList</span>
+                            </div>
+                            <div class="xp-col-badges">
+                                <span class="xp-badge badge-ss">★ SS Verified</span>
+                            </div>
+                            <div class="xp-col-action">
+                                <a href="https://imgur.com/a/nFFz0dQ" target="_blank" rel="noopener noreferrer" class="proof-action-btn">
+                                    <svg class="proof-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                    </svg>
+                                    <span>PROOF</span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Aura TierList -->
+                        <div class="xp-row">
+                            <div class="xp-row-glow"></div>
+                            <div class="xp-col-info">
+                                <svg class="xp-col-icon" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M20.317 4.37a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/>
+                                </svg>
+                                <span class="xp-col-name">TierList AuraMc</span>
+                            </div>
+                            <div class="xp-col-badges">
+                                <span class="xp-badge badge-ss">★ SS Verified</span>
+                            </div>
+                            <div class="xp-col-action">
+                                <a href="https://imgur.com/a/4XdZHgi" target="_blank" rel="noopener noreferrer" class="proof-action-btn">
+                                    <svg class="proof-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                    </svg>
+                                    <span>PROOF</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+        </main>
+    </div>
 
     <script src="script.js"></script>
 </body>
