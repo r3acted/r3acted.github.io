@@ -1078,22 +1078,23 @@
         });
 
         function revealApp() {
-            bgStartAudio.style.pointerEvents = 'none';
             bgStartAudio.style.opacity = '0';
             bgStartAudioH1.style.opacity = '0';
 
             setTimeout(() => {
+                bgStartAudio.style.display = 'none';
                 document.body.style.overflowY = 'auto';
                 appContainer.classList.add('animate-in');
                 volumeControl.classList.add('animate-in');
 
                 document.querySelectorAll('.section').forEach(s => s.classList.add('visible'));
-            }, 100);
+            }, 200);
 
             bgMusic.play().catch((error) => {
                 console.log("Autoplay failed:", error);
             });
         }
+        bgStartAudio.addEventListener('click', revealApp);
         document.addEventListener('click', revealApp, { once: true });
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -1127,4 +1128,12 @@
                 });
             });
 
-            window.a
+            window.addEventListener('scroll', highlightActiveSection);
+            highlightActiveSection();
+        });
+
+    </script>
+
+</body>
+
+</html>
