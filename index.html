@@ -1145,228 +1145,87 @@
                 '#38bdf8'
             ];
 
-            // 5 Grandi Fiori Blu con Stelo Lungo che partono dal basso e si fermano in alto
+            // 5 Grandi Rose Blu Realistiche con Stelo Lungo che partono dal basso e si fermano in alto
+            const roseImg = new Image();
+            roseImg.src = 'assets/realistic_blue_rose.png';
+
             const flowerConfigs = [
-                { xRatio: 0.15, targetYRatio: 0.26, size: 52, stemCurveOffset: -25, color: '#38bdf8' },
-                { xRatio: 0.32, targetYRatio: 0.18, size: 58, stemCurveOffset: 18, color: '#2563eb' },
-                { xRatio: 0.50, targetYRatio: 0.13, size: 66, stemCurveOffset: -8, color: '#00d4ff' }, // Centrale più alto e maestoso
-                { xRatio: 0.68, targetYRatio: 0.19, size: 56, stemCurveOffset: -20, color: '#60a5fa' },
-                { xRatio: 0.85, targetYRatio: 0.25, size: 50, stemCurveOffset: 22, color: '#38bdf8' }
+                { xRatio: 0.12, targetYRatio: 0.22, baseRotation: -0.10, scale: 0.94 },
+                { xRatio: 0.31, targetYRatio: 0.13, baseRotation: -0.04, scale: 1.04 },
+                { xRatio: 0.50, targetYRatio: 0.06, baseRotation: 0.00,  scale: 1.15 }, // Centro: maestoso e più alto
+                { xRatio: 0.69, targetYRatio: 0.14, baseRotation: 0.05,  scale: 1.02 },
+                { xRatio: 0.88, targetYRatio: 0.23, baseRotation: 0.10,  scale: 0.92 }
             ];
 
-            class BigStemFlower {
+            class RealisticRose {
                 constructor(config) {
                     this.config = config;
-                    this.recalcPosition();
-                    this.currentY = height + 60; // Parte dal basso fuori schermo
+                    this.recalc();
+                    this.currentY = height + 150; // Inizia sotto lo schermo
                     this.stopped = false;
                     this.swayAngle = Math.random() * Math.PI * 2;
-                    this.swaySpeed = 0.025;
                 }
 
-                recalcPosition() {
-                    this.baseX = width * this.config.xRatio;
-                    this.targetX = this.baseX;
+                recalc() {
+                    this.targetX = width * this.config.xRatio;
                     this.targetY = height * this.config.targetYRatio;
-                    this.size = this.config.size;
-                    this.color = this.config.color;
+                    // Altezza del fiore tale che lo stelo arrivi sempre dal fondo dello schermo
+                    this.roseHeight = Math.max((height - this.targetY) * 1.12, height * 0.9) * this.config.scale;
+                    this.roseWidth = this.roseHeight * 0.302; // Proporzione reale dell'immagine (2418x8000)
                 }
 
                 update() {
-                    this.swayAngle += this.swaySpeed;
+                    this.swayAngle += 0.02;
 
                     if (!this.stopped) {
                         const dist = this.currentY - this.targetY;
                         if (dist > 1) {
-                            // Salgono molto velocemente, poi rallentano dolcemente fino a fermarsi
-                            const speed = Math.max(Math.min(dist * 0.14, 22), 3);
+                            // Salita rapida con frenata morbida all'arrivo
+                            const speed = Math.max(Math.min(dist * 0.14, 25), 3);
                             this.currentY -= speed;
                         } else {
                             this.currentY = this.targetY;
-                            this.stopped = true; // Si fermano quando arrivano su!
+                            this.stopped = true; // Si ferma in alto!
                         }
                     }
                 }
 
                 draw() {
+                    if (!roseImg.complete) return;
+
                     ctx.save();
 
-                    // Calcolo curva naturale dello stelo
-                    const sway = Math.sin(this.swayAngle) * (this.stopped ? 5 : 12);
-                    const headX = this.targetX + sway * 0.7;
-                    const headY = this.currentY;
-                    const controlX = this.baseX + this.config.stemCurveOffset + sway;
-                    const controlY = (height + headY) / 2;
+                    // Movimento delicato e naturale una volta fermato
+                    const sway = Math.sin(this.swayAngle) * (this.stopped ? 4 : 10);
+                    const currentRot = this.config.baseRotation + (this.stopped ? Math.sin(this.swayAngle) * 0.015 : 0);
 
-                    // 1. Grande Stelo dal fondo dello schermo fino al fiore
-                    ctx.beginPath();
-                    ctx.moveTo(this.baseX, height);
-                    ctx.quadraticCurveTo(controlX, controlY, headX, headY);
-                    ctx.lineWidth = 5;
-                    ctx.strokeStyle = '#0284c7';
-                    ctx.shadowColor = '#00d4ff';
-                    ctx.shadowBlur = 12;
-                    ctx.lineCap = 'round';
-                    ctx.stroke();
+                    const drawX = this.targetX + sway;
+                    const drawY = this.currentY;
 
-                    // Linea interna luminosa dello stelo
-                    ctx.beginPath();
-                    ctx.moveTo(this.baseX, height);
-                    ctx.quadraticCurveTo(controlX, controlY, headX, headY);
-                    ctx.lineWidth = 1.8;
-                    ctx.strokeStyle = '#bae6fd';
-                    ctx.shadowBlur = 6;
-                    ctx.stroke();
+                    ctx.translate(drawX, drawY);
+                    ctx.rotate(currentRot);
 
-                    // 2. Grandi foglie lungo lo stelo
-                    const numLeaves = 5;
-                    for (let l = 1; l <= numLeaves; l++) {
-                        const t = l / (numLeaves + 1);
-                        // Posizione lungo la curva di bezier
-                        const lx = (1 - t) * (1 - t) * this.baseX + 2 * (1 - t) * t * controlX + t * t * headX;
-                        const ly = (1 - t) * (1 - t) * height + 2 * (1 - t) * t * controlY + t * t * headY;
-
-                        // Non mostrare foglie se il fiore non è ancora salito abbastanza
-                        if (ly < this.currentY - 10) continue;
-
-                        const side = l % 2 === 0 ? 1 : -1;
-                        const leafAngle = (side * Math.PI) / 3.2;
-
-                        ctx.save();
-                        ctx.translate(lx, ly);
-                        ctx.rotate(leafAngle);
-
-                        ctx.beginPath();
-                        const leafLen = this.size * 0.9;
-                        const leafW = this.size * 0.35;
-                        ctx.moveTo(0, 0);
-                        ctx.bezierCurveTo(leafW, -leafLen * 0.4, leafW, -leafLen * 0.8, 0, -leafLen);
-                        ctx.bezierCurveTo(-leafW, -leafLen * 0.8, -leafW, -leafLen * 0.4, 0, 0);
-                        ctx.fillStyle = '#0369a1';
-                        ctx.shadowColor = '#38bdf8';
-                        ctx.shadowBlur = 8;
-                        ctx.fill();
-
-                        // Venatura centrale foglia
-                        ctx.beginPath();
-                        ctx.lineWidth = 1;
-                        ctx.strokeStyle = '#7dd3fc';
-                        ctx.moveTo(0, 0);
-                        ctx.lineTo(0, -leafLen * 0.85);
-                        ctx.stroke();
-
-                        ctx.restore();
-                    }
-
-                    // 3. Grande Fiore Blu in cima allo stelo
-                    ctx.save();
-                    ctx.translate(headX, headY);
-
-                    // Calice alla base del fiore
-                    ctx.beginPath();
-                    ctx.moveTo(-this.size * 0.35, 4);
-                    ctx.lineTo(0, this.size * 0.45);
-                    ctx.lineTo(this.size * 0.35, 4);
-                    ctx.fillStyle = '#075985';
-                    ctx.shadowColor = '#0284c7';
-                    ctx.shadowBlur = 6;
-                    ctx.fill();
-
-                    // Petali esterni grandi
-                    const outerPetals = 6;
-                    for (let p = 0; p < outerPetals; p++) {
-                        ctx.save();
-                        ctx.rotate((p * 2 * Math.PI) / outerPetals);
-                        ctx.beginPath();
-                        ctx.moveTo(0, 0);
-                        ctx.bezierCurveTo(
-                            this.size * 0.5, -this.size * 0.65,
-                            this.size * 0.7, -this.size * 1.35,
-                            0, -this.size * 1.5
-                        );
-                        ctx.bezierCurveTo(
-                            -this.size * 0.7, -this.size * 1.35,
-                            -this.size * 0.5, -this.size * 0.65,
-                            0, 0
-                        );
-                        ctx.fillStyle = this.color;
-                        ctx.shadowColor = '#00e5ff';
-                        ctx.shadowBlur = 14;
-                        ctx.fill();
-
-                        // Contorno luminoso petalo
-                        ctx.lineWidth = 1.2;
-                        ctx.strokeStyle = '#bae6fd';
-                        ctx.stroke();
-
-                        ctx.restore();
-                    }
-
-                    // Petali intermedi
-                    const midPetals = 5;
-                    for (let mp = 0; mp < midPetals; mp++) {
-                        ctx.save();
-                        ctx.rotate((mp * 2 * Math.PI) / midPetals + 0.35);
-                        ctx.beginPath();
-                        ctx.moveTo(0, 0);
-                        ctx.bezierCurveTo(
-                            this.size * 0.4, -this.size * 0.5,
-                            this.size * 0.5, -this.size * 1.05,
-                            0, -this.size * 1.15
-                        );
-                        ctx.bezierCurveTo(
-                            -this.size * 0.5, -this.size * 1.05,
-                            -this.size * 0.4, -this.size * 0.5,
-                            0, 0
-                        );
-                        ctx.fillStyle = '#60a5fa';
-                        ctx.shadowColor = '#38bdf8';
-                        ctx.shadowBlur = 10;
-                        ctx.fill();
-                        ctx.restore();
-                    }
-
-                    // Petali interni bocciolo
-                    const innerPetals = 4;
-                    for (let ip = 0; ip < innerPetals; ip++) {
-                        ctx.save();
-                        ctx.rotate((ip * 2 * Math.PI) / innerPetals + 0.6);
-                        ctx.beginPath();
-                        ctx.moveTo(0, 0);
-                        ctx.bezierCurveTo(
-                            this.size * 0.28, -this.size * 0.35,
-                            this.size * 0.35, -this.size * 0.75,
-                            0, -this.size * 0.85
-                        );
-                        ctx.bezierCurveTo(
-                            -this.size * 0.35, -this.size * 0.75,
-                            -this.size * 0.28, -this.size * 0.35,
-                            0, 0
-                        );
-                        ctx.fillStyle = '#93c5fd';
-                        ctx.fill();
-                        ctx.restore();
-                    }
-
-                    // Cuore centrale luminescente
-                    ctx.beginPath();
-                    ctx.arc(0, 0, this.size * 0.22, 0, Math.PI * 2);
-                    ctx.fillStyle = '#ffffff';
-                    ctx.shadowColor = '#ffffff';
+                    // Glow blu attorno alla rosa realistica
+                    ctx.shadowColor = 'rgba(56, 189, 248, 0.45)';
                     ctx.shadowBlur = 16;
-                    ctx.fill();
 
-                    ctx.restore();
+                    // Disegna la rosa realistica centrata
+                    ctx.drawImage(
+                        roseImg,
+                        -this.roseWidth / 2,
+                        0,
+                        this.roseWidth,
+                        this.roseHeight
+                    );
+
                     ctx.restore();
                 }
             }
 
-            // Inizializza i 5 fiori
-            const flowers = flowerConfigs.map(cfg => new BigStemFlower(cfg));
+            const flowers = flowerConfigs.map(c => new RealisticRose(c));
 
-            // Aggiornamento su resize
             window.addEventListener('resize', () => {
-                flowers.forEach(f => f.recalcPosition());
+                flowers.forEach(f => f.recalc());
             });
 
             function loop() {
