@@ -1152,20 +1152,20 @@
 
                 reset(isInitial = false) {
                     this.x = Math.random() * width;
-                    this.y = isInitial ? Math.random() * height : height + Math.random() * 50 + 20;
-                    this.size = Math.random() * 12 + 10; // 10px to 22px
+                    this.y = isInitial ? Math.random() * height : height + Math.random() * 60 + 30;
+                    this.size = Math.random() * 12 + 16; // 16px to 28px
                     // Salgono molto velocemente (rising very fast)
-                    this.vy = -(Math.random() * 7 + 8); // -8px to -15px per frame
-                    this.vx = (Math.random() - 0.5) * 1.8;
-                    this.swaySpeed = Math.random() * 0.06 + 0.03;
-                    this.swayAmp = Math.random() * 2.8 + 1.2;
+                    this.vy = -(Math.random() * 8 + 8.5); // -8.5px to -16.5px per frame
+                    this.vx = (Math.random() - 0.5) * 1.6;
+                    this.swaySpeed = Math.random() * 0.05 + 0.03;
+                    this.swayAmp = Math.random() * 2.5 + 1.2;
                     this.swayAngle = Math.random() * Math.PI * 2;
                     this.rotation = Math.random() * Math.PI * 2;
-                    this.rotSpeed = (Math.random() - 0.5) * 0.12;
+                    this.rotSpeed = (Math.random() - 0.5) * 0.08;
                     this.color = colors[Math.floor(Math.random() * colors.length)];
                     this.centerColor = centerColors[Math.floor(Math.random() * centerColors.length)];
-                    this.opacity = Math.random() * 0.4 + 0.55;
-                    this.isPetal = Math.random() < 0.3; // 30% individual petals, 70% full blossoms
+                    this.opacity = Math.random() * 0.35 + 0.6;
+                    this.isPetalOnly = Math.random() < 0.25; // 25% single long drifting petal, 75% full Spider Lily
                 }
 
                 update() {
@@ -1174,7 +1174,7 @@
                     this.x += Math.sin(this.swayAngle) * this.swayAmp + this.vx;
                     this.rotation += this.rotSpeed;
 
-                    if (this.y < -60) {
+                    if (this.y < -90) {
                         this.reset(false);
                     }
                 }
@@ -1185,36 +1185,100 @@
                     ctx.rotate(this.rotation);
                     ctx.globalAlpha = this.opacity;
 
-                    if (this.isPetal) {
+                    if (this.isPetalOnly) {
+                        // Single long slender Spider Lily petal (petalo lungo arricciato)
                         ctx.beginPath();
-                        ctx.moveTo(0, -this.size * 0.8);
-                        ctx.bezierCurveTo(this.size * 0.6, -this.size * 0.4, this.size * 0.6, this.size * 0.5, 0, this.size * 0.9);
-                        ctx.bezierCurveTo(-this.size * 0.6, this.size * 0.5, -this.size * 0.6, -this.size * 0.4, 0, -this.size * 0.8);
+                        ctx.moveTo(0, 0);
+                        ctx.bezierCurveTo(this.size * 0.35, -this.size * 0.9, this.size * 0.75, -this.size * 1.8, this.size * 0.2, -this.size * 2.6);
+                        ctx.bezierCurveTo(this.size * 0.05, -this.size * 1.8, -this.size * 0.2, -this.size * 0.9, 0, 0);
                         ctx.fillStyle = this.color;
                         ctx.shadowColor = this.color;
-                        ctx.shadowBlur = 8;
+                        ctx.shadowBlur = 9;
                         ctx.fill();
+
+                        // Petal filament
+                        ctx.beginPath();
+                        ctx.lineWidth = 1;
+                        ctx.strokeStyle = '#bae6fd';
+                        ctx.moveTo(0, 0);
+                        ctx.quadraticCurveTo(this.size * 0.3, -this.size * 1.2, this.size * 0.2, -this.size * 2.5);
+                        ctx.stroke();
                     } else {
-                        const numPetals = 5;
+                        // Full Blue Spider Lily / Higanbana (Giglio del ragno blu)
+                        const numPetals = 6;
                         for (let i = 0; i < numPetals; i++) {
                             ctx.save();
                             ctx.rotate((i * 2 * Math.PI) / numPetals);
+
+                            // 1. Long, slender, wavy, recurved petals
                             ctx.beginPath();
                             ctx.moveTo(0, 0);
-                            ctx.bezierCurveTo(this.size * 0.45, -this.size * 0.6, this.size * 0.5, -this.size * 1.25, 0, -this.size * 1.35);
-                            ctx.bezierCurveTo(-this.size * 0.5, -this.size * 1.25, -this.size * 0.45, -this.size * 0.6, 0, 0);
+                            ctx.bezierCurveTo(
+                                this.size * 0.28, -this.size * 0.7,
+                                this.size * 0.75, -this.size * 1.4,
+                                this.size * 0.3, -this.size * 2.2
+                            );
+                            ctx.bezierCurveTo(
+                                this.size * 0.08, -this.size * 1.5,
+                                -this.size * 0.15, -this.size * 0.75,
+                                0, 0
+                            );
                             ctx.fillStyle = this.color;
                             ctx.shadowColor = this.color;
-                            ctx.shadowBlur = 7;
+                            ctx.shadowBlur = 8;
                             ctx.fill();
+
+                            // Inner central vein of petal
+                            ctx.beginPath();
+                            ctx.lineWidth = 1;
+                            ctx.strokeStyle = '#93c5fd';
+                            ctx.moveTo(0, 0);
+                            ctx.quadraticCurveTo(this.size * 0.25, -this.size * 1.1, this.size * 0.28, -this.size * 2.15);
+                            ctx.stroke();
+
                             ctx.restore();
                         }
 
+                        // 2. Long, dramatic, upward-curving stamens (stami e filamenti lunghi)
+                        const numStamens = 7;
+                        ctx.lineWidth = 1.2;
+                        for (let j = 0; j < numStamens; j++) {
+                            ctx.save();
+                            const stamenAngle = (j * 2 * Math.PI) / numStamens + 0.3;
+                            ctx.rotate(stamenAngle);
+
+                            const tipX = this.size * 1.1;
+                            const tipY = -this.size * 3.0;
+
+                            ctx.beginPath();
+                            ctx.moveTo(0, 0);
+                            ctx.bezierCurveTo(
+                                this.size * 0.2, -this.size * 1.0,
+                                this.size * 0.85, -this.size * 2.0,
+                                tipX, tipY
+                            );
+                            ctx.strokeStyle = '#bae6fd';
+                            ctx.shadowColor = '#60a5fa';
+                            ctx.shadowBlur = 6;
+                            ctx.stroke();
+
+                            // Anther dot at filament tip
+                            ctx.beginPath();
+                            ctx.arc(tipX, tipY, this.size * 0.08 + 1, 0, Math.PI * 2);
+                            ctx.fillStyle = '#ffffff';
+                            ctx.shadowColor = '#ffffff';
+                            ctx.shadowBlur = 8;
+                            ctx.fill();
+
+                            ctx.restore();
+                        }
+
+                        // Glowing center core
                         ctx.beginPath();
-                        ctx.arc(0, 0, this.size * 0.28, 0, Math.PI * 2);
+                        ctx.arc(0, 0, this.size * 0.24, 0, Math.PI * 2);
                         ctx.fillStyle = this.centerColor;
-                        ctx.shadowColor = '#60a5fa';
-                        ctx.shadowBlur = 6;
+                        ctx.shadowColor = '#38bdf8';
+                        ctx.shadowBlur = 8;
                         ctx.fill();
                     }
 
