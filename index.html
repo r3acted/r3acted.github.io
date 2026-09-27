@@ -1145,94 +1145,100 @@
                 '#38bdf8'
             ];
 
-            // 5 Grandi Rose Blu Realistiche con Stelo Lungo che partono dal basso e si fermano in alto
-            const roseImg = new Image();
-            roseImg.src = 'assets/realistic_blue_rose.png';
-
-            const flowerConfigs = [
-                { xRatio: 0.12, targetYRatio: 0.22, baseRotation: -0.10, scale: 0.94 },
-                { xRatio: 0.31, targetYRatio: 0.13, baseRotation: -0.04, scale: 1.04 },
-                { xRatio: 0.50, targetYRatio: 0.06, baseRotation: 0.00,  scale: 1.15 }, // Centro: maestoso e più alto
-                { xRatio: 0.69, targetYRatio: 0.14, baseRotation: 0.05,  scale: 1.02 },
-                { xRatio: 0.88, targetYRatio: 0.23, baseRotation: 0.10,  scale: 0.92 }
-            ];
-
-            class RealisticRose {
-                constructor(config) {
-                    this.config = config;
-                    this.recalc();
-                    this.currentY = height + 150; // Inizia sotto lo schermo
-                    this.stopped = false;
-                    this.swayAngle = Math.random() * Math.PI * 2;
+            // Petali Blu che scendono morbidamente dall'alto
+            class FallingPetal {
+                constructor(isInitial = false) {
+                    this.reset(isInitial);
                 }
 
-                recalc() {
-                    this.targetX = width * this.config.xRatio;
-                    this.targetY = height * this.config.targetYRatio;
-                    // Altezza del fiore tale che lo stelo arrivi sempre dal fondo dello schermo
-                    this.roseHeight = Math.max((height - this.targetY) * 1.12, height * 0.9) * this.config.scale;
-                    this.roseWidth = this.roseHeight * 0.302; // Proporzione reale dell'immagine (2418x8000)
+                reset(isInitial = false) {
+                    this.x = Math.random() * (width + 100) - 50;
+                    this.y = isInitial ? Math.random() * height : -30 - Math.random() * 40;
+                    this.size = Math.random() * 12 + 13; // 13px to 25px
+                    // Cadono dall'alto in modo naturale ed elegante
+                    this.vy = Math.random() * 1.8 + 1.6; // 1.6px a 3.4px per frame
+                    this.vx = (Math.random() - 0.35) * 0.9; // leggera brezza
+                    this.swayAngle = Math.random() * Math.PI * 2;
+                    this.swaySpeed = Math.random() * 0.03 + 0.02;
+                    this.swayAmp = Math.random() * 1.8 + 1.2;
+
+                    // Rotazione e capovolgimento 3D (tumbling nel vento)
+                    this.angle = Math.random() * Math.PI * 2;
+                    this.rotSpeed = (Math.random() - 0.5) * 0.025;
+                    this.flip = Math.random() * Math.PI * 2;
+                    this.flipSpeed = Math.random() * 0.04 + 0.02;
+
+                    // Colori realistici petali blu
+                    const colorThemes = [
+                        { dark: '#1e3a8a', mid: '#2563eb', light: '#93c5fd' }, // Royal Blue
+                        { dark: '#1d4ed8', mid: '#38bdf8', light: '#bae6fd' }, // Sky/Electric
+                        { dark: '#0f172a', mid: '#1d4ed8', light: '#60a5fa' }, // Deep Velvet Navy
+                        { dark: '#0369a1', mid: '#0ea5e9', light: '#e0f2fe' }  // Ice Cyan-Blue
+                    ];
+                    this.palette = colorThemes[Math.floor(Math.random() * colorThemes.length)];
+                    this.opacity = Math.random() * 0.35 + 0.65;
                 }
 
                 update() {
-                    this.swayAngle += 0.02;
+                    this.y += this.vy;
+                    this.swayAngle += this.swaySpeed;
+                    this.x += Math.sin(this.swayAngle) * this.swayAmp + this.vx;
 
-                    if (!this.stopped) {
-                        const dist = this.currentY - this.targetY;
-                        if (dist > 1) {
-                            // Salita rapida con frenata morbida all'arrivo
-                            const speed = Math.max(Math.min(dist * 0.14, 25), 3);
-                            this.currentY -= speed;
-                        } else {
-                            this.currentY = this.targetY;
-                            this.stopped = true; // Si ferma in alto!
-                        }
+                    this.angle += this.rotSpeed;
+                    this.flip += this.flipSpeed;
+
+                    // Quando escono dal fondo dello schermo, rinascono sopra
+                    if (this.y > height + 40 || this.x < -60 || this.x > width + 60) {
+                        this.reset(false);
                     }
                 }
 
                 draw() {
-                    if (!roseImg.complete) return;
-
                     ctx.save();
+                    ctx.translate(this.x, this.y);
+                    ctx.rotate(this.angle);
+                    // Effetto 3D realistico: il petalo volteggia ruotando su se stesso nell'aria
+                    const flipScale = Math.cos(this.flip);
+                    ctx.scale(flipScale, 1);
+                    ctx.globalAlpha = this.opacity;
 
-                    // Movimento delicato e naturale una volta fermato
-                    const sway = Math.sin(this.swayAngle) * (this.stopped ? 4 : 10);
-                    const currentRot = this.config.baseRotation + (this.stopped ? Math.sin(this.swayAngle) * 0.015 : 0);
+                    // Sfumatura realistica del petalo dal calice alla punta
+                    const grad = ctx.createLinearGradient(0, -this.size, 0, this.size);
+                    grad.addColorStop(0, this.palette.dark);
+                    grad.addColorStop(0.55, this.palette.mid);
+                    grad.addColorStop(1, this.palette.light);
 
-                    const drawX = this.targetX + sway;
-                    const drawY = this.currentY;
+                    ctx.beginPath();
+                    ctx.moveTo(0, -this.size * 0.9);
+                    // Curvatura organica a goccia del petalo di rosa
+                    ctx.bezierCurveTo(this.size * 0.75, -this.size * 0.5, this.size * 0.8, this.size * 0.5, 0, this.size);
+                    ctx.bezierCurveTo(-this.size * 0.8, this.size * 0.5, -this.size * 0.75, -this.size * 0.5, 0, -this.size * 0.9);
 
-                    ctx.translate(drawX, drawY);
-                    ctx.rotate(currentRot);
-
-                    // Glow blu attorno alla rosa realistica
+                    ctx.fillStyle = grad;
                     ctx.shadowColor = 'rgba(56, 189, 248, 0.45)';
-                    ctx.shadowBlur = 16;
+                    ctx.shadowBlur = 10;
+                    ctx.fill();
 
-                    // Disegna la rosa realistica centrata
-                    ctx.drawImage(
-                        roseImg,
-                        -this.roseWidth / 2,
-                        0,
-                        this.roseWidth,
-                        this.roseHeight
-                    );
+                    // Riflesso delicato di luce sul bordo del petalo
+                    ctx.lineWidth = 0.8;
+                    ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
+                    ctx.stroke();
 
                     ctx.restore();
                 }
             }
 
-            const flowers = flowerConfigs.map(c => new RealisticRose(c));
-
-            window.addEventListener('resize', () => {
-                flowers.forEach(f => f.recalc());
-            });
+            const petalCount = Math.min(Math.floor((width * height) / 14000), 75) || 50;
+            const petals = [];
+            for (let i = 0; i < petalCount; i++) {
+                petals.push(new FallingPetal(true));
+            }
 
             function loop() {
                 ctx.clearRect(0, 0, width, height);
-                for (let i = 0; i < flowers.length; i++) {
-                    flowers[i].update();
-                    flowers[i].draw();
+                for (let i = 0; i < petals.length; i++) {
+                    petals[i].update();
+                    petals[i].draw();
                 }
                 flowerAnimId = requestAnimationFrame(loop);
             }
