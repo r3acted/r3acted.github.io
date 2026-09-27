@@ -291,7 +291,7 @@
             font-weight: 600;
             border-left: 4px solid var(--accent-secondary);
             padding-left: calc(1.5rem - 4px);
-            box-shadow: 0 0 15px rgba(255, 43, 43, 0.3);
+            box-shadow: 0 0 15px rgba(0, 170, 255, 0.5);
         }
 
         .panel-item.active:hover {
@@ -1246,6 +1246,99 @@
         }
 
         initBlueFlowers();
+
+        // Scia del mouse sfocata e luminosa (Blurred Glowing Blue Mouse Trail)
+        (function initMouseTrail() {
+            const trailCanvas = document.createElement('canvas');
+            trailCanvas.id = 'cursor-trail-canvas';
+            trailCanvas.style.position = 'fixed';
+            trailCanvas.style.top = '0';
+            trailCanvas.style.left = '0';
+            trailCanvas.style.width = '100vw';
+            trailCanvas.style.height = '100vh';
+            trailCanvas.style.pointerEvents = 'none';
+            trailCanvas.style.zIndex = '999999999';
+            trailCanvas.style.filter = 'blur(3px)'; // Effetto scia morbida e sfocata
+            document.body.appendChild(trailCanvas);
+
+            const tCtx = trailCanvas.getContext('2d');
+            let tW = (trailCanvas.width = window.innerWidth);
+            let tH = (trailCanvas.height = window.innerHeight);
+
+            window.addEventListener('resize', () => {
+                tW = trailCanvas.width = window.innerWidth;
+                tH = trailCanvas.height = window.innerHeight;
+            });
+
+            const points = [];
+            let lastX = null;
+            let lastY = null;
+
+            window.addEventListener('mousemove', (e) => {
+                const curX = e.clientX;
+                const curY = e.clientY;
+
+                if (lastX === null) {
+                    lastX = curX;
+                    lastY = curY;
+                }
+
+                const dist = Math.hypot(curX - lastX, curY - lastY);
+                const steps = Math.min(Math.max(Math.floor(dist / 5), 1), 10);
+
+                for (let i = 0; i <= steps; i++) {
+                    const t = i / steps;
+                    points.push({
+                        x: lastX + (curX - lastX) * t,
+                        y: lastY + (curY - lastY) * t,
+                        size: 16,
+                        alpha: 0.85
+                    });
+                }
+
+                lastX = curX;
+                lastY = curY;
+            });
+
+            function renderTrail() {
+                tCtx.clearRect(0, 0, tW, tH);
+
+                for (let i = points.length - 1; i >= 0; i--) {
+                    const p = points[i];
+                    p.size *= 0.93;
+                    p.alpha -= 0.035;
+
+                    if (p.alpha <= 0 || p.size <= 0.5) {
+                        points.splice(i, 1);
+                        continue;
+                    }
+
+                    tCtx.save();
+                    tCtx.globalAlpha = p.alpha;
+                    tCtx.shadowBlur = 18;
+                    tCtx.shadowColor = '#00d4ff';
+
+                    // Bagliore esterno azzurro/ciano
+                    tCtx.beginPath();
+                    tCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    tCtx.fillStyle = '#38bdf8';
+                    tCtx.fill();
+
+                    // Cuore centrale bianco luminoso
+                    tCtx.beginPath();
+                    tCtx.arc(p.x, p.y, p.size * 0.45, 0, Math.PI * 2);
+                    tCtx.fillStyle = '#ffffff';
+                    tCtx.shadowColor = '#ffffff';
+                    tCtx.shadowBlur = 8;
+                    tCtx.fill();
+
+                    tCtx.restore();
+                }
+
+                requestAnimationFrame(renderTrail);
+            }
+            requestAnimationFrame(renderTrail);
+        })();
 
         function revealApp() {
             if (flowerAnimId) {
