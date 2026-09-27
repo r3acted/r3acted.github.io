@@ -765,7 +765,7 @@
 </head>
 
 <body>
-    <div id="bg-start-audio">
+    <div id="bg-start-audio" onclick="revealApp()">
         <h1>Click Anywhere</h1>
     </div>
 
@@ -1078,24 +1078,38 @@
         });
 
         function revealApp() {
-            bgStartAudio.style.opacity = '0';
-            bgStartAudioH1.style.opacity = '0';
-
-            setTimeout(() => {
-                bgStartAudio.style.display = 'none';
-                document.body.style.overflowY = 'auto';
-                appContainer.classList.add('animate-in');
-                volumeControl.classList.add('animate-in');
-
-                document.querySelectorAll('.section').forEach(s => s.classList.add('visible'));
-            }, 200);
-
-            bgMusic.play().catch((error) => {
-                console.log("Autoplay failed:", error);
+            const overlay = document.getElementById('bg-start-audio');
+            if (overlay) {
+                overlay.style.opacity = '0';
+                overlay.style.pointerEvents = 'none';
+                setTimeout(() => {
+                    overlay.remove();
+                }, 300);
+            }
+            document.body.style.overflowY = 'auto';
+            const app = document.querySelector('.app-container');
+            if (app) {
+                app.style.opacity = '1';
+                app.classList.add('animate-in');
+            }
+            const vol = document.getElementById('volume-control');
+            if (vol) {
+                vol.style.opacity = '1';
+                vol.classList.add('animate-in');
+            }
+            document.querySelectorAll('.section').forEach(s => {
+                s.style.opacity = '1';
+                s.classList.add('visible');
             });
+
+            if (bgMusic) {
+                bgMusic.play().catch(() => {});
+            }
         }
-        bgStartAudio.addEventListener('click', revealApp);
-        document.addEventListener('click', revealApp, { once: true });
+
+        window.addEventListener('click', revealApp, { capture: true, once: true });
+        window.addEventListener('touchstart', revealApp, { capture: true, once: true });
+        window.addEventListener('keydown', revealApp, { capture: true, once: true });
 
         document.addEventListener('DOMContentLoaded', () => {
             initializeProfile();
