@@ -1,4 +1,4 @@
-const CACHE_NAME = '8qtw-pwa-v3';
+const CACHE_NAME = '8qtw-pwa-v4';
 const ASSETS = [
   './',
   './index.html',
@@ -35,7 +35,7 @@ self.addEventListener('activate', event => {
 // Fetch event (network-first strategy with cache fallback)
 self.addEventListener('fetch', event => {
   // Exclude large media files from cache storage limit protection
-  if (event.request.url.includes('music.mp3') || event.request.url.includes('song.mp4')) {
+  if (event.request.url.includes('music.m4a') || event.request.url.includes('song.mp4')) {
     return;
   }
 
