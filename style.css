@@ -3,12 +3,12 @@
     --card-bg: rgba(10, 10, 12, 0.55);
     --card-bg-hover: rgba(16, 16, 20, 0.7);
     --border-base: rgba(255, 255, 255, 0.05);
-    --border-hover: rgba(255, 42, 95, 0.35);
+    --border-hover: rgba(0, 170, 255, 0.4);
     
-    /* Premium Neon Ruby Accent */
-    --accent-hsl: 345, 100%, 58%;
+    /* Premium Neon Blue Accent */
+    --accent-hsl: 205, 100%, 55%;
     --accent: hsl(var(--accent-hsl));
-    --accent-hover: hsl(345, 100%, 65%);
+    --accent-hover: hsl(205, 100%, 65%);
     --accent-glow: hsla(var(--accent-hsl), 0.2);
     --accent-glow-strong: hsla(var(--accent-hsl), 0.45);
     
@@ -165,7 +165,7 @@ body {
 
 .splash:hover .click-to-enter-text {
     color: #fff;
-    text-shadow: 0 0 12px rgba(255, 42, 95, 0.8);
+    text-shadow: 0 0 12px rgba(0, 170, 255, 0.85);
 }
 
 @keyframes text-pulse {
@@ -175,7 +175,7 @@ body {
     }
     50% {
         opacity: 0.9;
-        text-shadow: 0 0 8px rgba(255, 42, 95, 0.4);
+        text-shadow: 0 0 8px rgba(0, 170, 255, 0.5);
     }
 }
 
