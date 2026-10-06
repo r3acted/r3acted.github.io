@@ -1,4 +1,4 @@
-const CACHE_NAME = '8qtw-pwa-v13';
+const CACHE_NAME = '8qtw-pwa-v14';
 const ASSETS = [
   './',
   './index.html',
