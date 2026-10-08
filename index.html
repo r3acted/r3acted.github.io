@@ -1250,98 +1250,84 @@
 
         initBlueFlowers();
 
-        // Scia del mouse sfocata e luminosa (Blurred Glowing Blue Mouse Trail)
-        (function initMouseTrail() {
-            const trailCanvas = document.createElement('canvas');
-            trailCanvas.id = 'cursor-trail-canvas';
-            trailCanvas.style.position = 'fixed';
-            trailCanvas.style.top = '0';
-            trailCanvas.style.left = '0';
-            trailCanvas.style.width = '100vw';
-            trailCanvas.style.height = '100vh';
-            trailCanvas.style.pointerEvents = 'none';
-            trailCanvas.style.zIndex = '999999999';
-            trailCanvas.style.filter = 'blur(3px)'; // Effetto scia morbida e sfocata
-            document.body.appendChild(trailCanvas);
+        function ghostCursor(options) {
+            let hasWrapperEl = options && options.element;
+            let element = hasWrapperEl || document.body;
+            const lifeSpan = options && options.lifeSpan || 40;
+            let width = window.innerWidth;
+            let height = window.innerHeight;
+            let cursor = { x: width / 2, y: width / 2 };
+            let particles = [];
+            let canvas, context, animationFrame;
+            let baseImage = new Image();
+            baseImage.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAATCAYAAACk9eypAAAAAXNSR0IArs4c6QAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAhGVYSWZNTQAqAAAACAAFARIAAwAAAAEAAQAAARoABQAAAAEAAABKARsABQAAAAEAAABSASgAAwAAAAEAAgAAh2kABAAAAAEAAABaAAAAAAAAAEgAAAABAAAASAAAAAEAA6ABAAMAAAABAAEAAKACAAQAAAABAAAADKADAAQAAAABAAAAEwAAAAAChpcNAAAACXBIWXMAAAsTAAALEwEAmpwYAAABWWlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS40LjAiPgogICA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPgogICAgICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIgogICAgICAgICAgICB4bWxuczp0aWZmPSJodHRwOi8vbnMuYWRvYmUuY29tL3RpZmYvMS4wLyI+CiAgICAgICAgIDx0aWZmOk9yaWVudGF0aW9uPjE8L3RpZmY6T3JpZW50YXRpb24+CiAgICAgIDwvcmRmOkRlc2NyaXB0aW9uPgogICA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgpMwidZAAABqElEQVQoFY3SPUvDQBgH8BREpRHExYiDgmLFl6WC+AYmWeyLg4i7buJX8DMpOujgyxGvUYeCgzhUQUSKKLUS0+ZyptXh8Z5Ti621ekPyJHl+uftfomhaf9Ei5JyxXKfynyEA6EYcLHpwyflT958GAQ7DTABNHd8EbtDbEH2BD5QEQmi2mM8P/Iq+A0SzszEg+3sPjDnDdVEtQKQbMUidHD3xVzf6A9UDEmEm+8h9KTqTVUjT+vB53aHrCbAPiceYq1dQI1Aqv4EhMll0jzv+Y0yiRgCnLRSYyDQHVoqUXe4uKL9l+L7GXC4vkMhE6eW/AOJs9k583ORDUyXMZ8F5SVHVVnllmPNKSFagAJ5DofaqGXw/gHBYg51dIldkmknY3tguv3jOtHR4+MqAzaraJXbEhqHhcQlwGSOi5pytVQHZLN5s0WNe8HPrLYlFsO20RPHkImxsbmHdLJFI76th7Z4SeuF53hTeFLvhRCJRCTKZKxgdnRDbW+iozFJbBMw14/ElwGYc0egMBMFzT21f5Rog33Z7dX02GBm7WV5ZfT5Nn5bE3zuCDe9UxdTpNvK+5AAAAABJRU5ErkJggg==";
 
-            const tCtx = trailCanvas.getContext('2d');
-            let tW = (trailCanvas.width = window.innerWidth);
-            let tH = (trailCanvas.height = window.innerHeight);
+            const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-            window.addEventListener('resize', () => {
-                tW = trailCanvas.width = window.innerWidth;
-                tH = trailCanvas.height = window.innerHeight;
-            });
-
-            const points = [];
-            let lastX = null;
-            let lastY = null;
-
-            window.addEventListener('mousemove', (e) => {
-                const curX = e.clientX;
-                const curY = e.clientY;
-
-                if (lastX === null) {
-                    lastX = curX;
-                    lastY = curY;
-                }
-
-                const dist = Math.hypot(curX - lastX, curY - lastY);
-                const steps = Math.min(Math.max(Math.floor(dist / 5), 1), 10);
-
-                for (let i = 0; i <= steps; i++) {
-                    const t = i / steps;
-                    points.push({
-                        x: lastX + (curX - lastX) * t,
-                        y: lastY + (curY - lastY) * t,
-                        size: 16,
-                        alpha: 0.85
-                    });
-                }
-
-                lastX = curX;
-                lastY = curY;
-            });
-
-            function renderTrail() {
-                tCtx.clearRect(0, 0, tW, tH);
-
-                for (let i = points.length - 1; i >= 0; i--) {
-                    const p = points[i];
-                    p.size *= 0.93;
-                    p.alpha -= 0.035;
-
-                    if (p.alpha <= 0 || p.size <= 0.5) {
-                        points.splice(i, 1);
-                        continue;
-                    }
-
-                    tCtx.save();
-                    tCtx.globalAlpha = p.alpha;
-                    tCtx.shadowBlur = 18;
-                    tCtx.shadowColor = '#00d4ff';
-
-                    // Bagliore esterno azzurro/ciano
-                    tCtx.beginPath();
-                    tCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-                    tCtx.fillStyle = '#38bdf8';
-                    tCtx.fill();
-
-                    // Cuore centrale bianco luminoso
-                    tCtx.beginPath();
-                    tCtx.arc(p.x, p.y, p.size * 0.45, 0, Math.PI * 2);
-                    tCtx.fillStyle = '#ffffff';
-                    tCtx.shadowColor = '#ffffff';
-                    tCtx.shadowBlur = 8;
-                    tCtx.fill();
-
-                    tCtx.restore();
-                }
-
-                requestAnimationFrame(renderTrail);
+            function init() {
+                if (prefersReducedMotion.matches) return false;
+                canvas = document.createElement("canvas");
+                context = canvas.getContext("2d");
+                canvas.style.top = "0px";
+                canvas.style.left = "0px";
+                canvas.style.pointerEvents = "none";
+                canvas.style.zIndex = "9999999999";
+                canvas.style.position = "fixed";
+                document.body.appendChild(canvas);
+                canvas.width = width;
+                canvas.height = height;
+                bindEvents();
+                loop();
             }
-            requestAnimationFrame(renderTrail);
-        })();
+
+            function bindEvents() {
+                element.addEventListener("mousemove", onMouseMove);
+                window.addEventListener("resize", () => {
+                    width = window.innerWidth;
+                    height = window.innerHeight;
+                    canvas.width = width;
+                    canvas.height = height;
+                });
+            }
+
+            function onMouseMove(e) {
+                cursor.x = e.clientX;
+                cursor.y = e.clientY;
+                particles.push(new Particle(cursor.x, cursor.y, baseImage));
+            }
+
+            function updateParticles() {
+                if (particles.length == 0) return;
+                context.clearRect(0, 0, width, height);
+                for (let i = 0; i < particles.length; i++) particles[i].update(context);
+                for (let i = particles.length - 1; i >= 0; i--) {
+                    if (particles[i].lifeSpan < 0) particles.splice(i, 1);
+                }
+                if (particles.length == 0) context.clearRect(0, 0, width, height);
+            }
+
+            function loop() {
+                updateParticles();
+                animationFrame = requestAnimationFrame(loop);
+            }
+
+            function Particle(x, y, image) {
+                this.initialLifeSpan = lifeSpan;
+                this.lifeSpan = lifeSpan;
+                this.position = { x, y };
+                this.image = image;
+                this.update = function (context) {
+                    this.lifeSpan--;
+                    const opacity = Math.max(this.lifeSpan / this.initialLifeSpan, 0);
+                    context.globalAlpha = opacity;
+                    context.drawImage(this.image, this.position.x, this.position.y);
+                };
+            }
+
+            init();
+        }
+
+        ghostCursor({});
 
         function revealApp() {
             if (flowerAnimId) {
