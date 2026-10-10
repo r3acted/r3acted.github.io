@@ -1010,8 +1010,8 @@
 
                 const rolesHtml = roleList.map(r => {
                     let roleColor = server.color || '#3b82f6';
-                    // Head SS sempre rosso
-                    if (/head\s*ss/i.test(r)) {
+                    // Head SS e SS Manager sempre rosso
+                    if (/(head\s*ss|ss\s*manager)/i.test(r)) {
                         roleColor = '#ef4444';
                     } else if (/ss\s*verif/i.test(r) || /ss\s*veteran/i.test(r)) {
                         roleColor = '#10b981';
