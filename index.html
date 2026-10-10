@@ -481,7 +481,7 @@
             background: var(--bg-tertiary);
             border: 1px solid var(--border-primary);
             border-radius: 12px;
-            padding: 1.5rem;
+            padding: 1.15rem 1rem;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
@@ -490,7 +490,7 @@
             flex-direction: column;
             align-items: center;
             text-align: center;
-            height: 120px;
+            min-height: 120px;
             justify-content: center;
         }
 
@@ -527,18 +527,29 @@
             text-align: center;
         }
 
+        .server-roles-wrap {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.35rem;
+            justify-content: center;
+            align-items: center;
+            margin-top: 0.25rem;
+        }
+
         .server-role {
             background: #10b9811a;
             color: #10b981;
             border: 1px solid #10b98133;
-            padding: 0.375rem 0.75rem;
+            padding: 0.3rem 0.65rem;
             border-radius: 6px;
-            font-size: 0.75rem;
+            font-size: 0.725rem;
             font-weight: 600;
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            margin-top: 0.25rem;
+            line-height: 1.2;
             transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
         }
 
@@ -994,20 +1005,34 @@
 
                 const yearHtml = server.year ? `<div class="server-year">${server.year}</div>` : '';
 
+                // Se ci sono ruoli multipli divisi da virgola, crea badge separati
+                const roleList = server.role ? server.role.split(',').map(r => r.trim()).filter(Boolean) : [];
+
+                const rolesHtml = roleList.map(r => {
+                    let roleColor = server.color || '#3b82f6';
+                    // Head SS sempre rosso
+                    if (/head\s*ss/i.test(r)) {
+                        roleColor = '#ef4444';
+                    } else if (/ss\s*verif/i.test(r) || /ss\s*veteran/i.test(r)) {
+                        roleColor = '#10b981';
+                    } else if (/helper/i.test(r) && (!server.color || server.color === '#3b82f6')) {
+                        roleColor = '#a855f7';
+                    }
+                    const bg = hexToRgba(roleColor, 0.12);
+                    const border = hexToRgba(roleColor, 0.25);
+                    return `<span class="server-role" style="background: ${bg}; border-color: ${border}; color: ${roleColor};">${r}</span>`;
+                }).join('');
+
                 card.innerHTML = `
                     <div class="server-info">
                         <h4>${server.serverName}</h4>
                         ${yearHtml}
-                        <div class="server-role">${server.role}</div>
+                        <div class="server-roles-wrap">
+                            ${rolesHtml}
+                        </div>
                     </div>
                 `;
 
-                if (server.color) {
-                    const roleEl = card.querySelector('.server-role');
-                    roleEl.style.background = hexToRgba(server.color, 0.1);
-                    roleEl.style.borderColor = hexToRgba(server.color, 0.2);
-                    roleEl.style.color = server.color;
-                }
                 grid.appendChild(card);
             });
 
@@ -1028,7 +1053,9 @@
                 card.innerHTML = `
                     <div class="server-info">
                         <h4>${item.icon ? `<i class="${item.icon}"></i>&nbsp;` : ''}${cardName}</h4>
-                        <div class="server-role">${item.role}</div>
+                        <div class="server-roles-wrap">
+                            <span class="server-role">${item.role}</span>
+                        </div>
                     </div>
                 `;
                 if (item.color) {
