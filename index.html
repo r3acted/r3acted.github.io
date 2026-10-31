@@ -2938,7 +2938,7 @@
 
                         <div class="stat-number" id="statLeadRoles">0</div>
 
-                        <div class="stat-label">Head SS & Lead</div>
+                        <div class="stat-label">Lead & Management</div>
 
                     </div>
 
@@ -3099,17 +3099,17 @@
                                                 "imgurLink": "https://imgur.com/a/9GApA38"
                                     },
                                     {
-                                                "serverName": "MineBack",
-                                                "role": "🛡️ MOD, 🎓 SS MENTOR",
-                                                "color": "#3b82f6",
-                                                "imgurLink": "https://imgur.com/26IwpzA"
-                                    },
+            "serverName": "MineBack",
+            "role": "🛡️ MOD, 💼 SS MENTOR",
+            "color": "#ef4444",
+            "imgurLink": "https://imgur.com/26IwpzA"
+        },
                                     {
-                                                "serverName": "MineCloud",
-                                                "role": "🛡️ MOD, 🎓 SS MENTOR",
-                                                "color": "#3b82f6",
-                                                "imgurLink": "https://imgur.com/Tqyp0Or"
-                                    },
+            "serverName": "MineCloud",
+            "role": "🛡️ MOD, 💼 SS MENTOR",
+            "color": "#ef4444",
+            "imgurLink": "https://imgur.com/Tqyp0Or"
+        },
                                     {
                                                 "serverName": "SoloLegends",
                                                 "role": "🛡️ MOD, ★ SS VERIFIED",
@@ -3293,11 +3293,11 @@
                                                 "imgurLink": "https://imgur.com/zIOSTxg"
                                     },
                                     {
-                                                "serverName": "Moonhex Tiers",
-                                                "role": "★ Forensics Veteran",
-                                                "color": "#10b981",
-                                                "imgurLink": null
-                                    },
+            "serverName": "Moonhex Tiers",
+            "role": "💼 FORENSICS VETERAN",
+            "color": "#ef4444",
+            "imgurLink": null
+        },
                                     {
                                                 "serverName": "Solar TierList",
                                                 "role": "🔍 SSER",
@@ -3385,7 +3385,7 @@
 
             const totalCount = allServers.length;
 
-            const leadCount = allServers.filter(s => /(head\s*ss|ss\s*manager|ss\s*coord|admin|overseer)/i.test(s.role || '')).length;
+            const leadCount = allServers.filter(s => /(head\s*ss|ss\s*manager|ss\s*coord|admin|overseer|ss\s*mentor|forensics\s*veteran)/i.test(s.role || '')).length;
 
             // ssverified include anche ss manager
 
@@ -3487,7 +3487,7 @@
 
                         if (currentFilter === 'lead') {
 
-                            matchesCategory = /(head\s*ss|ss\s*manager|ss\s*coord|admin|overseer)/i.test(sRoles);
+                            matchesCategory = /(head\s*ss|ss\s*manager|ss\s*coord|admin|overseer|ss\s*mentor|forensics\s*veteran)/i.test(sRoles);
 
                         } else if (currentFilter === 'verified_pc') {
 
@@ -3627,7 +3627,7 @@
 
                     let roleColor = color || '#3b82f6';
 
-                    if (/(head\s*ss|ss\s*manager|ss\s*coord)/i.test(r)) {
+                    if (/(head\s*ss|ss\s*manager|ss\s*coord|ss\s*mentor|forensics\s*veteran)/i.test(r)) {
 
                         roleColor = '#ef4444';
 
@@ -3839,7 +3839,7 @@
 
                     // Head SS e SS Manager sempre rosso
 
-                    if (/(head\s*ss|ss\s*manager|ss\s*coord)/i.test(r)) {
+                    if (/(head\s*ss|ss\s*manager|ss\s*coord|ss\s*mentor|forensics\s*veteran)/i.test(r)) {
 
                         roleColor = '#ef4444';
 
