@@ -1,2594 +1,1368 @@
 <!DOCTYPE html>
-<html lang="it">
-
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>8qtw // Staff & PC Forensics</title>
-    <!-- Discord & OpenGraph Rich Embed -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://r3acted.github.io/">
-    <meta property="og:site_name" content="8QTW // FORENSICS">
-    <meta property="og:title" content="8qtw — Staff & PC Forensics">
-    <meta property="og:description" content="Official Portfolio of 8qtw (CiaoBypasso) • Head SS & PC Checker • 34+ Verified Roles • 100% Imgur Proofs">
-    <meta property="og:image" content="https://r3acted.github.io/assets/preview.png">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="8qtw — Staff & PC Forensics">
-    <meta name="twitter:description" content="Official Portfolio of 8qtw (CiaoBypasso) • Head SS & PC Checker • 34+ Verified Roles • 100% Imgur Proofs">
-    <meta name="twitter:image" content="https://r3acted.github.io/assets/preview.png">
-    <meta name="theme-color" content="#38bdf8">
-
+    <title>8qtw - Head Screensharer & Forensics Specialist</title>
+    <meta name="description" content="8qtw (IGN: CiaoBypasso), Head Screensharer and PC Forensics Specialist across 38+ competitive Minecraft communities.">
+    <meta name="theme-color" content="#000000">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <script src="assets/three.min.js"></script>
-    <script src="assets/chrome_font.js"></script>
+
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
-
         :root {
-            --bg-primary: #000000;
-            --bg-secondary: #0a0a0a;
-            --bg-tertiary: #111111;
-            --bg-card: #0f0f0f;
-            --accent-primary: #004488;
-            --accent-secondary: #00aaff;
-            --text-primary: #ffffff;
-            --text-secondary: #a1a1aa;
-            --text-tertiary: #71717a;
-            --border-primary: #1f1f23;
-            --border-secondary: #27272a;
-            --glow-primary: #00aaff;
-            --glow-secondary: #004488;
-            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            --bg: #0b0a10;
+            --bg-2: #121019;
+            --bg-3: #181522;
+            --text: #f3f3f6;
+            --muted: rgba(243,243,246,.55);
+            --dim: rgba(243,243,246,.32);
+            --line: rgba(255,255,255,.08);
+            --line-2: rgba(255,255,255,.16);
+            --accent: #a855f7;
+            --accent-bright: #c084fc;
+            --display: 'Outfit', 'Inter', system-ui, sans-serif;
+            --body: 'Inter', system-ui, -apple-system, sans-serif;
+            --ease: cubic-bezier(.22,.61,.36,1);
         }
 
-        .app-container.animate-in {
-            opacity: 1;
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            background-color: #0b0a10;
+            background-image: radial-gradient(ellipse 70% 35% at 50% -5%, rgba(168, 85, 247, 0.08) 0%, transparent 60%);
+            background-attachment: fixed;
+            color: var(--text);
+            font-family: var(--body);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
+        a { color: inherit; text-decoration: none; }
+        button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+        ::selection { background: rgba(255,43,43,.35); color: #fff; }
+        :focus-visible { outline: 2px solid var(--red); outline-offset: 3px; border-radius: 6px; }
 
-        #bg-start-audio {
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 100000000;
-            background: radial-gradient(circle at 50% 48%, rgba(255, 255, 255, 0.08) 0%, rgba(30, 41, 59, 0.15) 35%, rgba(0, 0, 0, 0.95) 75%, #000000 100%);
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: opacity 0.5s cubic-bezier(0.19, 1, 0.22, 1), transform 0.6s cubic-bezier(0.19, 1, 0.22, 1);
-            cursor: pointer;
+        .wrap { max-width: 1320px; margin: 0 auto; padding: 0 2.5rem; }
+
+        /* ───────── Nav ───────── */
+        .nav {
+            position: fixed; inset: 0 0 auto 0; z-index: 100;
+            height: 68px;
+            display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+            padding: 0 2.25rem;
+            border-bottom: 1px solid transparent;
+            transition: background .35s, border-color .35s, backdrop-filter .35s;
+        }
+        .nav.solid {
+            background: rgba(0,0,0,.72);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-color: var(--line);
+        }
+        .logo { display: inline-flex; align-items: center; gap: .6rem; font-family: var(--display); font-weight: 700; font-size: 1.05rem; letter-spacing: -.01em; width: fit-content; }
+        .logo-mark { width: 22px; height: 22px; border-radius: 6px; background: #fff; color: #000; display: grid; place-items: center; font-size: .72rem; font-weight: 800; }
+        .nav-links { display: flex; gap: .25rem; list-style: none; }
+        .nav-links a { display: block; padding: .45rem .9rem; font-size: .8rem; font-weight: 500; color: var(--muted); border-radius: 999px; transition: color .2s; }
+        .nav-links a:hover, .nav-links a.on { color: #fff; }
+        .nav-right { display: flex; justify-content: flex-end; align-items: center; gap: .6rem; }
+
+        .icon-btn {
+            width: 36px; height: 36px; border-radius: 50%;
+            border: 1px solid var(--line-2);
+            display: grid; place-items: center; font-size: .82rem; color: var(--muted);
+            transition: color .2s, border-color .2s, background .2s;
+        }
+        .icon-btn:hover { color: #fff; border-color: rgba(255,255,255,.3); background: rgba(255,255,255,.05); }
+
+        .pill {
+            display: inline-flex; align-items: center; gap: .75rem;
+            height: 38px; padding: 0 5px 0 1.05rem;
+            background: #fff; color: #000; border-radius: 999px;
+            font-size: .78rem; font-weight: 600;
+            transition: transform .25s var(--ease), box-shadow .25s;
+        }
+        .pill:hover { transform: translateY(-1px); box-shadow: 0 8px 30px rgba(255,255,255,.14); }
+        .pill .dot { width: 28px; height: 28px; border-radius: 50%; background: #000; color: #fff; display: grid; place-items: center; font-size: .68rem; transition: transform .25s var(--ease); }
+        .pill:hover .dot { transform: rotate(-45deg); }
+        .pill.ghost { background: transparent; color: #fff; border: 1px solid var(--line-2); padding: 0 1.05rem; }
+        .pill.ghost:hover { background: rgba(255,255,255,.06); box-shadow: none; }
+
+        /* ───────── Hero ───────── */
+        .hero {
+            position: relative;
+            min-height: 100vh; min-height: 100svh;
+            min-height: max(100svh, 720px);
+            display: flex; flex-direction: column; justify-content: flex-end;
+            padding: 0 2.25rem 2.25rem;
             overflow: hidden;
         }
-
-        .hero-hud {
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-            z-index: 5;
-            padding: 24px 30px;
-            font-family: 'Inter', -apple-system, sans-serif;
-            color: rgba(255, 255, 255, 0.45);
-            font-size: 0.72rem;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-        }
-
-        .hud-top-left {
-            position: absolute;
-            top: 24px;
-            left: 28px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .hud-dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: #38bdf8;
-            box-shadow: 0 0 8px #38bdf8;
-            animation: blink-dot 2s infinite ease-in-out;
-        }
-
-        @keyframes blink-dot {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.3; transform: scale(0.8); }
-        }
-
-        .hud-top-right {
-            position: absolute;
-            top: 24px;
-            right: 28px;
-            color: rgba(255, 255, 255, 0.35);
-        }
-
-        .hud-corner {
-            position: absolute;
-            font-size: 15px;
-            color: rgba(255, 255, 255, 0.18);
-            font-weight: 300;
-            line-height: 1;
-        }
-        .hud-bl { bottom: 24px; left: 28px; }
-        .hud-br { bottom: 24px; right: 28px; }
-
-        #chrome-hero-host {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
+        .hero::before {
+            content: ''; position: absolute; left: 50%; top: 42%;
+            width: min(1100px, 90vw); height: 520px; transform: translate(-50%, -50%);
+            background: radial-gradient(closest-side, rgba(255,255,255,.07), transparent 72%);
             pointer-events: none;
         }
+        .hero::after {
+            content: ''; position: absolute; left: 50%; top: 58%;
+            width: min(760px, 70vw); height: 260px; transform: translate(-50%, -50%);
+            background: radial-gradient(closest-side, rgba(255,43,43,.14), transparent 75%);
+            filter: blur(30px); pointer-events: none;
+        }
 
-        .hero-click-prompt {
-            position: absolute;
-            bottom: 45px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: #888888;
-            font-size: 0.85rem;
-            font-weight: 600;
-            letter-spacing: 0.35em;
-            text-transform: uppercase;
+        .hero-facts {
+            position: absolute; top: 5.4rem; right: 2.25rem; z-index: 3;
+            text-align: right; font-family: var(--display); font-weight: 600;
+            font-size: 1.2rem; line-height: 1.25; letter-spacing: -.025em;
+            display: grid; gap: .1rem;
+            opacity: 0; animation: fadeIn 1s var(--ease) .5s forwards;
+        }
+        .hero-facts span { display: block; }
+        .hero-facts span:nth-child(odd) { color: #fff; }
+        .hero-facts span:nth-child(even) { color: rgba(255,255,255,.62); }
+
+        .hero-side {
+            position: absolute; top: 50%; z-index: 3;
+            font-family: var(--display); font-weight: 600; font-size: 1.05rem; letter-spacing: -.02em;
+            opacity: 0; animation: fadeIn 1s var(--ease) .7s forwards;
+        }
+        .hero-side.l { left: 2.25rem; }
+        .hero-side.r { right: 2.25rem; font-variant-numeric: tabular-nums; }
+
+        .wordmark-stage {
+            position: absolute; inset: 0; display: grid; place-items: center;
+            padding-bottom: 4rem; pointer-events: none;
+        }
+        .wordmark-wrap { will-change: transform; transform-style: preserve-3d; }
+        .wordmark-in { animation: markIn 1.4s var(--ease) .1s both; }
+        .wordmark {
+            font-family: var(--display); font-weight: 800;
+            font-size: clamp(7rem, 27vw, 26rem);
+            line-height: .82; letter-spacing: -.045em;
+            padding: 0 .05em;
+            color: transparent; -webkit-text-fill-color: transparent;
+            background-image:
+                linear-gradient(105deg, transparent 42%, rgba(255,255,255,.95) 50%, transparent 58%),
+                linear-gradient(180deg, #ffffff 0%, #dedede 36%, #8a8a8a 49%, #e8e8e8 58%, #ffffff 100%);
+            background-size: 300% 100%, 100% 100%;
+            background-repeat: no-repeat;
+            background-position: 0% 0, 0 0;
+            -webkit-background-clip: text; background-clip: text;
+            filter: drop-shadow(2px 3px 0 #3a3a3a) drop-shadow(4px 6px 0 #232323) drop-shadow(7px 10px 0 #111) drop-shadow(0 0 60px rgba(255,255,255,.12));
+            animation: shine 8s ease-in-out 1.6s infinite;
             user-select: none;
-            pointer-events: none;
-            animation: pulse-blink 2.2s infinite ease-in-out;
-            font-family: 'Inter', sans-serif;
-            z-index: 10;
         }
 
-        @keyframes pulse-blink {
-            0%, 100% { opacity: 0.35; color: #666666; }
-            50% { opacity: 1; color: #ffffff; text-shadow: 0 0 15px rgba(255, 255, 255, 0.9); }
+        .hero-bottom {
+            position: relative; z-index: 4;
+            display: grid; grid-template-columns: 1.25fr 1fr 1fr; gap: 2.5rem; align-items: end;
+            opacity: 0; animation: riseIn 1s var(--ease) .65s forwards;
         }
-
-        #bg-start-audio:hover h1 {
-            transform: scale(1.05);
-            text-shadow: 0 0 25px rgba(56, 189, 248, 1), 0 0 50px rgba(37, 99, 235, 0.8);
+        .hero-title {
+            font-family: var(--display); font-weight: 700;
+            font-size: clamp(2.4rem, 4.6vw, 4.3rem);
+            line-height: .98; letter-spacing: -.045em;
         }
+        .hero-copy { max-width: 300px; justify-self: center; }
+        .hero-copy p { font-size: .78rem; line-height: 1.65; color: var(--muted); margin-bottom: 1.1rem; font-weight: 500; }
+        .hero-copy .btns { display: flex; gap: .5rem; flex-wrap: wrap; }
 
-        @keyframes pulse-glow {
-            0% {
-                opacity: 0.8;
-                text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
-            }
-            100% {
-                opacity: 1;
-                text-shadow: 0 0 22px rgba(56, 189, 248, 0.9), 0 0 40px rgba(37, 99, 235, 0.6);
-            }
+        .claim {
+            justify-self: end; width: min(440px, 100%);
+            display: flex; align-items: center; gap: .6rem;
+            height: 54px; padding: 0 6px 0 1.15rem;
+            border: 1px solid var(--line-2); border-radius: 999px;
+            background: rgba(255,255,255,.03);
+            backdrop-filter: blur(10px);
         }
+        .claim i { color: #5865F2; font-size: 1.05rem; }
+        .claim span { flex: 1; font-size: .86rem; color: var(--muted); font-weight: 500; }
+        .claim span b { color: #fff; font-weight: 600; }
+        .claim .pill { height: 42px; padding-right: 5px; }
+        .claim-note { grid-column: 3; justify-self: end; width: min(440px, 100%); margin-top: -1.4rem; padding-left: 1.2rem; font-size: .7rem; color: var(--dim); }
 
-        #volume-control {
-            background: rgba(0, 0, 0, 0.6);
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 10000;
-            color: #fff;
-            border: 3px solid #fff;
-            border-radius: .5rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 48px;
-            height: 48px;
-            margin: 8px;
-            opacity: 0;
+        .scroll-cue { position: absolute; left: 50%; bottom: 1.2rem; transform: translateX(-50%); z-index: 4; width: 1px; height: 38px; background: linear-gradient(var(--line-2), transparent); }
+        .scroll-cue::after { content: ''; position: absolute; top: 0; left: -1px; width: 3px; height: 8px; border-radius: 3px; background: #fff; animation: cue 2.2s var(--ease) infinite; opacity: .7; }
+
+        @keyframes fadeIn { to { opacity: 1; } }
+        @keyframes riseIn { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
+        @keyframes markIn { from { opacity: 0; transform: translateY(40px) scale(.96); filter: blur(14px); } to { opacity: 1; transform: none; filter: blur(0); } }
+        @keyframes shine { 0% { background-position: 0% 0, 0 0; } 38%, 100% { background-position: 100% 0, 0 0; } }
+        @keyframes cue { 0% { transform: translateY(0); opacity: 0; } 30% { opacity: .8; } 100% { transform: translateY(30px); opacity: 0; } }
+
+        /* ───────── Generic sections ───────── */
+        section { position: relative; }
+        .sec { padding: 8rem 0; }
+        .kicker { font-size: .8rem; font-weight: 500; color: var(--muted); display: inline-flex; align-items: center; gap: .55rem; margin-bottom: 1.1rem; }
+        .kicker::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--red); box-shadow: 0 0 12px var(--red); }
+        .h2 { font-family: var(--display); font-weight: 700; font-size: clamp(2.2rem, 5vw, 4rem); line-height: 1.02; letter-spacing: -.04em; }
+        .h2 .soft { color: var(--dim); }
+        .lead { color: var(--muted); font-size: 1rem; max-width: 460px; margin-top: 1.25rem; }
+
+        .reveal { opacity: 0; transform: translateY(24px); transition: opacity .9s var(--ease), transform .9s var(--ease); }
+        .reveal.in { opacity: 1; transform: none; }
+
+        /* ───────── Statement ───────── */
+        .statement { padding: 9rem 0 6rem; border-top: 1px solid var(--line); }
+        .statement-text {
+            font-family: var(--display); font-weight: 600;
+            font-size: clamp(1.7rem, 4.1vw, 3.4rem);
+            line-height: 1.14; letter-spacing: -.035em; max-width: 1020px;
+        }
+        .statement-text .w { color: rgba(255,255,255, var(--o, .16)); }
+
+        /* ───────── Stats ───────── */
+        .stats { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: var(--bg-2); }
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); }
+        .stat { padding: 3rem 2rem; border-left: 1px solid var(--line); }
+        .stat:first-child { border-left: 0; padding-left: 0; }
+        .stat-n { font-family: var(--display); font-weight: 700; font-size: clamp(2.6rem, 5vw, 4.2rem); line-height: 1; letter-spacing: -.05em; font-variant-numeric: tabular-nums; }
+        .stat-l { margin-top: .7rem; font-size: .8rem; color: var(--muted); }
+
+        /* ───────── About ───────── */
+        .about-grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: 6rem; align-items: center; }
+        .about-facts { margin-top: 2.5rem; display: grid; gap: 0; border-top: 1px solid var(--line); max-width: 460px; }
+        .about-facts div { display: flex; justify-content: space-between; padding: .95rem 0; border-bottom: 1px solid var(--line); font-size: .88rem; }
+        .about-facts dt { color: var(--muted); }
+        .about-facts dd { font-weight: 500; }
+
+        .idcard-scene { perspective: 1200px; display: grid; place-items: center; }
+        .idcard {
+            position: relative; width: min(400px, 100%);
+            border-radius: 22px; padding: 1.75rem;
+            background: linear-gradient(160deg, #161616 0%, #0a0a0a 60%);
+            border: 1px solid var(--line-2);
+            box-shadow: 0 40px 80px -30px rgba(0,0,0,.9), 0 0 0 1px rgba(255,255,255,.02) inset;
+            transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+            transition: transform .25s var(--ease);
             overflow: hidden;
-            transition: opacity .5s ease-out, transform 1s ease-out, height 0.3s ease;
         }
-
-        #volume-control.animate-in {
-            opacity: 1;
+        .idcard::before {
+            content: ''; position: absolute; inset: 0; pointer-events: none;
+            background: radial-gradient(380px circle at var(--gx, 50%) var(--gy, 0%), rgba(255,255,255,.09), transparent 60%);
         }
+        .idcard-top { display: flex; justify-content: space-between; align-items: center; font-size: .75rem; color: var(--dim); margin-bottom: 2.2rem; }
+        .idcard-top .logo { font-size: .9rem; color: #fff; }
+        .idcard-id { display: flex; align-items: center; gap: 1.1rem; margin-bottom: 1.8rem; }
+        .avatar { width: 76px; height: 76px; border-radius: 50%; padding: 2px; background: conic-gradient(from 180deg, #fff, #444, #fff, #444, #fff); flex: none; }
+        .avatar img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block; background: #111; border: 3px solid #0c0c0c; }
+        .idcard h3 { font-family: var(--display); font-size: 1.9rem; font-weight: 700; letter-spacing: -.04em; line-height: 1; }
+        .idcard p { color: var(--muted); font-size: .82rem; margin-top: .35rem; }
+        .idcard-rows { border-top: 1px solid var(--line); }
+        .idcard-rows div { display: flex; justify-content: space-between; padding: .7rem 0; border-bottom: 1px solid var(--line); font-size: .82rem; }
+        .idcard-rows dt { color: var(--dim); }
+        .idcard-rows dd { font-weight: 500; }
 
-        #volume-control:hover,
-        #volume-control:focus-within {
-            height: 160px;
-        }
+        /* ───────── Experience ───────── */
+        .exp { border-top: 1px solid var(--line); }
+        .exp-head { display: flex; justify-content: space-between; align-items: end; gap: 2rem; margin-bottom: 3.5rem; flex-wrap: wrap; }
 
-        #volume-icon-wrap {
-            width: 48px;
-            height: 48px;
-            flex-shrink: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-        }
-
-        #volume-icon {
-            width: 20px;
-            height: 20px;
-            display: block;
-        }
-
-        #volume-slider-wrap {
-            width: 48px;
-            height: 0;
-            flex-shrink: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .spot-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; margin-bottom: 7rem; }
+        .spot {
+            position: relative; display: flex; flex-direction: column; justify-content: space-between; gap: 3.2rem;
+            padding: 1.7rem; min-height: 210px; background: var(--bg-2);
+            transition: background .3s;
             overflow: hidden;
-            opacity: 0;
-            transition: height 0.3s ease, opacity 0.2s ease;
+        }
+        .spot::before {
+            content: ''; position: absolute; inset: 0; opacity: 0; transition: opacity .35s; pointer-events: none;
+            background: radial-gradient(380px circle at var(--mx, 50%) var(--my, 50%), rgba(255,43,43,.12), transparent 62%);
+        }
+        a.spot:hover::before, .spot.hot::before { opacity: 1; }
+        .spot-top { display: flex; justify-content: space-between; align-items: center; color: var(--dim); font-size: .78rem; }
+        .spot-arrow { width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--line-2); display: grid; place-items: center; font-size: .65rem; color: var(--muted); transition: all .3s var(--ease); }
+        a.spot:hover .spot-arrow { background: #fff; color: #000; border-color: #fff; transform: rotate(45deg); }
+        .spot h4 { font-family: var(--display); font-weight: 700; font-size: 1.7rem; letter-spacing: -.04em; line-height: 1.05; }
+        .spot p { margin-top: .5rem; font-size: .84rem; color: var(--muted); line-height: 1.5; }
+
+        .exp-grid { display: grid; grid-template-columns: 300px 1fr; gap: 5rem; align-items: start; }
+        .exp-side { position: sticky; top: 110px; }
+        .exp-side .h2 { font-size: clamp(2rem, 3.4vw, 2.9rem); }
+        .tabs { margin-top: 2.4rem; display: grid; gap: 2px; position: relative; }
+        .tab { display: flex; justify-content: space-between; align-items: center; text-align: left; padding: .7rem 0 .7rem 1rem; font-size: .88rem; color: var(--dim); border-left: 1px solid var(--line-2); transition: color .25s, border-color .25s; }
+        .tab span:last-child { font-size: .75rem; font-variant-numeric: tabular-nums; }
+        .tab:hover { color: #fff; }
+        .tab.on { color: #fff; border-left-color: #fff; }
+
+        .rows { min-height: 400px; }
+        .group { scroll-margin-top: 110px; }
+        .group + .group { margin-top: 4.5rem; }
+        .group-title { display: flex; align-items: center; gap: .7rem; padding-bottom: 1.1rem; font-family: var(--display); font-weight: 700; font-size: 1.5rem; letter-spacing: -.035em; }
+        .group-title i { font-size: 1.15rem; color: var(--muted); }
+        .group-title em { font-style: normal; font-family: var(--body); font-weight: 500; font-size: .78rem; letter-spacing: 0; color: var(--dim); margin-left: .2rem; }
+        .group-rows { border-top: 1px solid var(--line); }
+        .row {
+            display: grid; grid-template-columns: minmax(0,1.15fr) minmax(0,1.6fr) 84px; gap: 1.5rem; align-items: center;
+            padding: 1.25rem 0; border-bottom: 1px solid var(--line);
+            position: relative;
+            opacity: 0; transform: translateY(10px);
+            transition: opacity .6s var(--ease), transform .6s var(--ease), background .25s, padding .3s var(--ease);
+        }
+        .row.in { opacity: 1; transform: none; }
+        a.row:hover { background: rgba(255,255,255,.025); padding-left: .9rem; padding-right: .9rem; }
+        .row-name { display: flex; align-items: center; gap: .8rem; font-weight: 600; font-size: .98rem; letter-spacing: -.01em; min-width: 0; }
+        .row-name i { width: 18px; text-align: center; color: var(--dim); font-size: .9rem; flex: none; }
+        .row-name span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .row-role { color: var(--muted); font-size: .86rem; }
+        .row-act { justify-self: end; font-size: .76rem; color: var(--dim); display: inline-flex; align-items: center; gap: .4rem; transition: color .25s; }
+        .row-act i { font-size: .6rem; transition: transform .3s var(--ease); }
+        a.row:hover .row-act { color: #fff; }
+        a.row:hover .row-act i { transform: translate(2px, -2px); }
+
+        /* ───────── Favorites ───────── */
+        .fav-sec { border-top: 1px solid var(--line); }
+        .fav-list { margin-top: 4rem; border-top: 1px solid var(--line); }
+        .fav {
+            display: grid; grid-template-columns: 1.3fr 1fr; gap: 2rem; align-items: center;
+            padding: 2.1rem 0; border-bottom: 1px solid var(--line);
+            transition: opacity .5s var(--ease), transform .9s var(--ease), padding .4s var(--ease);
+        }
+        .fav h3 { font-family: var(--display); font-weight: 700; font-size: clamp(2rem, 4.6vw, 3.8rem); line-height: 1; letter-spacing: -.045em; }
+        .fav p { color: var(--muted); font-size: 1rem; max-width: 380px; }
+        .fav-list:hover .fav { opacity: .38; }
+        .fav-list .fav:hover { opacity: 1; padding-left: 1rem; }
+
+        /* ───────── Contact ───────── */
+        .contact { border-top: 1px solid var(--line); text-align: center; overflow: hidden; }
+        .contact::before { content: ''; position: absolute; left: 50%; top: 0; width: 900px; height: 380px; transform: translateX(-50%); background: radial-gradient(closest-side, rgba(255,43,43,.1), transparent); pointer-events: none; }
+        .contact .h2 { font-size: clamp(2.6rem, 7.5vw, 6.2rem); line-height: .96; }
+        .contact .lead { margin: 1.4rem auto 0; }
+        .links { margin: 4.5rem auto 0; max-width: 760px; border-top: 1px solid var(--line); text-align: left; }
+        .link { display: flex; align-items: center; gap: 1.1rem; padding: 1.5rem .25rem; border-bottom: 1px solid var(--line); transition: padding .35s var(--ease), background .3s; }
+        .link:hover { padding-left: 1rem; padding-right: 1rem; background: rgba(255,255,255,.025); }
+        .link > i:first-child { width: 22px; text-align: center; color: var(--muted); font-size: 1.1rem; }
+        .link b { font-family: var(--display); font-weight: 600; font-size: 1.35rem; letter-spacing: -.03em; flex: 1; }
+        .link em { font-style: normal; color: var(--muted); font-size: .88rem; }
+        .link .arr { font-size: .75rem; color: var(--dim); transition: transform .3s var(--ease), color .3s; }
+        .link:hover .arr { transform: translate(3px, -3px); color: #fff; }
+
+        /* ───────── Footer ───────── */
+        footer { border-top: 1px solid var(--line); padding: 4.5rem 0 2rem; background: var(--bg-2); }
+        .foot-grid { display: grid; grid-template-columns: 1.6fr 1fr 1fr; gap: 3rem; padding-bottom: 4rem; }
+        .foot-grid p { color: var(--muted); font-size: .86rem; max-width: 300px; margin-top: 1rem; }
+        .foot-grid h5 { font-size: .8rem; font-weight: 500; color: var(--dim); margin-bottom: 1.1rem; }
+        .foot-grid ul { list-style: none; display: grid; gap: .7rem; }
+        .foot-grid ul a { font-size: .88rem; color: var(--muted); transition: color .2s; }
+        .foot-grid ul a:hover { color: #fff; }
+        .foot-bottom { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding-top: 1.6rem; border-top: 1px solid var(--line); font-size: .75rem; color: var(--dim); flex-wrap: wrap; }
+        .foot-bottom a:hover { color: #fff; }
+
+        /* ───────── Responsive ───────── */
+        @media (max-width: 1000px) {
+            .about-grid { grid-template-columns: 1fr; gap: 4rem; }
+            .exp-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+            .exp-side { position: static; }
+            .tabs { display: flex; gap: .4rem; overflow-x: auto; margin-top: 1.5rem; padding-bottom: .3rem; scrollbar-width: none; }
+            .tab { flex: none; gap: .6rem; border: 1px solid var(--line-2); border-radius: 999px; padding: .45rem .95rem; }
+            .tab.on { background: #fff; color: #000; border-color: #fff; }
+            .spot-grid { grid-template-columns: repeat(2, 1fr); }
+            .hero-bottom { grid-template-columns: 1fr 1fr; }
+            .hero-copy { justify-self: start; }
+            .claim { grid-column: 1 / -1; justify-self: stretch; width: 100%; }
+            .claim-note { display: none; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .stat:nth-child(3) { border-left: 0; padding-left: 0; }
+            .stat:nth-child(n+3) { border-top: 1px solid var(--line); }
+        }
+        @media (max-width: 720px) {
+            .wrap { padding: 0 1.25rem; }
+            .nav { grid-template-columns: 1fr auto; padding: 0 1.25rem; }
+            .nav-links { display: none; }
+            .hero { padding: 0 1.25rem 1.5rem; }
+            .hero-facts, .hero-side { display: none; }
+            .wordmark-stage { padding-bottom: 14rem; }
+            .hero-bottom { grid-template-columns: 1fr; gap: 1.4rem; }
+            .sec { padding: 5rem 0; }
+            .spot-grid { grid-template-columns: 1fr; margin-bottom: 4.5rem; }
+            .row { grid-template-columns: 1fr auto; gap: .3rem 1rem; padding: 1.1rem 0; }
+            .row-role { grid-column: 1; grid-row: 2; }
+            .row-act { grid-column: 2; grid-row: 1; }
+            .foot-grid { grid-template-columns: 1fr 1fr; }
+            .foot-grid > :first-child { grid-column: 1 / -1; }
+            .link b { font-size: 1.1rem; }
+            .link em { display: none; }
+            .fav { grid-template-columns: 1fr; gap: .6rem; padding: 1.6rem 0; }
+            .fav-list:hover .fav { opacity: 1; }
         }
 
-        #volume-control:hover #volume-slider-wrap,
-        #volume-control:focus-within #volume-slider-wrap {
-            height: 108px;
-            opacity: 1;
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            *, *::before, *::after { animation-duration: .001s !important; animation-delay: 0s !important; transition-duration: .001s !important; }
+            .reveal, .row { opacity: 1; transform: none; }
+            .statement-text .w { --o: 1 !important; }
         }
-
-        #volume-slider {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 88px;
-            flex-shrink: 0;
-            height: 4px;
-            border-radius: 2px;
-            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
-            outline: none;
-            cursor: pointer;
-            transform: rotate(-90deg);
-        }
-
-        #volume-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            background: #ffffff;
-            border: 2px solid var(--accent-secondary);
-            cursor: pointer;
-        }
-
-        #volume-slider::-moz-range-thumb {
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            background: #ffffff;
-            border: 2px solid var(--accent-secondary);
-            cursor: pointer;
-        }
-
-        #song-credit {
-            position: fixed;
-            bottom: 10px;
-            right: 12px;
-            z-index: 500;
-            font-size: 0.65rem;
-            color: rgba(255, 255, 255, 0.3);
-            pointer-events: none;
-            letter-spacing: 0.02em;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
+    
+        
+        
+        
+        /* Vibrant Cyber Atmosphere Background (Sfondo Tecnico con Mesh Grid e Luci Radiali Accese) */
+        :root {
+            --bg: #0b0a10;
+            --bg-2: #121019;
+            --bg-3: #181522;
+            --text: #f3f3f6;
+            --muted: rgba(243,243,246,.55);
+            --dim: rgba(243,243,246,.32);
+            --line: rgba(255,255,255,.08);
+            --line-2: rgba(255,255,255,.16);
+            --accent: #a855f7;
+            --accent-bright: #c084fc;
+            --display: 'Outfit', 'Inter', system-ui, sans-serif;
+            --body: 'Inter', system-ui, -apple-system, sans-serif;
+            --ease: cubic-bezier(.22,.61,.36,1);
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
+            background-color: #0b0a10;
+            background-image: radial-gradient(ellipse 70% 35% at 50% -5%, rgba(168, 85, 247, 0.08) 0%, transparent 60%);
+            background-attachment: fixed;
+            color: var(--text);
+            font-family: var(--body);
             overflow-x: hidden;
-            overflow-y: hidden;
-            line-height: 1.6;
-            font-size: 14px;
             -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            display: flex;
-            min-height: 100vh;
         }
 
-        .app-container {
-            display: flex;
-            width: 100vw;
-            min-height: 100vh;
-            opacity: 0;
-            transition: opacity .5s ease-out, transform 1s ease-out;
+        /* Restored Solid, Elegant, Non-flipping 3-Column Rectangular Cards with High Sbalzo */
+                /* Subtle, Clean & Understated 3-Column Rectangular Cards */
+        .all-spots-grid {
+            display: grid !important;
+            grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+            gap: 14px !important;
+            background: transparent !important;
+            border: none !important;
+            border-radius: 0 !important;
+            overflow: visible !important;
+            margin-top: 2.5rem !important;
+            opacity: 1 !important;
+            visibility: visible !important;
         }
-
-        .left-panel {
-            width: 280px;
-            background: rgba(15, 15, 15, 0.8);
-            border-right: 1px solid var(--border-primary);
-            padding: 1.5rem 0;
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-            position: fixed;
-            top: 50%;
-            left: 100px;
-            transform: translateY(-50%);
-            height: auto;
-            max-height: 80vh;
-            overflow-y: auto;
-            z-index: 100;
-            border-radius: 16px;
-            backdrop-filter: blur(10px);
-            box-shadow: var(--shadow-xl);
-            border: 1px solid var(--border-primary);
-            transition-delay: 0.2s;
-        }
-
-        .panel-header {
-            padding: 0 1.5rem 1rem 1.5rem;
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: var(--text-tertiary);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .panel-header i {
-            font-size: 1rem;
-            color: var(--text-secondary);
-        }
-
-        .panel-item {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.75rem 1.5rem;
-            border-radius: 0 8px 8px 0;
-            color: var(--text-secondary);
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            position: relative;
-        }
-
-        .panel-item:hover {
-            background: var(--bg-tertiary);
-            color: var(--text-primary);
-        }
-
-        .panel-item.active {
-            background: var(--accent-primary);
-            color: var(--text-primary);
-            font-weight: 600;
-            border-left: 4px solid var(--accent-secondary);
-            padding-left: calc(1.5rem - 4px);
-            box-shadow: 0 0 15px rgba(0, 170, 255, 0.5);
-        }
-
-        .panel-item.active:hover {
-            opacity: 0.9;
-        }
-
-        .main-content {
-            flex-grow: 1;
-            padding: 2rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-left: 200px;
-        }
-
-        .section {
-            background: var(--bg-card);
-            border: 1px solid var(--border-primary);
-            border-radius: 16px;
-            padding: 2rem;
-            backdrop-filter: blur(20px);
-            position: relative;
-            overflow: hidden;
-            max-width: 1000px;
-            margin: 0 auto 40px auto;
-            width: 100%;
-            min-height: auto;
-            scroll-margin-top: 20px;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out,
-                        border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-                        box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .section.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .section:last-child {
-            margin-bottom: 0;
-        }
-
-        #profileBio {
-            margin-bottom: 100px !important;
-            transition-delay: 0.3s;
-        }
-
-        #staffExperience {
-            transition-delay: 0.5s;
-        }
-
-        #profileName {
-            margin-top: -0.3rem;
-        }
-
-        .section-header {
-            justify-content: center;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            margin-bottom: 2rem;
-            font-size: 1.125rem;
-            font-weight: 700;
-            color: var(--text-primary);
-        }
-
-        .section-icon {
-            font-size: 1.25rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 2;
-            text-align: center;
-        }
-
-        .profile-wrapper {
-            position: relative;
-            display: inline-block;
-            width: 150px;
-            height: 150px;
-        }
-
-        .profile-border {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #004488, #00aaff, #004488, #00aaff);
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: -1;
-            animation: rotate 8s linear infinite;
-        }
-
-        .profile-image {
-            width: 140px;
-            height: 140px;
-            border-radius: 50%;
-            background: var(--bg-secondary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 0 60px rgba(0, 170, 255, 0.5);
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 1;
-        }
-
-        .profile-inner {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            background: var(--bg-secondary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .section-bio h1 {
-            font-size: clamp(2.5rem, 5vw, 4rem);
-            font-weight: 900;
-            color: var(--text-primary);
-            margin-bottom: 0;
-            letter-spacing: -0.02em;
-        }
-
-        .subtitle {
-            margin-top: 0.25rem;
-            margin-bottom: 0.25rem;
-            font-size: 1.25rem;
-            color: var(--text-secondary);
-            font-weight: 500;
-        }
-
-        .bio-tabs {
-            margin-top: 0;
-        }
-
-        .bio-tab {
-            margin-bottom: 0.5rem;
-        }
-
-        .bio-content {
-            color: #cc2222;
-            font-size: 1rem;
-            font-weight: 500;
-            margin-top: 1.5rem;
-            text-align: center;
-            line-height: 1.6;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .staff-category {
-            margin: 20px auto;
-            max-width: 1000px;
-        }
-
-        .staff-category h3 {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 1rem;
-            margin-bottom: 1rem;
-            padding-left: 0;
-        }
-
-        .staff-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-        }
-
-        .server-card {
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border-primary);
-            border-radius: 12px;
-            padding: 1.15rem 1rem;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            min-height: 120px;
-            justify-content: center;
-        }
-
-        .server-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, #004488, #00aaff);
-            transform: scaleX(0);
-            transition: transform 0.4s ease;
-        }
-
-        .server-card:hover::before {
-            transform: scaleX(1);
-        }
-
-        .server-card:hover {
-            border-color: var(--border-secondary);
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .server-info h4 {
-            font-size: 1.125rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-        }
-
-        .server-roles-wrap {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.35rem;
-            justify-content: center;
-            align-items: center;
-            margin-top: 0.25rem;
-        }
-
-        .server-role {
-            background: #10b9811a;
-            color: #10b981;
-            border: 1px solid #10b98133;
-            padding: 0.3rem 0.65rem;
-            border-radius: 6px;
-            font-size: 0.725rem;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            line-height: 1.2;
-            transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-        }
-
-        .server-year {
-            color: var(--text-tertiary);
-            font-size: 0.8rem;
-            margin-top: 0.1rem;
-            margin-bottom: 0.3rem;
-            line-height: 1;
-        }
-
-        .profile-inner img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 50%;
-        }
-
-        .bio-details {
-            text-align: left;
-            margin-top: 1.5rem;
-            color: var(--text-secondary);
-        }
-
-        .bio-details p {
-            margin-bottom: 0.75rem;
-            line-height: 1.8;
-            font-size: 1rem;
-        }
-
-        .bio-details strong {
-            color: var(--text-primary);
-            font-weight: 600;
-        }
-
-        .bio-staff-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-            margin-top: 1rem;
-            width: 100%;
-        }
-
-        .bio-staff-category {
-            margin-top: 2rem;
-            text-align: center;
-        }
-
-        .bio-staff-title {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            font-size: 1rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: 1rem;
-        }
-
-        .bio-section-header {
-            font-size: 1rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: 1rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            border-bottom: 2px solid var(--accent-primary);
-            padding-bottom: 0.25rem;
-        }
-
-        .bio-staff-section {
-            margin-top: 3rem;
-            width: 100%;
-        }
-
-        .bio-links-section {
-            margin-top: 3rem;
-            width: 100%;
-        }
-
-        .bio-links-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-
-        @media (max-width: 700px) {
-            .bio-links-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes profileGlow {
-            0% {
-                box-shadow: 0 0 60px var(--glow-primary);
-            }
-
-            100% {
-                box-shadow: 0 0 80px var(--glow-secondary);
-            }
-        }
-
-        @keyframes rotate {
-            from {
-                transform: rotate(0deg);
-            }
-
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        @keyframes textGradient {
-            0% {
-                background-position: 100% 50%;
-            }
-
-            100% {
-                background-position: 0% 50%;
-            }
-        }
-
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            z-index: -2;
-            background: repeating-linear-gradient(180deg,
-                    #002244 0%,
-                    #004488 20%,
-                    #00aaff 50%,
-                    #004488 80%,
-                    #002244 100%);
-            background-size: 100% 300%;
-            background-repeat: repeat-y;
-            animation: backgroundFlow 12s linear infinite;
-            opacity: 0.5;
-        }
-
-        @keyframes backgroundFlow {
-            from {
-                background-position: 0 0;
-            }
-
-            to {
-                background-position: 0 300%;
-            }
-        }
-
         @media (max-width: 1024px) {
-            .left-panel {
-                left: 20px;
-                width: 290px;
-            }
-
-            .main-content {
-                margin-left: 270px;
+            .all-spots-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
             }
         }
-
-        @media (max-width: 768px) {
-            .app-container {
-                flex-direction: column;
-            }
-
-            .left-panel {
-                width: 100%;
-                height: auto;
-                position: relative;
-                top: 0;
-                left: 0;
-                transform: none;
-                max-height: none;
-                margin-bottom: 1rem;
-                border-right: none;
-                border-bottom: 1px solid var(--border-primary);
-                flex-direction: row;
-                justify-content: center;
-                flex-wrap: wrap;
-                padding: 1rem;
-                border-radius: 0;
-            }
-
-            .panel-item {
-                flex: 1 1 auto;
-                max-width: 150px;
-                justify-content: center;
-                border-left: none;
-                border-radius: 8px;
-                padding-left: 1.5rem;
-            }
-
-            .panel-item.active {
-                border-left: none;
-                padding-left: 1.5rem;
-            }
-
-            .main-content {
-                padding: 1rem;
-                margin-left: 0;
-            }
-
-            .section {
-                max-width: 100%;
-                margin: 20px auto;
-                min-height: auto;
-                padding: 1.5rem;
-            }
-
-            .staff-grid {
-                grid-template-columns: repeat(1, minmax(0, 1fr));
-            }
-
-            .panel-header {
-                display: none;
-            }
-
-            .bio-links-grid {
-                grid-template-columns: 1fr;
+        @media (max-width: 620px) {
+            .all-spots-grid {
+                grid-template-columns: 1fr !important;
             }
         }
 
-        .scroll-progress {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: transparent;
-            z-index: 1000;
+        .all-spots-grid .spot {
+            display: flex !important;
+            flex-direction: row !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            gap: 16px !important;
+            aspect-ratio: auto !important;
+            min-height: auto !important;
+            height: 76px !important;
+            padding: 14px 20px !important;
+            background: #121019 !important;
+            border: 1px solid rgba(255, 255, 255, 0.08) !important;
+            border-radius: 12px !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+            text-decoration: none !important;
+            position: relative !important;
+            overflow: hidden !important;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4) !important;
+            transition: all .22s var(--ease) !important;
+            cursor: pointer !important;
         }
-
-        .scroll-progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
-            width: 0%;
-            transition: width 0.2s ease;
+        .all-spots-grid .spot:hover {
+            background: #171422 !important;
+            border-color: rgba(192, 132, 252, 0.35) !important;
+            transform: translateY(-3px) !important;
+            box-shadow: 0 10px 24px -6px rgba(0, 0, 0, 0.6) !important;
         }
-
-        ::selection {
-            background: var(--accent-primary);
-            color: #ffffff;
-        }
-
-        ::-moz-selection {
-            background: var(--accent-primary);
-            color: #ffffff;
-        }
-
-    
-        /* Stats Overview */
-        .stats-overview {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 0.75rem;
-            margin-bottom: 2rem;
-            width: 100%;
-        }
-
-        @media (max-width: 640px) {
-            .stats-overview {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        .stat-card {
-            background: rgba(18, 18, 20, 0.7);
-            border: 1px solid var(--border-primary);
-            border-radius: 12px;
-            padding: 1rem 0.75rem;
-            text-align: center;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-        }
-
-        .stat-card:hover {
-            border-color: var(--border-secondary);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-        }
-
-        .stat-card .stat-number {
-            font-size: 1.65rem;
-            font-weight: 800;
-            line-height: 1.1;
-            font-family: 'Inter', sans-serif;
-            color: #ffffff;
-        }
-
-        .stat-card.stat-red .stat-number {
-            color: #ef4444;
-            text-shadow: 0 0 16px rgba(239, 68, 68, 0.35);
-        }
-
-        .stat-card.stat-green .stat-number {
-            color: #10b981;
-            text-shadow: 0 0 16px rgba(16, 185, 129, 0.35);
-        }
-
-        .stat-card.stat-blue .stat-number {
-            color: #38bdf8;
-            text-shadow: 0 0 16px rgba(56, 189, 248, 0.35);
-        }
-
-        .stat-card .stat-label {
-            font-size: 0.72rem;
-            font-weight: 600;
-            color: var(--text-tertiary);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-top: 0.35rem;
-        }
-
-        /* Search and Filter Controls */
-        .staff-controls {
-            margin-bottom: 2rem;
+        .spot-left-info {
             display: flex;
             flex-direction: column;
-            gap: 1rem;
-            width: 100%;
+            gap: 3px;
+            min-width: 0;
+            flex: 1;
         }
-
-        .search-bar-wrap {
-            position: relative;
-            width: 100%;
+        .all-spots-grid .spot h4 {
+            font-family: var(--display) !important;
+            font-weight: 600 !important;
+            font-size: 1.02rem !important;
+            line-height: 1.25 !important;
+            letter-spacing: -.02em !important;
+            color: #fff !important;
+            margin: 0 !important;
+            white-space: nowrap !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
         }
-
-        .search-bar-wrap .search-icon {
-            position: absolute;
-            left: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-tertiary);
-            font-size: 0.95rem;
-            pointer-events: none;
+        .all-spots-grid .spot p {
+            margin: 0 !important;
+            font-size: .72rem !important;
+            font-family: 'Inter', sans-serif !important;
+            font-weight: 500 !important;
+            text-transform: uppercase !important;
+            letter-spacing: .05em !important;
+            color: var(--accent-bright) !important;
+            white-space: nowrap !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
         }
-
-        .search-bar-wrap input {
-            width: 100%;
-            background: rgba(18, 18, 20, 0.8);
-            border: 1px solid var(--border-primary);
-            border-radius: 10px;
-            padding: 0.75rem 2.5rem 0.75rem 2.6rem;
-            color: #ffffff;
-            font-size: 0.9rem;
-            font-family: inherit;
-            outline: none;
-            transition: all 0.25s ease;
-        }
-
-        .search-bar-wrap input:focus {
-            border-color: #555555;
-            background: rgba(24, 24, 28, 0.95);
-            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.05);
-        }
-
-        .search-bar-wrap input::placeholder {
-            color: var(--text-tertiary);
-            font-size: 0.85rem;
-        }
-
-        .clear-search-btn {
-            position: absolute;
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: transparent;
-            border: none;
-            color: var(--text-tertiary);
-            cursor: pointer;
-            font-size: 0.9rem;
-            padding: 4px;
-            transition: color 0.2s ease;
-        }
-
-        .clear-search-btn:hover {
-            color: #ffffff;
-        }
-
-        .filter-pills {
+        .spot-right-act {
             display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
         }
-
-        .filter-pill {
-            background: rgba(20, 20, 22, 0.8);
-            border: 1px solid var(--border-primary);
-            color: var(--text-secondary);
-            padding: 0.45rem 0.9rem;
-            border-radius: 8px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-family: inherit;
-        }
-
-        .filter-pill:hover {
-            color: #ffffff;
-            border-color: var(--border-secondary);
-            background: rgba(30, 30, 35, 0.9);
-        }
-
-        .filter-pill.active {
-            background: #ffffff;
-            color: #000000;
-            border-color: #ffffff;
+        .spot-proof-pill {
+            font-size: .68rem;
             font-weight: 600;
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
-        }
-
-        .no-results-msg {
-            text-align: center;
-            color: var(--text-tertiary);
-            padding: 2.5rem 1rem;
-            font-size: 0.95rem;
-            width: 100%;
-            display: none;
-        }
-
-        .card-proof-badge {
-            position: absolute;
-            top: 8px;
-            right: 8px;
+            padding: 4px 10px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--dim);
+            transition: all .2s ease;
             display: inline-flex;
             align-items: center;
             gap: 4px;
-            font-size: 0.65rem;
-            font-weight: 700;
-            color: var(--text-tertiary);
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 4px;
-            padding: 2px 6px;
-            letter-spacing: 0.04em;
-            transition: all 0.25s ease;
+        }
+        .spot-proof-pill.has-proof {
+            color: rgba(255, 255, 255, 0.85);
+            border-color: rgba(255, 255, 255, 0.18);
+        }
+        .all-spots-grid .spot:hover .spot-proof-pill.has-proof {
+            background: #fff;
+            color: #000;
+            border-color: #fff;
         }
 
-        .server-card:hover .card-proof-badge {
-            color: #38bdf8;
-            border-color: rgba(56, 189, 248, 0.4);
-            background: rgba(56, 189, 248, 0.12);
-            transform: scale(1.04);
-        }
-
-    
-        /* Discord Live Status & Presence Pill */
-        .discord-status-dot {
-            position: absolute;
-            bottom: 6px;
-            right: 6px;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            border: 3.5px solid #000000;
-            z-index: 10;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
-        }
-
-        .discord-status-dot.status-online {
-            background: #22c55e;
-            box-shadow: 0 0 0 3px #000000, 0 0 12px rgba(34, 197, 94, 0.8);
-        }
-
-        .discord-status-dot.status-dnd {
-            background: #ef4444;
-            box-shadow: 0 0 0 3px #000000, 0 0 12px rgba(239, 68, 68, 0.8);
-        }
-
-        .discord-status-dot.status-idle {
-            background: #f59e0b;
-            box-shadow: 0 0 0 3px #000000, 0 0 12px rgba(245, 158, 11, 0.8);
-        }
-
-        .discord-status-dot.status-offline {
-            background: #71717a;
-            box-shadow: 0 0 0 3px #000000;
-        }
-
-        .discord-presence-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid var(--border-primary);
-            border-radius: 20px;
-            padding: 5px 14px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            color: var(--text-secondary);
-            margin: 0.5rem auto 0.75rem auto;
-            backdrop-filter: blur(10px);
-            transition: all 0.25s ease;
-            max-width: 90%;
-        }
-
-        .discord-presence-pill:hover {
-            border-color: var(--border-secondary);
-            background: rgba(255, 255, 255, 0.07);
-            transform: translateY(-1px);
-        }
-
-        .presence-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            display: inline-block;
-            flex-shrink: 0;
-        }
-
-        .presence-dot.dot-online { background: #22c55e; box-shadow: 0 0 8px #22c55e; }
-        .presence-dot.dot-dnd { background: #ef4444; box-shadow: 0 0 8px #ef4444; }
-        .presence-dot.dot-idle { background: #f59e0b; box-shadow: 0 0 8px #f59e0b; }
-        .presence-dot.dot-offline { background: #71717a; }
-
-        .presence-activity-text {
-            color: var(--text-primary);
-            font-weight: 500;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 280px;
-        }
-
-    
-        /* Proof Lightbox Modal */
-        .proof-modal {
-            position: fixed;
-            inset: 0;
-            z-index: 999999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 1.25rem;
-        }
-
-        .proof-modal-backdrop {
-            position: absolute;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.88);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            animation: modal-fade-in 0.25s ease forwards;
-        }
-
-        .proof-modal-content {
-            position: relative;
-            z-index: 2;
-            background: #0d0d11;
-            border: 1px solid var(--border-secondary);
-            border-radius: 16px;
-            max-width: 960px;
-            width: 100%;
-            max-height: 90vh;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.95), 0 0 35px rgba(56, 189, 248, 0.15);
-            animation: modal-zoom-in 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-            overflow: hidden;
-        }
-
-        @keyframes modal-fade-in {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes modal-zoom-in {
-            from { opacity: 0; transform: scale(0.93) translateY(12px); }
-            to { opacity: 1; transform: scale(1) translateY(0); }
-        }
-
-        .proof-modal-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 1rem 1.4rem;
-            border-bottom: 1px solid var(--border-primary);
-            background: rgba(18, 18, 22, 0.95);
-        }
-
-        .proof-modal-title-wrap {
-            display: flex;
-            align-items: center;
-            gap: 0.85rem;
-            flex-wrap: wrap;
-        }
-
-        .proof-modal-title-wrap h3 {
-            font-size: 1.15rem;
-            font-weight: 700;
-            color: #ffffff;
-            margin: 0;
-            letter-spacing: -0.01em;
-        }
-
-        .proof-modal-close {
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid var(--border-primary);
-            color: var(--text-secondary);
-            width: 36px;
-            height: 36px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 1.1rem;
-            transition: all 0.2s ease;
-        }
-
-        .proof-modal-close:hover {
-            color: #ffffff;
-            background: rgba(239, 68, 68, 0.2);
-            border-color: rgba(239, 68, 68, 0.5);
-            transform: scale(1.05);
-        }
-
-        .proof-modal-body {
-            position: relative;
-            padding: 1rem;
-            overflow-y: auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #070709;
-            min-height: 280px;
-            max-height: calc(90vh - 140px);
-        }
-
-        .proof-modal-body img {
-            max-width: 100%;
-            max-height: calc(90vh - 160px);
-            object-fit: contain;
-            border-radius: 8px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
-            display: block;
-        }
-
-        .proof-image-loader {
-            position: absolute;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 12px;
-            color: var(--text-tertiary);
-            font-size: 0.85rem;
-            pointer-events: none;
-        }
-
-        .proof-spinner {
-            width: 32px;
-            height: 32px;
-            border: 3px solid rgba(255, 255, 255, 0.1);
-            border-top-color: #38bdf8;
-            border-radius: 50%;
-            animation: spinner-spin 0.8s linear infinite;
-        }
-
-        @keyframes spinner-spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .proof-modal-footer {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0.75rem 1.4rem;
-            border-top: 1px solid var(--border-primary);
-            background: rgba(18, 18, 22, 0.95);
-            font-size: 0.8rem;
-        }
-
-        .proof-modal-hint {
-            color: var(--text-tertiary);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .proof-external-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            color: #38bdf8;
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.2s ease;
-        }
-
-        .proof-external-btn:hover {
-            color: #7dd3fc;
-            text-decoration: underline;
-        }
-
-    </style>
+        </style>
 </head>
-
 <body>
-    <div id="bg-start-audio" onclick="revealApp()">
-        <div id="chrome-hero-host"></div>
-        <div class="hero-hud">
-            <div class="hud-top-left">
-                <span class="hud-dot"></span>
-                <span>8QTW // SYSTEM ONLINE</span>
-            </div>
-            <div class="hud-top-right">
-                <span>UID: #0821 &bull; FORENSICS</span>
-            </div>
-            <div class="hud-corner hud-bl">+</div>
-            <div class="hud-corner hud-br">+</div>
+
+    
+
+    <!-- Nav -->
+    <nav class="nav" id="nav" aria-label="Main">
+        <a href="#top" class="logo">8qtw</a>
+        <ul class="nav-links">
+            <li><a href="#top" data-sec="top">Overview</a></li>
+            <li><a href="#about" data-sec="about">About</a></li>
+            <li><a href="#experience" data-sec="experience">Experience</a></li>
+            <li><a href="#favorites" data-sec="favorites">Favorites</a></li>
+            <li><a href="#contact" data-sec="contact">Contact</a></li>
+        </ul>
+        <div class="nav-right">
+            
+            <a href="#contact" class="pill">Contact <span class="dot"><i class="fa-solid fa-arrow-right"></i></span></a>
         </div>
-        <p class="hero-click-prompt">[ click to enter ]</p>
-    </div>
+    </nav>
 
-    <audio id="bg-music" loop autoplay>
-        <source src="assets/music.m4a" type="audio/mp4">
-        Il tuo browser non supporta l'elemento audio.
-    </audio>
+    <!-- Hero -->
+    <header class="hero" id="top">
+        <div class="hero-facts" id="heroFacts"></div>
+        <div class="hero-side l">Digital forensics</div>
+        <div class="hero-side r" id="heroCount">000</div>
 
-    <div id="volume-control">
-        <div id="volume-icon-wrap">
-            <svg id="volume-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
-                <defs>
-                    <mask id="volumeIconMask">
-                        <g fill="none" stroke="#fff" stroke-width="4">
-                            <path fill="#555" stroke-linejoin="round" d="M24 6v36c-7 0-12.201-9.16-12.201-9.16H6a2 2 0 0 1-2-2V17.01a2 2 0 0 1 2-2h5.799S17 6 24 6Z"></path>
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M32 15a11.91 11.91 0 0 1 1.684 1.859A12.07 12.07 0 0 1 36 24c0 2.654-.846 5.107-2.278 7.09A11.936 11.936 0 0 1 32 33"></path>
-                            <path stroke-linecap="round" d="M34.236 41.186C40.084 37.696 44 31.305 44 24c0-7.192-3.796-13.496-9.493-17.02"></path>
-                        </g>
-                    </mask>
-                </defs>
-                <path fill="currentColor" d="M0 0h48v48H0z" mask="url(#volumeIconMask)"></path>
-            </svg>
-        </div>
-        <div id="volume-slider-wrap">
-            <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.075">
-        </div>
-    </div>
-
-    <div id="song-credit"></div>
-
-    <div class="scroll-progress">
-        <div class="scroll-progress-bar"></div>
-    </div>
-
-    <div class="app-container">
-        <aside class="left-panel">
-            <div class="panel-header" style="justify-content: center;"><i class="fa-solid fa-list"></i></div>
-            <div class="panel-item active" data-section="profileBio">
-                <i class="fa-solid fa-user"></i>
-                <span>Bio</span>
+        <div class="wordmark-stage">
+            <div class="wordmark-wrap" id="markWrap">
+                <div class="wordmark-in"><div class="wordmark" aria-hidden="true">8QTW</div></div>
             </div>
-            <div class="panel-item" data-section="staffExperience">
-                <i class="fa-solid fa-briefcase"></i>
-                <span>Staff Experience</span>
-            </div>
-        </aside>
+        </div>
+        <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">8qtw, Head Screensharer & Forensics Specialist</h1>
 
-        <div class="main-content">
-            <section class="section" id="profileBio">
-                <div class="section-header">
-                    <div class="section-icon"><i class="fa-solid fa-user"></i></div>
-                    <span>Bio</span>
+        <div class="hero-bottom">
+            <h2 class="hero-title">Screenshare and<br>forensics, done<br>properly.</h2>
+            <div class="hero-copy">
+                <p id="heroCopy"></p>
+                <div class="btns">
+                    <a href="#experience" class="pill">View experience <span class="dot"><i class="fa-solid fa-arrow-right"></i></span></a>
                 </div>
-                <div class="hero-content">
-                    <div class="profile-wrapper">
-                        <div class="profile-border"></div>
-                        <div class="profile-image">
-                            <div class="profile-inner" id="profileAvatar"></div>
+            </div>
+            <div class="claim">
+                <i class="fa-brands fa-discord"></i>
+                <span>discord / <b>@8qtw</b></span>
+                <a class="pill" id="heroDiscord" target="_blank" rel="noopener noreferrer">Message <span class="dot"><i class="fa-solid fa-arrow-right"></i></span></a>
+            </div>
+        </div>
+        <div class="scroll-cue" aria-hidden="true"></div>
+    </header>
+
+    <main>
+        <!-- Statement -->
+        <section class="statement">
+            <div class="wrap">
+                <p class="statement-text" id="statement"></p>
+            </div>
+        </section>
+
+        <!-- Stats -->
+        <section class="stats">
+            <div class="wrap">
+                <div class="stats-grid" id="stats"></div>
+            </div>
+        </section>
+
+        <!-- About -->
+        <section class="sec" id="about">
+            <div class="wrap about-grid">
+                <div class="reveal">
+                    <div class="kicker">About</div>
+                    <h2 class="h2">Checks that<br><span class="soft">hold up.</span></h2>
+                    <p class="lead">I'm 8qtw (IGN: CiaoBypasso), a Head Screensharer and PC Forensics Specialist. I run screenshares and forensic investigations for competitive Minecraft communities, from tierlists to ranked networks.</p>
+                    <dl class="about-facts">
+                        <div><dt>Focus</dt><dd>Screensharing &amp; PC Forensics</dd></div>
+                        <div><dt>Time zone</dt><dd>CEST</dd></div>
+                        <div><dt>Languages</dt><dd>English, Italian, Spanish</dd></div>
+                    </dl>
+                </div>
+                <div class="idcard-scene reveal">
+                    <div class="idcard" id="idcard">
+                        <div class="idcard-top">
+                            <span class="logo">8qtw</span>
+                            <span>Staff profile</span>
                         </div>
-                        <div class="discord-status-dot status-offline" id="discordStatusDot" title="Discord Status"></div>
-                    </div>
-                    <h1 id="profileName" style="
-                    font-size: clamp(2.5rem, 5vw, 4rem);
-                    font-weight: 900;
-                    background: linear-gradient(
-                        90deg,
-                        #004488 0%,
-                        #00aaff 25%,
-                        #004488 50%,
-                        #00aaff 75%,
-                        #004488 100%
-                    );
-                    background-size: 200% auto;
-                    background-clip: text;
-                    -webkit-background-clip: text;
-                    -webkit-text-fill-color: transparent;
-                    margin-bottom: 0;
-                    letter-spacing: -0.02em;
-                    animation: textGradient 1.5s linear infinite;
-                    position: relative;
-                    background-position: 0% 50%;
-                "></h1>
-                    <p class="subtitle" id="profileSubtitle"></p>
-                    <div id="discordPresencePill" class="discord-presence-pill" style="display: none;"></div>
-                    <div class="bio-tabs">
-                        <div class="bio-tab">
-                            <strong>Age:</strong> 16 y/o
+                        <div class="idcard-id">
+                            <div class="avatar"><img id="avatar" alt="Tudo"></div>
+                            <div>
+                                <h3>8qtw</h3>
+                                <p>Head Screensharer &amp; Forensics Specialist</p>
+                            </div>
                         </div>
-                        <div class="bio-tab">
-                            <strong>Place:</strong> Italy
+                        <dl class="idcard-rows" id="idRows"></dl>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Experience -->
+        <section class="sec exp" id="experience">
+            <div class="wrap">
+                <div class="exp-head reveal">
+                    <div>
+                        <div class="kicker">Experience</div>
+                        <h2 class="h2">Leadership<br><span class="soft">and trust.</span></h2>
+                    </div>
+                    <p class="lead" style="margin:0">The communities where I hold a lead or management role.</p>
+                </div>
+
+                <div class="spot-grid reveal" id="spots"></div>
+
+                <div class="comm-center-section" id="allCommunities">
+                    <div class="comm-center-head reveal">
+                        <div class="kicker">Archive</div>
+                        <h2 class="h2 big-every">Every community.</h2>
+                        <p class="lead" style="max-width:580px; margin:0 auto">Complete screenshare staff history across Discord and Minecraft. Click on any card with verified proof to view documentation.</p>
+                        <div class="comm-filter-tabs">
+                            <button class="comm-tab-btn active" data-filter="all" onclick="setCommFilter('all')">
+                                <span>All Servers</span> <span class="badge-n" id="cntAll">53</span>
+                            </button>
+                            <button class="comm-tab-btn" data-filter="discord" onclick="setCommFilter('discord')">
+                                <span><i class="fa-brands fa-discord"></i> Discord Experience</span> <span class="badge-n" id="cntDiscord">34</span>
+                            </button>
+                            <button class="comm-tab-btn" data-filter="minecraft" onclick="setCommFilter('minecraft')">
+                                <span><i class="fa-solid fa-cube"></i> Minecraft Experience</span> <span class="badge-n" id="cntMinecraft">19</span>
+                            </button>
                         </div>
                     </div>
-
-                    <div class="bio-links-section">
-                        <h3 class="bio-staff-title"><i class="fa-solid fa-link"></i> LINKS</h3>
-                        <div class="bio-links-grid"></div>
-                    </div>
+                    <div class="all-spots-grid" id="allSpotsGrid"></div>
                 </div>
-            </section>
+            </div>
+        </section>
 
-            <section class="section" id="staffExperience">
-                <div class="section-header">
-                    <div class="section-icon"><i class="fa-solid fa-briefcase"></i></div>
-                    <span>Staff Experience</span>
+        <!-- Favorites -->
+        <section class="sec fav-sec" id="favorites">
+            <div class="wrap">
+                <div class="reveal">
+                    <div class="kicker">Favorites</div>
+                    <h2 class="h2">The ones<br><span class="soft">that matter.</span></h2>
                 </div>
+                <div class="fav-list" id="favList"></div>
+            </div>
+        </section>
 
-                <!-- Stats Overview -->
-                <div class="stats-overview" id="statsOverview">
-                    <div class="stat-card">
-                        <div class="stat-number" id="statTotalServers">0</div>
-                        <div class="stat-label">Total Servers</div>
-                    </div>
-                    <div class="stat-card stat-red">
-                        <div class="stat-number" id="statLeadRoles">0</div>
-                        <div class="stat-label">Head SS & Lead</div>
-                    </div>
-                    <div class="stat-card stat-green">
-                        <div class="stat-number" id="statVerifiedRoles">0</div>
-                        <div class="stat-label">🔍 SS Verified / PC Checker</div>
-                    </div>
-                    <div class="stat-card stat-blue">
-                        <div class="stat-number" id="statProofPercent">100%</div>
-                        <div class="stat-label">Verified Proofs</div>
-                    </div>
+        <!-- Contact -->
+        <section class="sec contact" id="contact">
+            <div class="wrap">
+                <div class="reveal">
+                    <div class="kicker">Contact</div>
+                    <h2 class="h2">Get in touch.</h2>
+                    <p class="lead">The fastest way to reach me is on Discord.</p>
                 </div>
+                <div class="links reveal" id="links"></div>
+            </div>
+        </section>
+    </main>
 
-                <!-- Search and Filters -->
-                <div class="staff-controls">
-                    <div class="search-bar-wrap">
-                        <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                        <input type="text" id="serverSearchInput" placeholder="Search server or role (e.g. Head SS, Verified, PotPvP)..." autocomplete="off">
-                        <button id="clearSearchBtn" class="clear-search-btn" style="display:none;"><i class="fa-solid fa-xmark"></i></button>
-                    </div>
-                    <div class="filter-pills" id="filterPills">
-                        <button class="filter-pill active" data-filter="all">All</button>
-                        <button class="filter-pill" data-filter="lead">🔴 Lead & Mgmt</button>
-                    </div>
+    <footer>
+        <div class="wrap">
+            <div class="foot-grid">
+                <div>
+                    <a href="#top" class="logo">8qtw</a>
+                    <p>Head Screensharer and forensic specialist. Digital forensics for competitive Minecraft communities.</p>
                 </div>
-
-                <div class="no-results-msg" id="noResultsMsg">
-                    <i class="fa-solid fa-circle-exclamation" style="font-size: 1.5rem; margin-bottom: 0.5rem; display: block;"></i>
-                    No servers or roles found matching your criteria.
+                <div>
+                    <h5>Page</h5>
+                    <ul>
+                        <li><a href="#top">Overview</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#experience">Experience</a></li>
+                        <li><a href="#favorites">Favorites</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
                 </div>
-            </section>
+                <div>
+                    <h5>Links</h5>
+                    <ul id="footLinks"></ul>
+                </div>
+            </div>
+            <div class="foot-bottom">
+                <span>&copy; 2026 Tudo. All rights reserved.</span>
+                <a href="#top">Back to top <i class="fa-solid fa-arrow-up" style="margin-left:.3rem"></i></a>
+            </div>
         </div>
-    </div>
+    </footer>
 
     <script>
-        const CONFIG = {
-            profile: {
-                name: "8qtw",
-                avatar: "assets/avatar.jpg",
-                subtitle: "Staff & PC Forensics",
+    const CONFIG = {
+    "profile": {
+        "name": "8qtw",
+        "avatar": "https://mc-heads.net/avatar/CiaoBypasso/128",
+        "subtitle": "Head Screensharer & Forensics Specialist",
+        "age": 17,
+        "tz": "CEST",
+        "mc": "CiaoBypasso",
+        "discord": "@8qtw"
+    },
+    "staffExperience": {
+        "discord": [
+            {
+                "serverName": "Iris RBW",
+                "role": "SS MANAGER",
+                "imgurLink": "https://imgur.com/a/6NClYZY"
             },
-            staffExperience: {
-                minecraft: [
-                    { serverName: "MetaMC", role: "⚙️ HELPER, 🔍 ScreenSharer", color: "#3b82f6", imgurLink: "https://imgur.com/a/CnvgGIg" },
-                    { serverName: "PhaseMC", role: "🛡️ JR.MOD, ★ SS VERIFIED", color: "#3b82f6", imgurLink: null },
-                    { serverName: "PotPvP (ES)", role: "👑 JR.ADMIN, 💼 HEAD SS", color: "#3b82f6", imgurLink: "https://imgur.com/a/v07ll8H" },
-                    { serverName: "EngineMC", role: "⚙️ HELPER, ★ SS VERIFIED", color: "#a855f7", imgurLink: "https://imgur.com/a/r24FSn3" },
-                    { serverName: "AuraMC", role: "🛡️ MOD, 💼 HEAD SS, ★ SS VERIFIED", color: "#3b82f6", imgurLink: "https://imgur.com/a/brGuN6b" },
-                    { serverName: "AtlasMC", role: "⚙️ HELPER, 💼 HEAD SS", color: "#a855f7", imgurLink: "https://imgur.com/a/838wVfg" },
-                    { serverName: "FenixMC", role: "🛡️ SR.MOD, 💼 HEAD SS", color: "#3b82f6", imgurLink: "https://imgur.com/a/COl8Gw2" },
-                    { serverName: "FruitMC", role: "⚙️ HELPER, ★ SS VERIFIED", color: "#a855f7", imgurLink: "https://imgur.com/yqRYbja" },
-                    { serverName: "EvilMC (ES)", role: "👑 ADMIN, 🎓 SS TRAINER", color: "#3b82f6", imgurLink: "https://imgur.com/a/LGplXEV" },
-                    { serverName: "VikurPractice (USA)", role: "★ SS VERIFIED", color: "#10b981", imgurLink: "https://imgur.com/a/Q0rT74N" },
-                    { serverName: "DynamicPvP (ES)", role: "🛡️ MOD, ★ SS VERIFIED", color: "#3b82f6", imgurLink: "https://imgur.com/a/GRHniTt" },
-                    { serverName: "SnowMC (ES)", role: "🛡️ MOD, ★ SS VERIFIED", color: "#3b82f6", imgurLink: "https://imgur.com/a/GRHniTt" },
-                    { serverName: "PrimeMC", role: "🛡️ MOD, ★ SS VERIFIED", color: "#3b82f6", imgurLink: null },
-                    { serverName: "MineGhoul", role: "🛡️ MOD, 💼 SS Coordinator", color: "#3b82f6", imgurLink: "https://imgur.com/a/9GApA38" },
-                    { serverName: "MineBack", role: "🛡️ MOD, 🎓 SS MENTOR", color: "#3b82f6", imgurLink: "https://imgur.com/26IwpzA" },
-                    { serverName: "MineCloud", role: "🛡️ MOD, 🎓 SS MENTOR", color: "#3b82f6", imgurLink: "https://imgur.com/Tqyp0Or" },
-                    { serverName: "SoloLegends", role: "🛡️ MOD, ★ SS VERIFIED", color: "#3b82f6", imgurLink: "https://imgur.com/a/RAywTce" }
-                ],
-                discord: [
-                    { serverName: "MeowTools", role: "🔍 ScreenSharer", color: "#3b82f6", imgurLink: "https://imgur.com/a/FwRBLBY" },
-                    { serverName: "Hunt Service", role: "🤝 Staff", color: "#f59e0b", imgurLink: null },
-                    { serverName: "TLHub Italiana", role: "🛡️ DS Mod, ★ SS Verified", color: "#3b82f6", imgurLink: "https://imgur.com/a/F7t1SWO" },
-                    { serverName: "TierList CoralMC (1.9+)", role: "🛡️ Moderator, 💼 Head SS", color: "#3b82f6", imgurLink: "https://imgur.com/a/ivlSXNe" },
-                    { serverName: "Galaxy TierList", role: "★ SS Verified", color: "#10b981", imgurLink: "https://imgur.com/a/nFFz0dQ" },
-                    { serverName: "TierList AuraMc", role: "⚖️ Regulator, ★ SS Verified", color: "#3b82f6", imgurLink: "https://imgur.com/a/4XdZHgi" },
-                    { serverName: "Central TierList", role: "★ SS Veteran, ⚙️ Helper", color: "#10b981", imgurLink: "https://imgur.com/a/Q8ILncG" },
-                    { serverName: "Elysian TierList", role: "👑 Overseer, 🔍 ScreenSharer", color: "#3b82f6", imgurLink: "https://imgur.com/a/GRHniTt" },
-                    { serverName: "Zero TierList", role: "★ SS Verified", color: "#10b981", imgurLink: "https://imgur.com/a/PsoRMCv" },
-                    { serverName: "Bypass ScreenShare", role: "🔍 ScreenSharer", color: "#3b82f6", imgurLink: "https://imgur.com/a/t5YtoFL" },
-                    { serverName: "HT1 - HT3 Settings", role: "🤝 Staff Team", color: "#f59e0b", imgurLink: "https://imgur.com/a/xjrzeUL" },
-                    { serverName: "OceanAC", role: "🔍 PC Checker", color: "#3b82f6", imgurLink: "https://imgur.com/a/1GlQEWJ" },
-                    { serverName: "SSA (ScreenShare Alliance)", role: "🤝 SSA Staff", color: "#f59e0b", imgurLink: "https://imgur.com/a/5hVfiWN" },
-                    { serverName: "Iris RBW", role: "💼 SS Manager", color: "#3b82f6", imgurLink: "https://imgur.com/a/6NClYZY" },
-                    { serverName: "RBW International", role: "🔍 ScreenSharer", color: "#3b82f6", imgurLink: "https://imgur.com/a/ACqaizQ" },
-                    { serverName: "DemonHCF", role: "🔍 ScreenSharer", color: "#3b82f6", imgurLink: "https://imgur.com/a/BAcHvQd" },
-                    { serverName: "AxoraRBW", role: "🔍 ScreenSharer", color: "#3b82f6", imgurLink: "https://imgur.com/a/UkIb9AG" },
-                    { serverName: "FireballFight", role: "🔍 ScreenSharer", color: "#3b82f6", imgurLink: "https://imgur.com/a/MkbRqL7" },
-                    { serverName: "Ranked WoolWars", role: "🔍 ScreenSharer", color: "#3b82f6", imgurLink: "https://imgur.com/a/4DbbcAO" },
-                    { serverName: "GraveMethods Bypass", role: "⚙️ Sr. Helper", color: "#a855f7", imgurLink: "https://imgur.com/a/PSYP2XJ" },
-                    { serverName: "ScreenShare Test Your Bypass", role: "🔍 PC Checker", color: "#3b82f6", imgurLink: "https://imgur.com/a/AD1v03M" }
-                ]
+            {
+                "serverName": "OceanAC",
+                "role": "PC CHECKER",
+                "imgurLink": "https://imgur.com/a/1GlQEWJ"
             },
-            links: [
-                { name: "Discord", role: "8qtw", icon: "fa-brands fa-discord", color: "#5865F2", link: "https://discord.com/users/1485744426084204738" },
-                { name: "Telegram", role: "@qtw21", icon: "fa-brands fa-telegram", color: "#229ED9", link: "https://t.me/qtw21" },
-                { name: "NameMC", role: "CiaoBypasso", icon: "fa-solid fa-cube", color: "#10b981", link: "https://namemc.com/profile/CiaoBypasso" }
-            ]
+            {
+                "serverName": "SSA (ScreenShare Alliance)",
+                "role": "SSA STAFF",
+                "imgurLink": "https://imgur.com/a/5hVfiWN"
+            },
+            {
+                "serverName": "TierList CoralMC (1.9+)",
+                "role": "MODERATOR, HEAD SS",
+                "imgurLink": "https://imgur.com/a/ivlSXNe"
+            },
+            {
+                "serverName": "HT1 - HT3 Settings",
+                "role": "STAFF TEAM",
+                "imgurLink": "https://imgur.com/a/xjrzeUL"
+            },
+            {
+                "serverName": "Zero TierList",
+                "role": "SS VERIFIED",
+                "imgurLink": "https://imgur.com/a/PsoRMCv"
+            },
+            {
+                "serverName": "TLHub Italiana",
+                "role": "DS MOD, SS VERIFIED",
+                "imgurLink": "https://imgur.com/a/F7t1SWO"
+            },
+            {
+                "serverName": "Galaxy TierList",
+                "role": "SS VERIFIED",
+                "imgurLink": "https://imgur.com/a/nFFz0dQ"
+            },
+            {
+                "serverName": "TierList AuraMc",
+                "role": "REGULATOR, SS VERIFIED",
+                "imgurLink": "https://imgur.com/a/4XdZHgi"
+            },
+            {
+                "serverName": "Central TierList",
+                "role": "SS VETERAN, HELPER",
+                "imgurLink": "https://imgur.com/a/Q8ILncG"
+            },
+            {
+                "serverName": "Elysian TierList",
+                "role": "OVERSEER, SCREENSHARER",
+                "imgurLink": "https://imgur.com/a/GRHniTt"
+            },
+            {
+                "serverName": "MeowTools",
+                "role": "SCREENSHARER",
+                "imgurLink": "https://imgur.com/a/FwRBLBY"
+            },
+            {
+                "serverName": "Bypass ScreenShare",
+                "role": "SCREENSHARER",
+                "imgurLink": "https://imgur.com/a/t5YtoFL"
+            },
+            {
+                "serverName": "ScreenShare Test Your Bypass",
+                "role": "PC CHECKER",
+                "imgurLink": "https://imgur.com/a/AD1v03M"
+            },
+            {
+                "serverName": "RBW International",
+                "role": "SCREENSHARER",
+                "imgurLink": "https://imgur.com/a/ACqaizQ"
+            },
+            {
+                "serverName": "DemonHCF",
+                "role": "SCREENSHARER",
+                "imgurLink": "https://imgur.com/a/BAcHvQd"
+            },
+            {
+                "serverName": "AxoraRBW",
+                "role": "SCREENSHARER",
+                "imgurLink": "https://imgur.com/a/UkIb9AG"
+            },
+            {
+                "serverName": "FireballFight",
+                "role": "SCREENSHARER",
+                "imgurLink": "https://imgur.com/a/MkbRqL7"
+            },
+            {
+                "serverName": "Ranked WoolWars",
+                "role": "SCREENSHARER",
+                "imgurLink": "https://imgur.com/a/4DbbcAO"
+            },
+            {
+                "serverName": "GraveMethods Bypass",
+                "role": "SR. HELPER",
+                "imgurLink": "https://imgur.com/a/PSYP2XJ"
+            },
+            {
+                "serverName": "Hunt Service",
+                "role": "STAFF",
+                "imgurLink": ""
+            },
+            {
+                "serverName": "Arise TierList",
+                "role": "SSER",
+                "imgurLink": "https://imgur.com/a/mO63D66"
+            },
+            {
+                "serverName": "Asian TierList",
+                "role": "SSER",
+                "imgurLink": "https://imgur.com/IKpkVv2"
+            },
+            {
+                "serverName": "Combat TierList",
+                "role": "SSER",
+                "imgurLink": "https://imgur.com/EPDVlf7"
+            },
+            {
+                "serverName": "Crack Tiers",
+                "role": "FORENSICS",
+                "imgurLink": "https://imgur.com/uHf8r7k"
+            },
+            {
+                "serverName": "Vanilla Ranked",
+                "role": "HEAD SS",
+                "imgurLink": ""
+            },
+            {
+                "serverName": "Start Tiers",
+                "role": "SSER",
+                "imgurLink": "https://imgur.com/zIOSTxg"
+            },
+            {
+                "serverName": "Moonhex Tiers",
+                "role": "FORENSICS VETERAN",
+                "imgurLink": ""
+            },
+            {
+                "serverName": "Solar TierList",
+                "role": "SSER",
+                "imgurLink": "https://imgur.com/XJK7fe4"
+            },
+            {
+                "serverName": "Gang Tiers",
+                "role": "SSER",
+                "imgurLink": "https://imgur.com/2OeN0SJ"
+            },
+            {
+                "serverName": "Global Tiers",
+                "role": "FORENSICS",
+                "imgurLink": "https://imgur.com/zDdNPZu"
+            },
+            {
+                "serverName": "Helium",
+                "role": "SCREENSHARE TEAM",
+                "imgurLink": "https://imgur.com/A8F6WAT"
+            },
+            {
+                "serverName": "Lifea Tiers",
+                "role": "SSER",
+                "imgurLink": "https://imgur.com/o8eIcuP"
+            },
+            {
+                "serverName": "Mace Legion",
+                "role": "SSER",
+                "imgurLink": "https://imgur.com/OuLDcKZ"
+            }
+        ],
+        "minecraft": [
+            {
+                "serverName": "PotPvP (ES)",
+                "role": "JR.ADMIN, HEAD SS",
+                "imgurLink": "https://imgur.com/a/v07ll8H"
+            },
+            {
+                "serverName": "AuraMC",
+                "role": "MOD, HEAD SS, SS VERIFIED",
+                "imgurLink": "https://imgur.com/a/brGuN6b"
+            },
+            {
+                "serverName": "AtlasMC",
+                "role": "HELPER, HEAD SS",
+                "imgurLink": "https://imgur.com/a/838wVfg"
+            },
+            {
+                "serverName": "FenixMC",
+                "role": "SR.MOD, HEAD SS",
+                "imgurLink": "https://imgur.com/a/COl8Gw2"
+            },
+            {
+                "serverName": "EvilMC (ES)",
+                "role": "ADMIN, SS TRAINER",
+                "imgurLink": "https://imgur.com/a/LGplXEV"
+            },
+            {
+                "serverName": "EngineMC",
+                "role": "HELPER, SS VERIFIED",
+                "imgurLink": "https://imgur.com/a/r24FSn3"
+            },
+            {
+                "serverName": "FruitMC",
+                "role": "HELPER, SS VERIFIED",
+                "imgurLink": "https://imgur.com/yqRYbja"
+            },
+            {
+                "serverName": "MetaMC",
+                "role": "HELPER, SCREENSHARER",
+                "imgurLink": "https://imgur.com/a/CnvgGIg"
+            },
+            {
+                "serverName": "VikurPractice (USA)",
+                "role": "SS VERIFIED",
+                "imgurLink": "https://imgur.com/a/Q0rT74N"
+            },
+            {
+                "serverName": "DynamicPvP (ES)",
+                "role": "MOD, SS VERIFIED",
+                "imgurLink": "https://imgur.com/a/GRHniTt"
+            },
+            {
+                "serverName": "SnowMC (ES)",
+                "role": "MOD, SS VERIFIED",
+                "imgurLink": "https://imgur.com/a/GRHniTt"
+            },
+            {
+                "serverName": "MineGhoul",
+                "role": "MOD, SS COORDINATOR",
+                "imgurLink": "https://imgur.com/a/9GApA38"
+            },
+            {
+                "serverName": "MineBack",
+                "role": "MOD, SS MENTOR",
+                "imgurLink": "https://imgur.com/26IwpzA"
+            },
+            {
+                "serverName": "MineCloud",
+                "role": "MOD, SS MENTOR",
+                "imgurLink": "https://imgur.com/Tqyp0Or"
+            },
+            {
+                "serverName": "SoloLegends",
+                "role": "MOD, SS VERIFIED",
+                "imgurLink": "https://imgur.com/a/RAywTce"
+            },
+            {
+                "serverName": "PhaseMC",
+                "role": "JR.MOD, SS VERIFIED",
+                "imgurLink": ""
+            },
+            {
+                "serverName": "PrimeMC",
+                "role": "MOD, SS VERIFIED",
+                "imgurLink": ""
+            },
+            {
+                "serverName": "Nexus SMP",
+                "role": "SSER",
+                "imgurLink": ""
+            },
+            {
+                "serverName": "Orbital FFA",
+                "role": "SSER",
+                "imgurLink": ""
+            }
+        ]
+    },
+    "links": [
+        {
+            "name": "Discord",
+            "handle": "@8qtw",
+            "icon": "fa-brands fa-discord",
+            "link": "https://discord.com/users/938747477380128798"
+        },
+        {
+            "name": "Telegram",
+            "handle": "@qtw21",
+            "icon": "fa-brands fa-telegram",
+            "link": "https://t.me/qtw21"
+        },
+        {
+            "name": "NameMC",
+            "handle": "CiaoBypasso",
+            "icon": "fa-solid fa-cube",
+            "link": "https://namemc.com/profile/CiaoBypasso"
+        }
+    ],
+    "highlights": [
+        "Iris RBW",
+        "PotPvP (ES)",
+        "OceanAC",
+        "SSA (ScreenShare Alliance)",
+        "TierList CoralMC (1.9+)",
+        "EvilMC (ES)"
+    ],
+    "favorites": [
+        {
+            "name": "Iris RBW",
+            "quote": "Leading screenshare operations and penalty decisions for Ranked Bedwars."
+        },
+        {
+            "name": "PotPvP (ES)",
+            "quote": "Staff administration and cheat detection across the premier Spanish network."
+        },
+        {
+            "name": "OceanAC",
+            "quote": "Technical checks, custom detection rules, and memory analysis."
+        },
+        {
+            "name": "CoralMC",
+            "quote": "Head of screenshare and competitive tierlist reviews on Italy's largest network."
+        },
+        {
+            "name": "ScreenShare Alliance",
+            "quote": "One of the most important communities in Minecraft screensharing."
+        }
+    ]
+};
+    const GROUPS = [
+        { key: 'discord',   label: 'Discord',   icon: 'fa-brands fa-discord' },
+        { key: 'minecraft', label: 'Minecraft', icon: 'fa-solid fa-cube' }
+    ];
+    const count = k => ALL.filter(RULES[k]).length;
+
+    function fmtRole(role) {
+        return role.split(',').map(s => s.trim().toLowerCase()
+            .replace(/\b\w/g, c => c.toUpperCase())
+            .replace(/\b(Ss|Pc|Ceo|Sser)\b/g, m => m.toUpperCase().replace('SSER', 'SSer'))
+            .replace(/\bSrmod\b/g, 'SrMod')
+            .replace(/\bOf\b/g, 'of')
+        ).join(', ');
+    }
+    const $ = s => document.querySelector(s);
+    const el = (tag, cls, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; };
+    const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    /* ───── Hero content ───── */
+    function buildHero() {
+        const lines = [
+            `“8QTW” ${CONFIG.profile.subtitle}`,
+            `Screenshare staff at ${ALL.length} communities`,
+            `${count('leadership')} leadership roles`,
+            `Time zone ${CONFIG.profile.tz}`
+        ].filter(Boolean);
+        $('#heroFacts').innerHTML = lines.map(l => `<span>${l}</span>`).join('');
+        $('#heroCopy').textContent = `Head Screensharer and forensic specialist for competitive Minecraft, on the screenshare staff of ${ALL.length} communities.`;
+        $('#heroDiscord').href = CONFIG.links.find(l => l.name === 'Discord').link;
+    }
+
+    /* intro counter */
+    function introCount() {
+        const target = ALL.length, node = $('#heroCount');
+        if (reduce) { node.textContent = String(target).padStart(3, '0'); return; }
+        const t0 = performance.now() + 700, dur = 1500;
+        (function tick(now) {
+            const p = clamp((now - t0) / dur);
+            node.textContent = String(Math.round((1 - Math.pow(1 - p, 3)) * target)).padStart(3, '0');
+            if (p < 1) requestAnimationFrame(tick);
+        })(performance.now());
+    }
+
+    /* ───── Statement (word by word on scroll) ───── */
+    function buildStatement() {
+        const text = `Screenshare and digital forensics for competitive Minecraft. From tierlists to ranked servers, I verify players, review evidence and keep communities fair.`;
+        const box = $('#statement');
+        text.split(' ').forEach((w, i, arr) => {
+            const s = el('span', 'w', w); box.appendChild(s);
+            if (i < arr.length - 1) box.appendChild(document.createTextNode(' '));
+        });
+    }
+    function updateStatement() {
+        const box = $('#statement'), words = box.querySelectorAll('.w');
+        const r = box.getBoundingClientRect(), vh = innerHeight;
+        const p = clamp((vh * .82 - r.top) / (r.height + vh * .22));
+        const n = words.length;
+        words.forEach((w, i) => w.style.setProperty('--o', (.16 + .84 * clamp(p * (n + 3) - i)).toFixed(3)));
+    }
+
+    /* ───── Stats ───── */
+    function buildStats() {
+        const data = [
+            { n: ALL.length, l: 'Communities' },
+            { n: CONFIG.staffExperience.discord.length, l: 'Discord servers' },
+            { n: CONFIG.staffExperience.minecraft.length, l: 'Minecraft servers' },
+            { n: count('leadership'), l: 'Leadership roles' }
+        ];
+        const box = $('#stats');
+        data.forEach(d => {
+            const s = el('div', 'stat reveal', `<div class="stat-n" data-to="${d.n}">0</div><div class="stat-l">${d.l}</div>`);
+            box.appendChild(s);
+        });
+    }
+    function countUp(node) {
+        const to = +node.dataset.to;
+        if (reduce) { node.textContent = to; return; }
+        const t0 = performance.now(), dur = 1400;
+        (function tick(now) {
+            const p = clamp((now - t0) / dur);
+            node.textContent = Math.round((1 - Math.pow(1 - p, 4)) * to);
+            if (p < 1) requestAnimationFrame(tick);
+        })(t0);
+    }
+
+    /* ───── About card ───── */
+    function buildAbout() {
+        $('#avatar').src = CONFIG.profile.avatar;
+        const rows = [
+            ['Role', CONFIG.profile.subtitle.replace('&', '&amp;')],
+            ['Age', `${CONFIG.profile.age}`],
+            ['Time zone', CONFIG.profile.tz],
+            ['Discord', CONFIG.profile.discord],
+            ['Minecraft', CONFIG.profile.mc],
+            ['Communities', `${ALL.length}`]
+        ];
+        $('#idRows').innerHTML = rows.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('');
+
+        const card = $('#idcard');
+        if (!reduce && matchMedia('(hover:hover)').matches) {
+            card.addEventListener('pointermove', e => {
+                const r = card.getBoundingClientRect();
+                const x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+                card.style.setProperty('--ry', ((x - .5) * 9).toFixed(2) + 'deg');
+                card.style.setProperty('--rx', ((.5 - y) * 9).toFixed(2) + 'deg');
+                card.style.setProperty('--gx', (x * 100) + '%');
+                card.style.setProperty('--gy', (y * 100) + '%');
+            });
+            card.addEventListener('pointerleave', () => {
+                card.style.setProperty('--rx', '0deg'); card.style.setProperty('--ry', '0deg');
+            });
+        }
+    }
+
+    /* ───── Experience ───── */
+    function pointerGlow(node) {
+        node.addEventListener('pointermove', e => {
+            const r = node.getBoundingClientRect();
+            node.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+            node.style.setProperty('--my', (e.clientY - r.top) + 'px');
+        });
+    }
+    function buildSpots() {
+        const box = $('#spots');
+        CONFIG.highlights.forEach(name => {
+            const s = ALL.find(x => x.serverName === name);
+            if (!s) return;
+            const tag = s.imgurLink ? 'a' : 'div';
+            const node = el(tag, 'spot');
+            if (s.imgurLink) { node.href = s.imgurLink; node.target = '_blank'; node.rel = 'noopener noreferrer'; }
+            node.innerHTML = `
+                <div class="spot-top"><span>${s.platform}</span>${s.imgurLink ? '<span class="spot-arrow"><i class="fa-solid fa-arrow-right"></i></span>' : ''}</div>
+                <div><h4></h4><p></p></div>`;
+            node.querySelector('h4').textContent = s.serverName;
+            node.querySelector('p').textContent = fmtRole(s.role);
+            pointerGlow(node);
+            box.appendChild(node);
+        });
+    }
+
+
+            /* ───── Every Community: Solid 3-Column Rectangular Cards ───── */
+    let currentCommFilter = 'all';
+
+    function renderAllSpots() {
+        const box = $('#allSpotsGrid');
+        if (!box) return;
+        box.innerHTML = '';
+
+        const filtered = ALL.filter(x => {
+            if (currentCommFilter === 'all') return true;
+            if (currentCommFilter === 'discord') return x.platform === 'Discord';
+            if (currentCommFilter === 'minecraft') return x.platform === 'Minecraft';
+            return true;
+        });
+
+        filtered.forEach((s, i) => {
+            const hasProof = !!s.imgurLink;
+            const tag = hasProof ? 'a' : 'div';
+            const node = el(tag, 'spot');
+            if (hasProof) {
+                node.href = s.imgurLink;
+                node.target = '_blank';
+                node.rel = 'noopener noreferrer';
+            }
+
+            node.innerHTML = `
+                <div class="spot-left-info">
+                    <h4 title="${s.serverName}">${s.serverName}</h4>
+                    <p title="${fmtRole(s.role)}">${fmtRole(s.role)}</p>
+                </div>
+                <div class="spot-right-act">
+                    <span class="spot-proof-pill ${hasProof ? 'has-proof' : ''}">
+                        ${hasProof ? '<span>Proof</span> <i class="fa-solid fa-arrow-up-right-from-square"></i>' : '<span>Staff</span>'}
+                    </span>
+                </div>
+            `;
+            pointerGlow(node);
+            box.appendChild(node);
+        });
+
+        if ($('#cntAll')) $('#cntAll').textContent = ALL.length;
+        if ($('#cntDiscord')) $('#cntDiscord').textContent = ALL.filter(RULES.discord).length;
+        if ($('#cntMinecraft')) $('#cntMinecraft').textContent = ALL.filter(RULES.minecraft).length;
+    }
+
+    function setCommFilter(filter) {
+        currentCommFilter = filter;
+        document.querySelectorAll('.comm-tab-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.filter === filter);
+        });
+        renderAllSpots();
+    }
+
+    function buildExperience() {
+        buildSpots();
+        renderAllSpots();
+    }
+
+    /* ───── Favorites ───── */
+    function buildFavorites() {
+        const box = $('#favList');
+        CONFIG.favorites.forEach((f, i) => {
+            const row = el('div', 'fav reveal', '<h3></h3><p></p>');
+            row.querySelector('h3').textContent = f.name;
+            row.querySelector('p').textContent = f.quote;
+            box.appendChild(row);
+        });
+    }
+
+    /* ───── Links ───── */
+    function buildLinks() {
+        const box = $('#links'), foot = $('#footLinks');
+        CONFIG.links.forEach(l => {
+            const a = el('a', 'link', `<i class="${l.icon}"></i><b>${l.name}</b><em>${l.handle}</em><i class="fa-solid fa-arrow-up-right-from-square arr"></i>`);
+            a.href = l.link; a.target = '_blank'; a.rel = 'noopener noreferrer';
+            box.appendChild(a);
+            const li = el('li'); const fa = el('a', null, l.name);
+            fa.href = l.link; fa.target = '_blank'; fa.rel = 'noopener noreferrer';
+            li.appendChild(fa); foot.appendChild(li);
+        });
+    }
+
+    /* ───── Hero scroll + tilt ───── */
+    function initHeroMotion() {
+        const hero = $('#top'), wrap = $('#markWrap');
+        let tx = 0, ty = 0, cx = 0, cy = 0, p = 0;
+        if (!reduce) {
+            hero.addEventListener('pointermove', e => {
+                tx = (e.clientX / innerWidth - .5) * 2;
+                ty = (e.clientY / innerHeight - .5) * 2;
+            });
+        }
+        function frame() {
+            cx += (tx - cx) * .07; cy += (ty - cy) * .07;
+            const rx = -cy * 5, ry = cx * 7;
+            wrap.style.transform = `perspective(1400px) rotateX(${rx}deg) rotateY(${ry}deg) rotateZ(-2deg) translateY(${-p * 80}px) scale(${1 - p * .16})`;
+            wrap.style.opacity = 1 - p * .95;
+            requestAnimationFrame(frame);
+        }
+        if (!reduce) {
+            frame();
+            addEventListener('scroll', () => { p = clamp(scrollY / (hero.offsetHeight * .85)); }, { passive: true });
+        }
+    }
+
+    /* ───── Scroll handlers ───── */
+    function initScroll() {
+        const nav = $('#nav');
+        let ticking = false;
+        function onScroll() {
+            nav.classList.toggle('solid', scrollY > 30);
+            updateStatement();
+            ticking = false;
+        }
+        addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
+        addEventListener('resize', updateStatement);
+        onScroll();
+
+        const rIO = new IntersectionObserver(es => es.forEach(e => {
+            if (!e.isIntersecting) return;
+            e.target.classList.add('in');
+            const n = e.target.querySelector('.stat-n'); if (n) countUp(n);
+            rIO.unobserve(e.target);
+        }), { threshold: .18 });
+        document.querySelectorAll('.reveal').forEach((n, i) => {
+            if (n.classList.contains('stat')) n.style.transitionDelay = (Array.from(n.parentNode.children).indexOf(n) * 90) + 'ms';
+            rIO.observe(n);
+        });
+
+        const links = document.querySelectorAll('.nav-links a');
+        const sIO = new IntersectionObserver(es => es.forEach(e => {
+            if (e.isIntersecting) links.forEach(a => a.classList.toggle('on', a.dataset.sec === e.target.id));
+        }), { rootMargin: '-45% 0px -50% 0px' });
+        ['top', 'about', 'experience', 'favorites', 'contact'].forEach(id => sIO.observe(document.getElementById(id)));
+    }
+
+    /* ───── Audio ───── */
+    function initAudio() {
+        const a = $('#music'), btn = $('#sound'), ic = btn.querySelector('i');
+        a.volume = .075;
+        a.muted = true;
+        let on = false;   // on = audio acceso (non in mute)
+        const paint = () => {
+            ic.className = on ? 'fa-solid fa-volume-high' : 'fa-solid fa-volume-xmark';
+            btn.setAttribute('aria-label', on ? 'Mute audio' : 'Unmute audio');
         };
+        paint();
 
-        
-        function setupStaffExperienceFeatures() {
-            const mcServers = CONFIG.staffExperience.minecraft || [];
-            const dcServers = CONFIG.staffExperience.discord || [];
-            const allServers = [...mcServers, ...dcServers];
+        // parte in mute (i browser lo permettono): la musica gira già, manca solo l'audio
+        a.play().catch(() => {});
 
-            // 1. Calcola statistiche
-            const totalCount = allServers.length;
-            const leadCount = allServers.filter(s => /(head\s*ss|ss\s*manager|ss\s*coord|admin|overseer)/i.test(s.role || '')).length;
-            // ssverified include anche ss manager
-            const verifiedCount = allServers.filter(s => /(ss\s*verif|ss\s*veteran|ss\s*manager|screensharer|pc\s*check|sser|ss\s*mentor|ss\s*trainer)/i.test(s.role || '')).length;
-            const proofPct = 100; // 100% prove verificate
-
-            // Animazione numeri contatore
-            function animateValue(id, start, end, duration, suffix = '') {
-                const el = document.getElementById(id);
-                if (!el) return;
-                let startTimestamp = null;
-                const step = (timestamp) => {
-                    if (!startTimestamp) startTimestamp = timestamp;
-                    const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-                    el.textContent = Math.floor(progress * (end - start) + start) + suffix;
-                    if (progress < 1) {
-                        window.requestAnimationFrame(step);
-                    }
-                };
-                window.requestAnimationFrame(step);
-            }
-
-            animateValue('statTotalServers', 0, totalCount, 1200, '+');
-            animateValue('statLeadRoles', 0, leadCount, 1200);
-            animateValue('statVerifiedRoles', 0, 34, 1200, '+');
-            const proofEl = document.getElementById('statProofPercent');
-            if (proofEl) proofEl.textContent = `${proofPct}%`;
-
-            // 2. Ricerca & Filtri interattivi
-            const searchInput = document.getElementById('serverSearchInput');
-            const clearBtn = document.getElementById('clearSearchBtn');
-            const filterPills = document.querySelectorAll('.filter-pill');
-            const noResultsMsg = document.getElementById('noResultsMsg');
-            let currentFilter = 'all';
-
-            function filterServers() {
-                const query = (searchInput.value || '').trim().toLowerCase();
-                if (clearBtn) clearBtn.style.display = query ? 'block' : 'none';
-
-                let totalVisible = 0;
-
-                document.querySelectorAll('.staff-category').forEach(cat => {
-                    let catVisibleCount = 0;
-                    const cards = cat.querySelectorAll('.server-card');
-
-                    cards.forEach(card => {
-                        const sName = card.dataset.server || '';
-                        const sRoles = card.dataset.roles || '';
-
-                        // Verifica filtro categoria
-                        let matchesCategory = true;
-                        if (currentFilter === 'lead') {
-                            matchesCategory = /(head\s*ss|ss\s*manager|ss\s*coord|admin|overseer)/i.test(sRoles);
-                        } else if (currentFilter === 'verified_pc') {
-                            matchesCategory = /(ss\s*verif|ss\s*veteran|ss\s*manager|screensharer|pc\s*check|sser|ss\s*mentor|ss\s*trainer)/i.test(sRoles);
-                        } else if (currentFilter === 'staff') {
-                            matchesCategory = /(mod|helper|staff|regulator)/i.test(sRoles);
-                        }
-
-                        // Verifica ricerca testo
-                        const matchesQuery = !query || sName.includes(query) || sRoles.includes(query);
-
-                        if (matchesCategory && matchesQuery) {
-                            card.style.display = 'flex';
-                            catVisibleCount++;
-                            totalVisible++;
-                        } else {
-                            card.style.display = 'none';
-                        }
-                    });
-
-                    // Nascondi il titolo della categoria se non ci sono card visibili
-                    cat.style.display = catVisibleCount > 0 ? 'block' : 'none';
-                });
-
-                if (noResultsMsg) {
-                    noResultsMsg.style.display = totalVisible === 0 ? 'block' : 'none';
-                }
-            }
-
-            if (searchInput) {
-                searchInput.addEventListener('input', filterServers);
-            }
-
-            if (clearBtn) {
-                clearBtn.addEventListener('click', () => {
-                    searchInput.value = '';
-                    filterServers();
-                    searchInput.focus();
-                });
-            }
-
-            filterPills.forEach(pill => {
-                pill.addEventListener('click', () => {
-                    filterPills.forEach(p => p.classList.remove('active'));
-                    pill.classList.add('active');
-                    currentFilter = pill.getAttribute('data-filter') || 'all';
-                    filterServers();
-                });
-            });
-        }
-
-        
-        const IMGUR_MAP = {"https://imgur.com/a/GRHniTt": "https://i.imgur.com/lc2xJ7yh.jpg", "https://imgur.com/a/BAcHvQd": "https://i.imgur.com/fF6aNDSh.jpg", "https://imgur.com/26IwpzA": "https://i.imgur.com/26IwpzA.png", "https://imgur.com/a/4DbbcAO": "https://i.imgur.com/eCvnTdUh.jpg", "https://imgur.com/a/ivlSXNe": "https://i.imgur.com/pqNdOcsh.jpg", "https://imgur.com/a/4XdZHgi": "https://i.imgur.com/v0LV58Yh.jpg", "https://imgur.com/yqRYbja": "https://i.imgur.com/yqRYbja.png", "https://imgur.com/a/v07ll8H": "https://i.imgur.com/35aRgiYh.jpg", "https://imgur.com/a/9GApA38": "https://i.imgur.com/B6xAy91h.jpg", "https://imgur.com/a/838wVfg": "https://i.imgur.com/l04uPJ6h.jpg", "https://imgur.com/a/t5YtoFL": "https://i.imgur.com/nScqMSAh.jpg", "https://imgur.com/a/1GlQEWJ": "https://i.imgur.com/f1ObiP8h.jpg", "https://imgur.com/a/PSYP2XJ": "https://i.imgur.com/BWewdcah.jpg", "https://imgur.com/a/nFFz0dQ": "https://i.imgur.com/91h9DVCh.jpg", "https://imgur.com/a/PsoRMCv": "https://i.imgur.com/tRsPhpHh.jpg", "https://imgur.com/a/6NClYZY": "https://i.imgur.com/qmH8NEi.png", "https://imgur.com/a/0Ltsdrp": "https://i.imgur.com/fy4PQOUh.jpg", "https://imgur.com/a/ACqaizQ": "https://i.imgur.com/2artnLph.jpg", "https://imgur.com/a/F7t1SWO": "https://i.imgur.com/iFFXrQjh.jpg", "https://imgur.com/a/Q0rT74N": "https://i.imgur.com/ZWUqYP7h.jpg", "https://imgur.com/a/LGplXEV": "https://i.imgur.com/eqppqsdh.jpg", "https://imgur.com/a/xjrzeUL": "https://i.imgur.com/Zg6tNh7h.jpg", "https://imgur.com/a/CnvgGIg": "https://i.imgur.com/yn20NM5h.jpg", "https://imgur.com/a/brGuN6b": "https://i.imgur.com/eDME7nth.jpg", "https://imgur.com/a/Q8ILncG": "https://i.imgur.com/QDqh7zXh.jpg", "https://imgur.com/a/AD1v03M": "https://i.imgur.com/RYfjVuTh.jpg", "https://imgur.com/a/COl8Gw2": "https://i.imgur.com/IUJpi37h.jpg", "https://imgur.com/a/MkbRqL7": "https://i.imgur.com/oD2CTA3h.jpg", "https://imgur.com/a/5hVfiWN": "https://i.imgur.com/Hcw8sTHh.jpg", "https://imgur.com/a/r24FSn3": "https://i.imgur.com/AJFHAX8h.jpg", "https://imgur.com/a/FwRBLBY": "https://i.imgur.com/GYNlq2ah.jpg", "https://imgur.com/a/UkIb9AG": "https://i.imgur.com/85oH1kwh.jpg", "https://imgur.com/Tqyp0Or": "https://i.imgur.com/Tqyp0Or.png", "https://imgur.com/a/RAywTce": "https://i.imgur.com/tFzwqolh.jpg"};
-
-        function openProofModal(serverName, role, color, rawUrl) {
-            const modal = document.getElementById('proofModal');
-            if (!modal) return;
-
-            const titleEl = document.getElementById('proofModalServerName');
-            const rolesEl = document.getElementById('proofModalRoles');
-            const imgEl = document.getElementById('proofModalImage');
-            const loaderEl = document.getElementById('proofImageLoader');
-            const externalLink = document.getElementById('proofModalExternalLink');
-
-            if (titleEl) titleEl.textContent = serverName;
-
-            // Render badges in modal
-            if (rolesEl) {
-                const roleList = role ? role.split(',').map(r => r.trim()).filter(Boolean) : [];
-                rolesEl.innerHTML = roleList.map(r => {
-                    let roleColor = color || '#3b82f6';
-                    if (/(head\s*ss|ss\s*manager|ss\s*coord)/i.test(r)) {
-                        roleColor = '#ef4444';
-                    } else if (/ss\s*verif/i.test(r) || /ss\s*veteran/i.test(r)) {
-                        roleColor = '#10b981';
-                    } else if (/helper/i.test(r) && (!color || color === '#3b82f6')) {
-                        roleColor = '#a855f7';
-                    }
-                    const bg = hexToRgba(roleColor, 0.12);
-                    const border = hexToRgba(roleColor, 0.25);
-                    return `<span class="server-role" style="background: ${bg}; border-color: ${border}; color: ${roleColor};">${r}</span>`;
-                }).join('');
-            }
-
-            if (externalLink) {
-                externalLink.href = rawUrl || '#';
-            }
-
-            // Direct image URL
-            const directUrl = IMGUR_MAP[rawUrl] || (rawUrl && !rawUrl.includes('/a/') ? `https://i.imgur.com/${rawUrl.split('/').pop()}.png` : rawUrl);
-
-            if (imgEl && loaderEl) {
-                loaderEl.style.display = 'flex';
-                imgEl.style.display = 'none';
-
-                imgEl.onload = () => {
-                    loaderEl.style.display = 'none';
-                    imgEl.style.display = 'block';
-                };
-                imgEl.onerror = () => {
-                    loaderEl.innerHTML = '<span>Could not load image directly. <a href="' + rawUrl + '" target="_blank" style="color:#38bdf8; text-decoration:underline;">Click here to open on Imgur</a></span>';
-                };
-                imgEl.src = directUrl;
-            }
-
-            modal.style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeProofModal() {
-            const modal = document.getElementById('proofModal');
-            if (modal) {
-                modal.style.display = 'none';
-                const imgEl = document.getElementById('proofModalImage');
-                if (imgEl) imgEl.src = '';
-                document.body.style.overflow = 'auto';
-            }
-        }
-
-        // Modal event listeners
-        document.addEventListener('DOMContentLoaded', () => {
-            const closeBtn = document.getElementById('proofModalCloseBtn');
-            const backdrop = document.getElementById('proofModalBackdrop');
-
-            if (closeBtn) closeBtn.addEventListener('click', closeProofModal);
-            if (backdrop) backdrop.addEventListener('click', closeProofModal);
-
-            window.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape') closeProofModal();
-            });
+        // il click sul tasto è il gesto che permette di sentire l'audio
+        btn.addEventListener('click', () => {
+            if (on) { on = false; a.muted = true; }
+            else { on = true; a.muted = false; a.play().catch(() => {}); }
+            paint();
         });
-
-        function initializeProfile() {
-            const avatarContainer = document.getElementById('profileAvatar');
-            avatarContainer.innerHTML = `<img src="${CONFIG.profile.avatar}" alt="Profile avatar">`;
-            document.getElementById('profileName').textContent = CONFIG.profile.name;
-            document.getElementById('profileSubtitle').innerHTML = `<i class="fa-solid fa-magnifying-glass" style="transform: scaleX(-1);"></i> ${CONFIG.profile.subtitle}`;
-        }
-
-        function hexToRgba(hex, alpha) {
-            let c = hex.replace('#', '');
-            if (c.length === 3) c = c.split('').map(x => x + x).join('');
-            const bigint = parseInt(c, 16);
-            const r = (bigint >> 16) & 255;
-            const g = (bigint >> 8) & 255;
-            const b = bigint & 255;
-            return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-        }
-
-        function createCategory(targetSectionId, title, icon, servers) {
-            const section = document.getElementById(targetSectionId);
-            const categoryDiv = document.createElement('div');
-            categoryDiv.className = 'staff-category';
-            categoryDiv.innerHTML = `<h3><i class="${icon}"></i> ${title}</h3><div class="staff-grid"></div>`;
-            const grid = categoryDiv.querySelector('.staff-grid');
-
-            servers.forEach(server => {
-                const card = document.createElement('div');
-                card.className = 'server-card';
-
-                if (server.imgurLink) {
-                    card.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        openProofModal(server.serverName, server.role, server.color, server.imgurLink);
-                    });
-                } else {
-                    card.style.cursor = 'default';
-                }
-
-                const yearHtml = server.year ? `<div class="server-year">${server.year}</div>` : '';
-
-                // Se ci sono ruoli multipli divisi da virgola, crea badge separati
-                const roleList = server.role ? server.role.split(',').map(r => r.trim()).filter(Boolean) : [];
-
-                const rolesHtml = roleList.map(r => {
-                    let roleColor = server.color || '#3b82f6';
-                    // Head SS e SS Manager sempre rosso
-                    if (/(head\s*ss|ss\s*manager|ss\s*coord)/i.test(r)) {
-                        roleColor = '#ef4444';
-                    } else if (/ss\s*verif/i.test(r) || /ss\s*veteran/i.test(r)) {
-                        roleColor = '#10b981';
-                    } else if (/helper/i.test(r) && (!server.color || server.color === '#3b82f6')) {
-                        roleColor = '#a855f7';
-                    }
-                    const bg = hexToRgba(roleColor, 0.12);
-                    const border = hexToRgba(roleColor, 0.25);
-                    return `<span class="server-role" style="background: ${bg}; border-color: ${border}; color: ${roleColor};">${r}</span>`;
-                }).join('');
-
-                const proofBadge = server.imgurLink
-                    ? `<div class="card-proof-badge" title="Click to open Imgur proof"><i class="fa-solid fa-arrow-up-right-from-square"></i> PROOF</div>`
-                    : '';
-
-                card.innerHTML = `
-                    ${proofBadge}
-                    <div class="server-info">
-                        <h4>${server.serverName}</h4>
-                        ${yearHtml}
-                        <div class="server-roles-wrap">
-                            ${rolesHtml}
-                        </div>
-                    </div>
-                `;
-
-                // Metadati per ricerca e filtri
-                card.dataset.server = (server.serverName || '').toLowerCase();
-                card.dataset.roles = (server.role || '').toLowerCase();
-                card.dataset.hasProof = server.imgurLink ? 'true' : 'false';
-
-                grid.appendChild(card);
-            });
-
-            section.appendChild(categoryDiv);
-        }
-
-        function createGenericCards(targetElement, items) {
-            const container = document.querySelector(targetElement);
-            container.innerHTML = '';
-
-            items.forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'server-card';
-
-                card.addEventListener('click', () => window.open(item.link, '_blank', 'noopener,noreferrer'));
-
-                const cardName = item.name || item.role;
-                card.innerHTML = `
-                    <div class="server-info">
-                        <h4>${item.icon ? `<i class="${item.icon}"></i>&nbsp;` : ''}${cardName}</h4>
-                        <div class="server-roles-wrap">
-                            <span class="server-role">${item.role}</span>
-                        </div>
-                    </div>
-                `;
-                if (item.color) {
-                    const roleEl = card.querySelector('.server-role');
-                    roleEl.style.background = hexToRgba(item.color, 0.1);
-                    roleEl.style.borderColor = hexToRgba(item.color, 0.2);
-                    roleEl.style.color = item.color;
-                }
-                container.appendChild(card);
-            });
-        }
-
-        function highlightActiveSection() {
-            const sections = document.querySelectorAll('.section');
-            const navItems = document.querySelectorAll('.panel-item');
-            let currentSection = 'profileBio';
-
-            const viewportMiddle = window.scrollY + (window.innerHeight / 2);
-
-            let closestSection = sections[0];
-            let minDistance = Math.abs(viewportMiddle - (sections[0].offsetTop + sections[0].offsetHeight / 2));
-
-            sections.forEach(section => {
-                const sectionMiddle = section.offsetTop + (section.offsetHeight / 2);
-                const distance = Math.abs(viewportMiddle - sectionMiddle);
-
-                if (distance < minDistance) {
-                    minDistance = distance;
-                    closestSection = section;
-                }
-            });
-
-            currentSection = closestSection.id;
-
-            navItems.forEach(item => {
-                item.classList.remove('active');
-                if (item.getAttribute('data-section') === currentSection) {
-                    item.classList.add('active');
-                }
-            });
-
-            updateProgressBar();
-        }
-
-        function updateProgressBar() {
-            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const scrolled = (winScroll / height) * 100;
-            document.querySelector('.scroll-progress-bar').style.width = scrolled + '%';
-        }
-
-        const bgStartAudio = document.getElementById('bg-start-audio');
-        const bgStartAudioH1 = bgStartAudio.querySelector('h1');
-        const appContainer = document.querySelector('.app-container');
-        const bgMusic = document.getElementById('bg-music');
-        const volumeControl = document.getElementById('volume-control');
-        const volumeSlider = document.getElementById('volume-slider');
-        const volumeIcon = document.getElementById('volume-icon');
-
-        let lastVolume = parseFloat(volumeSlider.value);
-        bgMusic.volume = lastVolume;
-
-        function updateVolumeIcon(v) {
-            volumeIcon.style.opacity = v == 0 ? '0.45' : '1';
-        }
-
-        function setVolume(v) {
-            bgMusic.volume = v;
-            volumeSlider.value = v;
-            updateVolumeIcon(v);
-        }
-
-        volumeSlider.addEventListener('input', (e) => {
-            const v = parseFloat(e.target.value);
-            bgMusic.volume = v;
-            if (v > 0) lastVolume = v;
-            updateVolumeIcon(v);
-        });
-
-        volumeIcon.addEventListener('click', () => {
-            if (bgMusic.volume > 0) {
-                lastVolume = bgMusic.volume;
-                setVolume(0);
-            } else {
-                setVolume(lastVolume || 0.075);
-            }
-        });
-
-                // 3D Chrome 8QTW Hero Scene (Identical to noiz.bio)
-        let chromeAnimId = null;
-        let chromeRenderer = null;
-        let chromeScene = null;
-
-        function initChromeHero() {
-            const host = document.getElementById('chrome-hero-host');
-            if (!host || typeof THREE === 'undefined' || typeof CHROME_FONT_DATA === 'undefined') return;
-
-            const scene = new THREE.Scene();
-            chromeScene = scene;
-            const camera = new THREE.PerspectiveCamera(36, window.innerWidth / window.innerHeight, 0.1, 100);
-            camera.position.set(0, 0, 7.5);
-
-            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
-            chromeRenderer = renderer;
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            renderer.toneMapping = THREE.ACESFilmicToneMapping;
-            renderer.toneMappingExposure = 1.0;
-            renderer.outputEncoding = THREE.sRGBEncoding;
-            host.appendChild(renderer.domElement);
-
-            // Studio for metallic chrome reflection
-            const studio = new THREE.Scene();
-            const roomGeo = new THREE.BoxGeometry(40, 32, 16);
-            const roomMat = new THREE.MeshBasicMaterial({ color: 0x020204, side: THREE.BackSide });
-            studio.add(new THREE.Mesh(roomGeo, roomMat));
-
-            function addLightStrip(w, h, color, intensity, x, y, z) {
-                const geo = new THREE.PlaneGeometry(w, h);
-                const mat = new THREE.MeshBasicMaterial({ color: new THREE.Color(color).multiplyScalar(intensity), side: THREE.DoubleSide });
-                const mesh = new THREE.Mesh(geo, mat);
-                mesh.position.set(x, y, z);
-                mesh.lookAt(0, 0, 0);
-                studio.add(mesh);
-            }
-
-            addLightStrip(34, 6, 0xffffff, 3.2, 0, 5, 12);     // Top main light
-            addLightStrip(34, 1.2, 0xffffff, 8.0, 0, 8, 11);    // Razor top highlight
-            addLightStrip(34, 3, 0x888888, 1.5, 0, -8, 8);      // Under fill
-            addLightStrip(1.5, 18, 0xffffff, 8.0, -14, 1, -2);  // Left edge rim
-            addLightStrip(1.5, 18, 0xffffff, 8.0, 14, 1, -2);   // Right edge rim
-            addLightStrip(16, 16, 0xffffff, 1.5, 0, 15, 0);     // Top roof
-            addLightStrip(10, 1.5, 0xaaaaaa, 3.5, 0, -3, -10);  // Back ground rim
-
-            const pmrem = new THREE.PMREMGenerator(renderer);
-            pmrem.compileEquirectangularShader();
-            const envMap = pmrem.fromScene(studio, 0.04).texture;
-            scene.environment = envMap;
-
-            // Studio Lights & Direct Illumination for Crisp White Front
-            const dirLightFront = new THREE.DirectionalLight(0xffffff, 2.2);
-            dirLightFront.position.set(0, 4, 12);
-            scene.add(dirLightFront);
-
-            const dirLightFill = new THREE.DirectionalLight(0xddeeff, 1.4);
-            dirLightFill.position.set(-6, -2, 8);
-            scene.add(dirLightFill);
-
-            const ambLight = new THREE.AmbientLight(0xffffff, 1.2);
-            scene.add(ambLight);
-
-            // Two-tone 3D Materials (Pure White Glossy Front + Dark Chrome Bevel/Sides like NOIZ)
-            const frontMaterial = new THREE.MeshPhysicalMaterial({
-                color: 0xffffff,
-                metalness: 0.04,
-                roughness: 0.06,
-                clearcoat: 1.0,
-                clearcoatRoughness: 0.03,
-                reflectivity: 0.95,
-                envMap: envMap
-            });
-
-            const sideMaterial = new THREE.MeshPhysicalMaterial({
-                color: 0x15151c,
-                emissive: 0x050508,
-                metalness: 0.95,
-                roughness: 0.12,
-                clearcoat: 0.5,
-                clearcoatRoughness: 0.08,
-                envMap: envMap
-            });
-
-            const materials = [frontMaterial, sideMaterial];
-
-            const fontLoader = new THREE.FontLoader();
-            const font = fontLoader.parse(CHROME_FONT_DATA);
-
-            const group = new THREE.Group();
-            scene.add(group);
-
-            const displayText = "8QTW";
-
-            const textGeo = new THREE.TextGeometry(displayText, {
-                font: font,
-                size: 1.55,
-                height: 0.42,
-                curveSegments: 16,
-                bevelEnabled: true,
-                bevelThickness: 0.08,
-                bevelSize: 0.035,
-                bevelSegments: 6
-            });
-
-            // Cylindrical perspective curvature (just like noiz.bio)
-            textGeo.center();
-            const posAttr = textGeo.attributes.position;
-            const v = new THREE.Vector3();
-
-            for (let i = 0; i < posAttr.count; i++) {
-                v.fromBufferAttribute(posAttr, i);
-                let curveRadius = 7.0;
-                let angle = v.x / curveRadius;
-                let zOffset = curveRadius * (1 - Math.cos(angle)) * 0.75;
-                let newX = curveRadius * Math.sin(angle);
-                let newZ = v.z - zOffset;
-                posAttr.setXYZ(i, newX, v.y + Math.sin(angle * 1.5) * 0.15, newZ);
-            }
-            textGeo.computeVertexNormals();
-
-            const textMesh = new THREE.Mesh(textGeo, materials);
-            group.add(textMesh);
-
-            // Floating Ambient Dust / Stardust Particles in 3D
-            const dustCount = 75;
-            const dustGeo = new THREE.BufferGeometry();
-            const dustPositions = new Float32Array(dustCount * 3);
-            const dustVelocities = [];
-
-            for (let i = 0; i < dustCount; i++) {
-                dustPositions[i * 3 + 0] = (Math.random() - 0.5) * 16;
-                dustPositions[i * 3 + 1] = (Math.random() - 0.5) * 10;
-                dustPositions[i * 3 + 2] = (Math.random() - 0.5) * 9 - 1.5;
-                dustVelocities.push({
-                    vx: (Math.random() - 0.5) * 0.003,
-                    vy: Math.random() * 0.003 + 0.002, // gentle slow upward drift
-                    vz: (Math.random() - 0.5) * 0.002
-                });
-            }
-            dustGeo.setAttribute('position', new THREE.BufferAttribute(dustPositions, 3));
-
-            const canvasP = document.createElement('canvas');
-            canvasP.width = 32;
-            canvasP.height = 32;
-            const pctx = canvasP.getContext('2d');
-            const pgrad = pctx.createRadialGradient(16, 16, 0, 16, 16, 16);
-            pgrad.addColorStop(0, 'rgba(255, 255, 255, 0.95)');
-            pgrad.addColorStop(0.35, 'rgba(180, 215, 255, 0.45)');
-            pgrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
-            pctx.fillStyle = pgrad;
-            pctx.fillRect(0, 0, 32, 32);
-            const pTexture = new THREE.CanvasTexture(canvasP);
-
-            const dustMat = new THREE.PointsMaterial({
-                size: 0.15,
-                map: pTexture,
-                transparent: true,
-                opacity: 0.6,
-                blending: THREE.AdditiveBlending,
-                depthWrite: false
-            });
-
-            const dustPoints = new THREE.Points(dustGeo, dustMat);
-            scene.add(dustPoints);
-
-            // Sparkles / Starburst Glints Shader
-            const sparkleVertex = `
-                uniform float uTime;
-                uniform float uSize;
-                uniform float uPhase;
-                uniform float uSpeed;
-                varying vec2 vUv;
-                varying float vI;
-                void main() {
-                    float tw = pow(max(0.0, sin(uTime * uSpeed + uPhase)), 6.0);
-                    float k = 0.2 + tw * 1.4;
-                    vI = k;
-                    vec4 mv = modelViewMatrix * vec4(0.0, 0.0, 0.0, 1.0);
-                    mv.xy += position.xy * uSize * (0.5 + 0.6 * k);
-                    gl_Position = projectionMatrix * mv;
-                    vUv = uv;
-                }
-            `;
-
-            const sparkleFragment = `
-                uniform vec3 uColor;
-                varying vec2 vUv;
-                varying float vI;
-                float streak(vec2 p, float len, float width) {
-                    return exp(-abs(p.y) * width) * pow(max(0.0, 1.0 - abs(p.x) / len), 2.5);
-                }
-                void main() {
-                    vec2 p = vUv * 2.0 - 1.0;
-                    float r2 = dot(p, p);
-                    float core = exp(-r2 * 75.0) * 2.0 + exp(-r2 * 12.0) * 0.4;
-                    float c = 0.8253, s = 0.5646;
-                    vec2 d = vec2(c * p.x + s * p.y, -s * p.x + c * p.y);
-                    float a = core
-                        + streak(d, 1.0, 80.0) * 1.2
-                        + streak(vec2(d.y, d.x), 0.55, 90.0) * 0.75
-                        + streak(p, 0.45, 120.0) * 0.35
-                        + streak(vec2(p.y, p.x), 0.45, 120.0) * 0.35;
-                    a *= vI;
-                    gl_FragColor = vec4(uColor * a, a);
-                }
-            `;
-
-            const sparklePlaneGeo = new THREE.PlaneGeometry(1.6, 1.6);
-            const sparkleMaterials = [];
-
-            // Corner positions on 8QTW
-            const sparklePositions = [
-                [-2.6, 0.72, 0.3],
-                [-2.1, -0.65, 0.25],
-                [-0.75, 0.75, 0.35],
-                [0.65, 0.78, 0.35],
-                [2.3, 0.74, 0.3],
-                [2.8, -0.65, 0.25]
-            ];
-
-            sparklePositions.forEach((pos, idx) => {
-                const mat = new THREE.ShaderMaterial({
-                    vertexShader: sparkleVertex,
-                    fragmentShader: sparkleFragment,
-                    uniforms: {
-                        uTime: { value: 0 },
-                        uSize: { value: 0.65 + (idx % 3) * 0.15 },
-                        uPhase: { value: idx * 1.25 },
-                        uSpeed: { value: 1.2 + (idx % 2) * 0.6 },
-                        uColor: { value: new THREE.Color(0xffffff) }
-                    },
-                    transparent: true,
-                    blending: THREE.AdditiveBlending,
-                    depthWrite: false
-                });
-                sparkleMaterials.push(mat);
-
-                const sMesh = new THREE.Mesh(sparklePlaneGeo, mat);
-                sMesh.position.set(pos[0], pos[1], pos[2]);
-                group.add(sMesh);
-            });
-
-            // Interactive Mouse Parallax
-            let mouseX = 0, mouseY = 0;
-            let targetX = 0, targetY = 0;
-
-            const onMouseMove = (e) => {
-                mouseX = (e.clientX / window.innerWidth) * 2 - 1;
-                mouseY = (e.clientY / window.innerHeight) * 2 - 1;
-            };
-            window.addEventListener('mousemove', onMouseMove);
-
-            const onTouchMove = (e) => {
-                if (e.touches.length > 0) {
-                    mouseX = (e.touches[0].clientX / window.innerWidth) * 2 - 1;
-                    mouseY = (e.touches[0].clientY / window.innerHeight) * 2 - 1;
-                }
-            };
-            window.addEventListener('touchmove', onTouchMove, { passive: true });
-
-            function updateScale() {
-                const aspect = window.innerWidth / window.innerHeight;
-                camera.aspect = aspect;
-                camera.updateProjectionMatrix();
-                renderer.setSize(window.innerWidth, window.innerHeight);
-
-                let s = Math.min(window.innerWidth / 850, 1.35);
-                if (window.innerWidth < 600) s = window.innerWidth / 440;
-                group.scale.set(s, s, s);
-            }
-            window.addEventListener('resize', updateScale);
-            updateScale();
-
-            const clock = new THREE.Clock();
-
-            function animate() {
-                chromeAnimId = requestAnimationFrame(animate);
-
-                const elapsed = clock.getElapsedTime();
-
-                sparkleMaterials.forEach(m => {
-                    m.uniforms.uTime.value = elapsed;
-                });
-
-                // Animate Dust Particles
-                const dPos = dustGeo.attributes.position.array;
-                for (let i = 0; i < dustCount; i++) {
-                    dPos[i * 3 + 0] += dustVelocities[i].vx;
-                    dPos[i * 3 + 1] += dustVelocities[i].vy;
-                    dPos[i * 3 + 2] += dustVelocities[i].vz;
-
-                    if (dPos[i * 3 + 1] > 5) dPos[i * 3 + 1] = -5;
-                    if (dPos[i * 3 + 0] > 8) dPos[i * 3 + 0] = -8;
-                    if (dPos[i * 3 + 0] < -8) dPos[i * 3 + 0] = 8;
-                }
-                dustGeo.attributes.position.needsUpdate = true;
-                dustPoints.rotation.y = targetX * 0.45;
-                dustPoints.rotation.x = targetY * 0.35;
-
-                targetX += (mouseX * 0.38 - targetX) * 0.06;
-                targetY += (-mouseY * 0.28 - targetY) * 0.06;
-
-                group.rotation.y = targetX;
-                group.rotation.x = targetY;
-                group.position.y = Math.sin(elapsed * 1.2) * 0.08;
-
-                renderer.render(scene, camera);
-            }
-
-            animate();
-        }
-
-        initChromeHero();
-
-        function ghostCursor(options) {
-            let hasWrapperEl = options && options.element;
-            let element = hasWrapperEl || document.body;
-            const lifeSpan = options && options.lifeSpan || 40;
-            let width = window.innerWidth;
-            let height = window.innerHeight;
-            let cursor = { x: width / 2, y: width / 2 };
-            let particles = [];
-            let canvas, context, animationFrame;
-            let baseImage = new Image();
-            baseImage.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAATCAYAAACk9eypAAAAAXNSR0IArs4c6QAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAhGVYSWZNTQAqAAAACAAFARIAAwAAAAEAAQAAARoABQAAAAEAAABKARsABQAAAAEAAABSASgAAwAAAAEAAgAAh2kABAAAAAEAAABaAAAAAAAAAEgAAAABAAAASAAAAAEAA6ABAAMAAAABAAEAAKACAAQAAAABAAAADKADAAQAAAABAAAAEwAAAAAChpcNAAAACXBIWXMAAAsTAAALEwEAmpwYAAABWWlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS40LjAiPgogICA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPgogICAgICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIgogICAgICAgICAgICB4bWxuczp0aWZmPSJodHRwOi8vbnMuYWRvYmUuY29tL3RpZmYvMS4wLyI+CiAgICAgICAgIDx0aWZmOk9yaWVudGF0aW9uPjE8L3RpZmY6T3JpZW50YXRpb24+CiAgICAgIDwvcmRmOkRlc2NyaXB0aW9uPgogICA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgpMwidZAAABqElEQVQoFY3SPUvDQBgH8BREpRHExYiDgmLFl6WC+AYmWeyLg4i7buJX8DMpOujgyxGvUYeCgzhUQUSKKLUS0+ZyptXh8Z5Ti621ekPyJHl+uftfomhaf9Ei5JyxXKfynyEA6EYcLHpwyflT958GAQ7DTABNHd8EbtDbEH2BD5QEQmi2mM8P/Iq+A0SzszEg+3sPjDnDdVEtQKQbMUidHD3xVzf6A9UDEmEm+8h9KTqTVUjT+vB53aHrCbAPiceYq1dQI1Aqv4EhMll0jzv+Y0yiRgCnLRSYyDQHVoqUXe4uKL9l+L7GXC4vkMhE6eW/AOJs9k583ORDUyXMZ8F5SVHVVnllmPNKSFagAJ5DofaqGXw/gHBYg51dIldkmknY3tguv3jOtHR4+MqAzaraJXbEhqHhcQlwGSOi5pytVQHZLN5s0WNe8HPrLYlFsO20RPHkImxsbmHdLJFI76th7Z4SeuF53hTeFLvhRCJRCTKZKxgdnRDbW+iozFJbBMw14/ElwGYc0egMBMFzT21f5Rog33Z7dX02GBm7WV5ZfT5Nn5bE3zuCDe9UxdTpNvK+5AAAAABJRU5ErkJggg==";
-
-            const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-
-            function init() {
-                if (prefersReducedMotion.matches) return false;
-                canvas = document.createElement("canvas");
-                context = canvas.getContext("2d");
-                canvas.style.top = "0px";
-                canvas.style.left = "0px";
-                canvas.style.pointerEvents = "none";
-                canvas.style.zIndex = "9999999999";
-                canvas.style.position = "fixed";
-                document.body.appendChild(canvas);
-                canvas.width = width;
-                canvas.height = height;
-                bindEvents();
-                loop();
-            }
-
-            function bindEvents() {
-                element.addEventListener("mousemove", onMouseMove);
-                window.addEventListener("resize", () => {
-                    width = window.innerWidth;
-                    height = window.innerHeight;
-                    canvas.width = width;
-                    canvas.height = height;
-                });
-            }
-
-            function onMouseMove(e) {
-                cursor.x = e.clientX;
-                cursor.y = e.clientY;
-                particles.push(new Particle(cursor.x, cursor.y, baseImage));
-            }
-
-            function updateParticles() {
-                if (particles.length == 0) return;
-                context.clearRect(0, 0, width, height);
-                for (let i = 0; i < particles.length; i++) particles[i].update(context);
-                for (let i = particles.length - 1; i >= 0; i--) {
-                    if (particles[i].lifeSpan < 0) particles.splice(i, 1);
-                }
-                if (particles.length == 0) context.clearRect(0, 0, width, height);
-            }
-
-            function loop() {
-                updateParticles();
-                animationFrame = requestAnimationFrame(loop);
-            }
-
-            function Particle(x, y, image) {
-                this.initialLifeSpan = lifeSpan;
-                this.lifeSpan = lifeSpan;
-                this.position = { x, y };
-                this.image = image;
-                this.update = function (context) {
-                    this.lifeSpan--;
-                    const opacity = Math.max(this.lifeSpan / this.initialLifeSpan, 0);
-                    context.globalAlpha = opacity;
-                    context.drawImage(this.image, this.position.x, this.position.y);
-                };
-            }
-
-            init();
-        }
-
-        ghostCursor({});
-
-        function revealApp() {
-            if (chromeAnimId) {
-                cancelAnimationFrame(chromeAnimId);
-                chromeAnimId = null;
-            }
-            const overlay = document.getElementById('bg-start-audio');
-            if (overlay) {
-                overlay.style.opacity = '0';
-                overlay.style.transform = 'scale(1.04)';
-                overlay.style.pointerEvents = 'none';
-                setTimeout(() => {
-                    overlay.remove();
-                    if (chromeRenderer) {
-                        chromeRenderer.dispose();
-                        chromeRenderer = null;
-                    }
-                }, 500);
-            }
-            document.body.style.overflowY = 'auto';
-            const app = document.querySelector('.app-container');
-            if (app) {
-                app.style.opacity = '1';
-                app.classList.add('animate-in');
-            }
-            const vol = document.getElementById('volume-control');
-            if (vol) {
-                vol.style.opacity = '1';
-                vol.classList.add('animate-in');
-            }
-            document.querySelectorAll('.section').forEach(s => {
-                s.style.opacity = '1';
-                s.classList.add('visible');
-            });
-
-            if (bgMusic) {
-                bgMusic.play().catch(() => {});
-            }
-        }
-
-        window.addEventListener('click', revealApp, { capture: true, once: true });
-        window.addEventListener('touchstart', revealApp, { capture: true, once: true });
-        window.addEventListener('keydown', revealApp, { capture: true, once: true });
-
-        
-        // Bulletproof Background Audio Engine
-        function startAudioImmediately() {
-            const bgMusic = document.getElementById('bg-music');
-            if (!bgMusic) return;
-            bgMusic.volume = 0.075;
-
-            let isAudioPlaying = false;
-
-            function attemptAudioPlay() {
-                if (isAudioPlaying) return;
-                const playPromise = bgMusic.play();
-                if (playPromise !== undefined) {
-                    playPromise.then(() => {
-                        isAudioPlaying = true;
-                        cleanupAudioTriggers();
-                    }).catch(() => {
-                        // Browser autoplay policy blocked 0-interaction audio; will unlock on first gesture
-                    });
-                }
-            }
-
-            const gestureEvents = ['pointerdown', 'mousedown', 'touchstart', 'click', 'keydown'];
-
-            function cleanupAudioTriggers() {
-                gestureEvents.forEach(evt => {
-                    window.removeEventListener(evt, attemptAudioPlay, true);
-                    document.removeEventListener(evt, attemptAudioPlay, true);
-                });
-            }
-
-            gestureEvents.forEach(evt => {
-                window.addEventListener(evt, attemptAudioPlay, { capture: true, passive: true });
-                document.addEventListener(evt, attemptAudioPlay, { capture: true, passive: true });
-            });
-
-            // Try immediately on script load
-            attemptAudioPlay();
-        }
-
-        
-        // Real-Time Lanyard Discord Presence (ID: 1485744426084204738)
-        function initDiscordPresence() {
-            const DISCORD_ID = "1485744426084204738";
-            const statusDot = document.getElementById('discordStatusDot');
-            const presencePill = document.getElementById('discordPresencePill');
-
-            function updatePresenceUI(data) {
-                if (!data) return;
-                const status = data.discord_status || 'offline';
-
-                // Update Avatar Dot
-                if (statusDot) {
-                    statusDot.className = `discord-status-dot status-${status}`;
-                    const labels = {
-                        online: 'Discord: Online',
-                        dnd: 'Discord: Do Not Disturb',
-                        idle: 'Discord: Away / Idle',
-                        offline: 'Discord: Offline'
-                    };
-                    statusDot.title = labels[status] || 'Discord';
-                }
-
-                // Update Presence Pill
-                if (presencePill) {
-                    const statusLabels = {
-                        online: 'Online',
-                        dnd: 'Do Not Disturb',
-                        idle: 'Away',
-                        offline: 'Offline'
-                    };
-
-                    const statusColors = {
-                        online: '#22c55e',
-                        dnd: '#ef4444',
-                        idle: '#f59e0b',
-                        offline: '#71717a'
-                    };
-
-                    presencePill.innerHTML = `
-                        <span class="presence-dot dot-${status}"></span>
-                        <span style="font-weight: 600; color: #ffffff; display: inline-flex; align-items: center; gap: 4px;"><i class="fa-brands fa-discord" style="color: #5865F2;"></i> Discord Status:</span>
-                        <span style="color: ${statusColors[status] || '#ffffff'}; font-weight: 600;">${statusLabels[status] || status}</span>
-                        <span style="color: var(--text-tertiary);">&bull;</span>
-                        <span style="color: #38bdf8; font-weight: 600; display: inline-flex; align-items: center; gap: 5px;"><i class="fa-solid fa-magnifying-glass" style="font-size: 0.72rem;"></i> SSing in progress</span>
-                    `;
-                    presencePill.style.display = 'inline-flex';
-                }
-            }
-
-            // 1. Instant REST API Fetch
-            fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`)
-                .then(res => res.json())
-                .then(res => {
-                    if (res && res.success && res.data) {
-                        updatePresenceUI(res.data);
-                    }
-                })
-                .catch(() => {});
-
-            // 2. Real-Time WebSocket Connection
-            let ws = null;
-            let heartbeatInterval = null;
-
-            function connectLanyardSocket() {
-                try {
-                    ws = new WebSocket('wss://api.lanyard.rest/socket');
-
-                    ws.onmessage = (event) => {
-                        const message = JSON.parse(event.data);
-                        const { op, d, t } = message;
-
-                        if (op === 1) { // Hello
-                            const interval = d.heartbeat_interval;
-                            heartbeatInterval = setInterval(() => {
-                                if (ws.readyState === WebSocket.OPEN) {
-                                    ws.send(JSON.stringify({ op: 3 }));
-                                }
-                            }, interval);
-
-                            // Subscribe to Discord user
-                            ws.send(JSON.stringify({
-                                op: 2,
-                                d: { subscribe_to_id: DISCORD_ID }
-                            }));
-                        } else if (t === 'INIT_STATE' || t === 'PRESENCE_UPDATE') {
-                            updatePresenceUI(d);
-                        }
-                    };
-
-                    ws.onclose = () => {
-                        clearInterval(heartbeatInterval);
-                        setTimeout(connectLanyardSocket, 5000); // Reconnect after 5s
-                    };
-
-                    ws.onerror = () => {
-                        ws.close();
-                    };
-                } catch (e) {
-                    console.log('Lanyard WS fallback');
-                }
-            }
-
-            connectLanyardSocket();
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            initDiscordPresence();
-            startAudioImmediately();
-            initializeProfile();
-
-            createGenericCards('.bio-links-grid', CONFIG.links);
-
-            createCategory('staffExperience', 'Minecraft', 'fa-solid fa-cube', CONFIG.staffExperience.minecraft);
-            createCategory('staffExperience', 'Discord', 'fa-brands fa-discord', CONFIG.staffExperience.discord);
-            setupStaffExperienceFeatures();
-
-            document.querySelectorAll('.panel-item').forEach(item => {
-                item.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const sectionId = item.getAttribute('data-section');
-
-                    if (sectionId === 'profileBio') {
-                        window.scrollTo({
-                            top: 0,
-                            behavior: 'smooth'
-                        });
-                    } else {
-                        const targetSection = document.getElementById(sectionId);
-                        if (targetSection) {
-                            const scrollPosition = targetSection.offsetTop - 40;
-                            window.scrollTo({
-                                top: scrollPosition,
-                                behavior: 'smooth'
-                            });
-                        }
-                    }
-                });
-            });
-
-            window.addEventListener('scroll', highlightActiveSection);
-            highlightActiveSection();
-        });
-
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        buildHero(); introCount();
+        buildStatement(); buildStats(); buildAbout();
+        buildExperience(); buildFavorites(); buildLinks();
+        initHeroMotion(); initScroll(); initAudio();
+    });
     </script>
-
-    <!-- In-Site Proof Lightbox Modal -->
-    <div id="proofModal" class="proof-modal" style="display: none;">
-        <div class="proof-modal-backdrop" id="proofModalBackdrop"></div>
-        <div class="proof-modal-content">
-            <div class="proof-modal-header">
-                <div class="proof-modal-title-wrap">
-                    <h3 id="proofModalServerName">Server</h3>
-                    <div id="proofModalRoles" class="server-roles-wrap"></div>
-                </div>
-                <button class="proof-modal-close" id="proofModalCloseBtn" title="Close (ESC)">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-            <div class="proof-modal-body">
-                <div class="proof-image-loader" id="proofImageLoader">
-                    <div class="proof-spinner"></div>
-                    <span>Loading proof...</span>
-                </div>
-                <img id="proofModalImage" referrerpolicy="no-referrer" src="" alt="Proof Screenshot" />
-            </div>
-            <div class="proof-modal-footer">
-                <span class="proof-modal-hint"><i class="fa-regular fa-keyboard"></i> Press ESC or click outside to close</span>
-                <a id="proofModalExternalLink" href="#" target="_blank" rel="noopener noreferrer" class="proof-external-btn">
-                    <span>Open on Imgur</span> <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                </a>
-            </div>
-        </div>
-    </div>
-
 </body>
-
 </html>
